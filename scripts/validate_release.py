@@ -11,6 +11,7 @@ from nano_data_pipeline.analog import (
     build_format_analog_dataset,
     build_packing_isolation_preservation_mix_dataset,
     build_percentage_isolation_preservation_mix_dataset,
+    build_schedule_isolation_preservation_mix_dataset,
     build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
@@ -38,6 +39,9 @@ PERCENTAGE_ISOLATION = (
 )
 PACKING_ISOLATION = (
     ROOT / "datasets/packing_isolation_preservation_mix_v9.json"
+)
+SCHEDULE_ISOLATION = (
+    ROOT / "datasets/schedule_isolation_preservation_mix_v10.json"
 )
 FAILURE_FAMILIES = (
     ROOT.parent
@@ -169,6 +173,21 @@ def main() -> None:
     )
     if packing_isolation != expected_packing_isolation:
         raise SystemExit("committed packing-isolation mix is not reproducible")
+    schedule_isolation = json.loads(
+        SCHEDULE_ISOLATION.read_text(encoding="utf-8")
+    )
+    validate_analog_dataset(schedule_isolation)
+    expected_schedule_isolation = (
+        build_schedule_isolation_preservation_mix_dataset(
+            COMMITTED,
+            FAILURE_FAMILIES,
+            TARGETED,
+            FAILURE_TARGETED,
+            [ANALOG, CURRICULUM, SEMANTIC, PROCESS, PRESERVATION],
+        )
+    )
+    if schedule_isolation != expected_schedule_isolation:
+        raise SystemExit("committed schedule-isolation mix is not reproducible")
     print(
         json.dumps(
             {
@@ -264,6 +283,13 @@ def main() -> None:
                 "packing_isolation_replacement_count": packing_isolation[
                     "source"
                 ]["replacement_count"],
+                "schedule_isolation_dataset_id": schedule_isolation["dataset_id"],
+                "schedule_isolation_samples": schedule_isolation["summary"][
+                    "samples"
+                ],
+                "schedule_isolation_replacement_count": schedule_isolation[
+                    "source"
+                ]["replacement_count"],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
@@ -274,6 +300,7 @@ def main() -> None:
                 "failure_targeted_byte_reproducible": True,
                 "percentage_isolation_byte_reproducible": True,
                 "packing_isolation_byte_reproducible": True,
+                "schedule_isolation_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,

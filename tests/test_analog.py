@@ -12,6 +12,7 @@ from nano_data_pipeline.analog import (
     build_format_analog_dataset,
     build_packing_isolation_preservation_mix_dataset,
     build_percentage_isolation_preservation_mix_dataset,
+    build_schedule_isolation_preservation_mix_dataset,
     build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
@@ -823,6 +824,60 @@ class AnalogTests(unittest.TestCase):
         )
         self.assertEqual(
             [row for row in v9["samples"] if row["split"] == "validation"],
+            [row for row in v6["samples"] if row["split"] == "validation"],
+        )
+
+    def test_builds_schedule_isolation_preservation_mix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            report_path = root / "v10.public.json"
+            receipt_path = root / "families.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            v5 = build_preservation_mix_dataset(feedback, priors)
+            v5_path = root / "v5.json"
+            v5_path.write_text(json.dumps(v5), encoding="utf-8")
+            self._development_report(report_path, v5)
+            v6 = build_targeted_preservation_mix_dataset(
+                feedback, v5_path, report_path, priors
+            )
+            v6_path = root / "v6.json"
+            v6_path.write_text(json.dumps(v6), encoding="utf-8")
+            self._failure_family_receipt(receipt_path)
+            v7 = build_failure_targeted_preservation_mix_dataset(
+                feedback, receipt_path, v6_path, [*priors, v5_path]
+            )
+            v7_path = root / "v7.json"
+            v7_path.write_text(json.dumps(v7), encoding="utf-8")
+            v10 = build_schedule_isolation_preservation_mix_dataset(
+                feedback,
+                receipt_path,
+                v6_path,
+                v7_path,
+                [*priors, v5_path],
+            )
+        self.assertEqual(v10["summary"], v6["summary"])
+        self.assertEqual(v10["source"]["replacement_count"], 8)
+        self.assertEqual(
+            v10["source"]["replacement_family_counts"],
+            {"weighted_recurring_schedule_total": 8},
+        )
+        changed = [
+            (before, after)
+            for before, after in zip(v6["samples"], v10["samples"])
+            if before != after
+        ]
+        self.assertEqual(len(changed), 8)
+        self.assertTrue(
+            all(
+                after["generation_rule"]
+                == "failure_targeted_weighted_recurring_schedule_total_v7"
+                for _, after in changed
+            )
+        )
+        self.assertEqual(
+            [row for row in v10["samples"] if row["split"] == "validation"],
             [row for row in v6["samples"] if row["split"] == "validation"],
         )
 
