@@ -22,6 +22,10 @@ from nano_data_pipeline.feedback import (
     build_feedback_manifest,
     validate_feedback_manifest,
 )
+from nano_data_pipeline.choice_matrix import (
+    build_choice_capability_matrix,
+    validate_choice_capability_matrix,
+)
 
 
 def main() -> None:
@@ -142,6 +146,15 @@ def main() -> None:
     choice_replay = subparsers.add_parser("build-choice-replay")
     choice_replay.add_argument("--base-dataset", required=True)
     choice_replay.add_argument("--output", required=True)
+
+    choice_matrix = subparsers.add_parser("build-choice-capability-matrix")
+    choice_matrix.add_argument("--prior-dataset", action="append", required=True)
+    choice_matrix.add_argument("--output", required=True)
+
+    validate_choice_matrix = subparsers.add_parser(
+        "validate-choice-capability-matrix"
+    )
+    validate_choice_matrix.add_argument("path")
 
     args = parser.parse_args()
     if args.command == "build-feedback":
@@ -289,6 +302,19 @@ def main() -> None:
             json.dumps(manifest, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
+    elif args.command == "build-choice-capability-matrix":
+        manifest = build_choice_capability_matrix(
+            [Path(path) for path in args.prior_dataset]
+        )
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    elif args.command == "validate-choice-capability-matrix":
+        manifest = json.loads(Path(args.path).read_text(encoding="utf-8"))
+        validate_choice_capability_matrix(manifest)
     else:
         manifest = json.loads(Path(args.path).read_text(encoding="utf-8"))
         validate_analog_dataset(manifest)

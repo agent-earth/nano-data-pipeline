@@ -21,6 +21,7 @@ from nano_data_pipeline.analog import (
     evaluate_arithmetic,
     validate_analog_dataset,
 )
+from nano_data_pipeline.choice_matrix import build_choice_capability_matrix
 
 
 class AnalogTests(unittest.TestCase):
@@ -918,6 +919,66 @@ class AnalogTests(unittest.TestCase):
         self.assertFalse(
             replay["policy"]["independent_holdout_used_for_training"]
         )
+
+    def test_builds_history_disjoint_choice_capability_matrix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            report_path = root / "v10.public.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            v5 = build_preservation_mix_dataset(feedback, priors)
+            v5_path = root / "v5.json"
+            v5_path.write_text(json.dumps(v5), encoding="utf-8")
+            self._development_report(report_path, v5)
+            v6 = build_targeted_preservation_mix_dataset(
+                feedback, v5_path, report_path, priors
+            )
+            v6_path = root / "v6.json"
+            v6_path.write_text(json.dumps(v6), encoding="utf-8")
+            matrix = build_choice_capability_matrix(
+                [*priors, v5_path, v6_path]
+            )
+        self.assertEqual(matrix["summary"]["cases"], 48)
+        self.assertEqual(
+            set(matrix["summary"]["by_family"].values()),
+            {8},
+        )
+        self.assertEqual(matrix["summary"]["scored_cases"], 32)
+        self.assertEqual(matrix["summary"]["ambiguity_cases"], 16)
+        self.assertEqual(matrix["summary"]["training_eligible_cases"], 0)
+        self.assertEqual(
+            matrix["summary"]["by_expected_route"],
+            {
+                "ambiguous_fallback": 16,
+                "unsupported_fallback": 24,
+                "verified_override": 8,
+            },
+        )
+        self.assertTrue(
+            all(
+                matrix["source"][key] == 0
+                for key in (
+                    "prior_case_id_overlap",
+                    "prior_exact_overlap",
+                    "prior_semantic_overlap",
+                    "prior_prompt_overlap",
+                    "prior_source_signature_overlap",
+                )
+            )
+        )
+        self.assertTrue(
+            all(
+                row["reference"] is None
+                for row in matrix["cases"]
+                if row["family"]
+                in {
+                    "explicit_average_no_exact_option",
+                    "duplicate_option_ambiguity",
+                }
+            )
+        )
+        self.assertFalse(matrix["policy"]["training_allowed"])
 
 
 if __name__ == "__main__":

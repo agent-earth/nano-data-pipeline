@@ -23,6 +23,10 @@ from nano_data_pipeline.feedback import (
     build_feedback_manifest,
     validate_feedback_manifest,
 )
+from nano_data_pipeline.choice_matrix import (
+    build_choice_capability_matrix,
+    validate_choice_capability_matrix,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +49,7 @@ SCHEDULE_ISOLATION = (
     ROOT / "datasets/schedule_isolation_preservation_mix_v10.json"
 )
 CHOICE_REPLAY = ROOT / "datasets/generic_choice_replay_v11.json"
+CHOICE_MATRIX = ROOT / "datasets/generic_choice_capability_matrix_v1.json"
 FAILURE_FAMILIES = (
     ROOT.parent
     / "nano-harness/configs/feedback/v11_base_only_failure_families_v1.json"
@@ -195,6 +200,25 @@ def main() -> None:
     expected_choice_replay = build_choice_replay_dataset(TARGETED)
     if choice_replay != expected_choice_replay:
         raise SystemExit("committed choice replay is not reproducible")
+    choice_matrix = json.loads(CHOICE_MATRIX.read_text(encoding="utf-8"))
+    validate_choice_capability_matrix(choice_matrix)
+    expected_choice_matrix = build_choice_capability_matrix(
+        [
+            ANALOG,
+            CURRICULUM,
+            SEMANTIC,
+            PROCESS,
+            PRESERVATION,
+            TARGETED,
+            FAILURE_TARGETED,
+            PERCENTAGE_ISOLATION,
+            PACKING_ISOLATION,
+            SCHEDULE_ISOLATION,
+            CHOICE_REPLAY,
+        ]
+    )
+    if choice_matrix != expected_choice_matrix:
+        raise SystemExit("committed choice matrix is not reproducible")
     print(
         json.dumps(
             {
@@ -305,6 +329,14 @@ def main() -> None:
                 "choice_replay_validation_samples": choice_replay["summary"][
                     "by_split"
                 ]["validation"],
+                "choice_matrix_id": choice_matrix["matrix_id"],
+                "choice_matrix_cases": choice_matrix["summary"]["cases"],
+                "choice_matrix_scored_cases": choice_matrix["summary"][
+                    "scored_cases"
+                ],
+                "choice_matrix_ambiguity_cases": choice_matrix["summary"][
+                    "ambiguity_cases"
+                ],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
@@ -317,6 +349,7 @@ def main() -> None:
                 "packing_isolation_byte_reproducible": True,
                 "schedule_isolation_byte_reproducible": True,
                 "choice_replay_byte_reproducible": True,
+                "choice_matrix_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,
