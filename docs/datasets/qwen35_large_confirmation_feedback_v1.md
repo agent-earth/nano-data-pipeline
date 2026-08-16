@@ -12,7 +12,7 @@ outputs, and source row indices are intentionally absent.
 ## Source Identity
 
 - Experiment: `qwen35-large-confirmation-v1`
-- Harness source revision: `47ee48f`
+- Harness source revision: `3545480`
 - Committed case manifest SHA256:
   `7742995c2b006228f6c6f60e937cd3d54d6fb743fdc84be0d101695f028af5cc`
 - 4B raw result SHA256:

@@ -35,7 +35,7 @@ def main() -> None:
         public_report_path=(
             HARNESS / "docs/results/large_confirmation_v1.public.json"
         ),
-        source_revision="47ee48f",
+        source_revision="3545480",
     )
     if actual != expected:
         raise SystemExit("committed feedback manifest is not reproducible")

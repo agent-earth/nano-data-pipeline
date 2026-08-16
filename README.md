@@ -43,6 +43,6 @@ PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-feedback \
   --four-b-results ../nano-harness/results/harness/qwen35-large-confirmation-v1/4b/cases.jsonl \
   --nine-b-results ../nano-harness/results/harness/qwen35-large-confirmation-v1/9b/cases.jsonl \
   --public-report ../nano-harness/docs/results/large_confirmation_v1.public.json \
-  --source-revision 47ee48f \
+  --source-revision 3545480 \
   --output manifests/qwen35_large_confirmation_feedback_v1.json
 ```

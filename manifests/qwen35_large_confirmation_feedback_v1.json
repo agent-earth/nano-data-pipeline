@@ -1744,8 +1744,8 @@
     "experiment_id": "qwen35-large-confirmation-v1",
     "four_b_raw_sha256": "977a99e978936fbcfc99d45d859a8324746215b3ba518ed3bc5c4a2b5990b33e",
     "nine_b_raw_sha256": "07b442f620245379444f02d633c76502032df84dfe5ad0b74d88996d3c0103bd",
-    "public_report_sha256": "5dd71e3cc89d21d04dc8a5ec7fed0c0c57b4a2c49c77fe4e53a67a82e245e046",
-    "source_revision": "47ee48f"
+    "public_report_sha256": "c219199324ada3f69d7f4dd3ce460d15c55ab70165aab3f09af13f26424bb80a",
+    "source_revision": "3545480"
   },
   "summary": {
     "by_benchmark": {
