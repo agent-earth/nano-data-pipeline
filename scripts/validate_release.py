@@ -5,6 +5,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from nano_data_pipeline.analog import (
+    build_format_analog_dataset,
+    validate_analog_dataset,
+)
 from nano_data_pipeline.feedback import (
     build_feedback_manifest,
     validate_feedback_manifest,
@@ -14,6 +18,7 @@ from nano_data_pipeline.feedback import (
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS = ROOT.parent / "nano-harness"
 COMMITTED = ROOT / "manifests/qwen35_large_confirmation_feedback_v1.json"
+ANALOG = ROOT / "datasets/format_contract_analog_v1.json"
 
 
 def main() -> None:
@@ -39,6 +44,11 @@ def main() -> None:
     )
     if actual != expected:
         raise SystemExit("committed feedback manifest is not reproducible")
+    analog = json.loads(ANALOG.read_text(encoding="utf-8"))
+    validate_analog_dataset(analog)
+    expected_analog = build_format_analog_dataset(COMMITTED)
+    if analog != expected_analog:
+        raise SystemExit("committed analog dataset is not reproducible")
     print(
         json.dumps(
             {
@@ -48,7 +58,14 @@ def main() -> None:
                 "training_eligible_rows": actual["summary"][
                     "training_eligible_rows"
                 ],
-                "byte_reproducible": True,
+                "analog_dataset_id": analog["dataset_id"],
+                "analog_samples": analog["summary"]["samples"],
+                "analog_train_samples": analog["summary"]["by_split"]["train"],
+                "analog_validation_samples": analog["summary"]["by_split"][
+                    "validation"
+                ],
+                "feedback_byte_reproducible": True,
+                "analog_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,

@@ -46,3 +46,16 @@ PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-feedback \
   --source-revision 3545480 \
   --output manifests/qwen35_large_confirmation_feedback_v1.json
 ```
+
+Build the leak-free format analog dataset for SFT smoke:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-format-analog \
+  --feedback-manifest manifests/qwen35_large_confirmation_feedback_v1.json \
+  --output datasets/format_contract_analog_v1.json
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli validate-analog \
+  datasets/format_contract_analog_v1.json
+```
+
+The analog dataset is deterministic synthetic arithmetic, not benchmark
+content. Its validation split checks only exact `FINAL:` contract learning.

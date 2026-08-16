@@ -1,0 +1,3369 @@
+{
+  "dataset_id": "format-contract-analog-v1",
+  "policy": {
+    "contains_benchmark_content": false,
+    "contains_model_outputs": false,
+    "contains_teacher_outputs": false,
+    "purpose": "format_contract_sft_smoke",
+    "source_split": "non_eval_analog_only",
+    "training_allowed": true
+  },
+  "samples": [
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "d7d6465c6b0bdfe7e00b98e4daf9569137877230730a8dc86d8abbd880793466",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 26 + 12.\nA. 36\nB. 37\nC. 39\nD. 38\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-057a7b0374a912466633",
+      "semantic_sha256": "c1963f9e5cb44a78aff3e17ed160a08f73ddc3b1b24af50c982e5516db48b962",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "c69df94c233d94ad840931fbebbd94bfb1aaeba6eb8df21b4b5a04095a9c0e94",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 33 - 13.\nA. 18\nB. 19\nC. 20\nD. 22\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-06e5baea7640cd6fcb34",
+      "semantic_sha256": "aa6d9e7bc750efb4521dce14d558d1283036a2411d861ad96b364c422aa848f3",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "e3c6653880b17430e23d69e2c0fea58843f68f8525f8b29260c75fd50542ae51",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 17 - 18.\nA. -3\nB. -2\nC. -1\nD. 1\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-083e1a5fa9d9ed6e3c4d",
+      "semantic_sha256": "239c2cb9898d25f0dc29091bc2d59649dfc0d41fc8e5f31b08307e3894943ecb",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "efd1146fae3b8f7847e6ae1cf4b281675a06440a269de91fe92afa903e4cc683",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 45 + 6 * 3. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 63",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-0a7ba765d03385eda54c",
+      "semantic_sha256": "6c712141fe204a5d8134e8f7920164f8e07b241578f59b87868abab54405b9ae",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "8f3f0304837ac6a17d5dbe374268b7e168a9d12c2f4013fe64eecc4ad48edb0f",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 23 + 8. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 31",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-0cae10ba0c5a0c8589b6",
+      "semantic_sha256": "dcfd3cc8eaeedf121ee9cd23643da45717a1c4345c2427b209ee1b94af084590",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "c5737c62420e86561cd28c765db8dd8ad052915855144222fefcbedc6615a424",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 7 - 2.\nA. 5\nB. 4\nC. 6\nD. 7\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-0e91118b39569e2b2303",
+      "semantic_sha256": "21b0b51fdd497a7698afc03a9b4c69b27091a59b78a32f120ac235191d4ec822",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "c9f1262d2b4f6e3a7f4bf7dd4fbea336d14090c1cddfb77662d287a5e0e3590a",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 28 + 5.\nA. 31\nB. 33\nC. 34\nD. 35\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-0ea5a5694f3e4fd57e77",
+      "semantic_sha256": "224f4dc86cf87b022104891504311e2cff1775e4e74fbf3d294815046984f151",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "5b0a2bbf63a28dbe4bea4eeb25eb2aa56d05d9e4cc5d85f85fbc03676506cb21",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 55 - 4.\nA. 51\nB. 50\nC. 52\nD. 53\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-0f35a37948d6931b2328",
+      "semantic_sha256": "5f6ffa580759f43775604b1c9122c79f13705c7be65ed9682c2932e13dfaf458",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "bee37bbff292abed1d647c32302ce4525eaccbcce1ad11e9f8cecb249b1c6445",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 49 - 8.\nA. 39\nB. 40\nC. 41\nD. 43\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-125388580063f6058f7f",
+      "semantic_sha256": "b44488e4c4d755d365e4fc0c11d86207f2f81383ae48b4d58aca8feb4cd90cad",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "1823e189bb5909d3f1cac258217f69ad1a84acd7e98c2a9124d9aef150f27952",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 32 + 8.\nA. 38\nB. 40\nC. 41\nD. 42\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-1576d9772c757e72fc07",
+      "semantic_sha256": "1b8bd029bf1781fcafe1d1f9bbe1456f6f2aef924a89bc63ad903ae0bf1499e8",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "3a554fc942f47be79340a210eecf112df6e394c90651c90825c4f95dc26327a2",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 63 + 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 65",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-1691850db5561b7ad0dd",
+      "semantic_sha256": "e83b353cc4c0a3ef87deecfd8a5907f4de02d129277f0d3b8474e85b82badb69",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "a3a7eebcdf429a4fd359fd68d4dab414bdd27ba401b4521e0811e822c802358f",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 37 - 16.\nA. 19\nB. 20\nC. 21\nD. 23\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-170f6daadaf5d688f5f0",
+      "semantic_sha256": "5c363d9a5f414117f76b4674b6d6fcfc446e75f980e4e43133f23b7ac0c59a90",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "1434218f65fd07ce5eb7f36108686962603c18b3f92610a1088b9ab3ec5972e3",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 64 + 15.\nA. 77\nB. 79\nC. 80\nD. 81\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-187ab02800b8339d1c6c",
+      "semantic_sha256": "c013e1eda792c87a905dfe23425462236a464d1727a615c59560a3b6d43fce54",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "2259019ac1b360309430082b03d50a77d080acf0bd9fde334cd1f0068b63c4a6",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 29 - 10.\nA. 17\nB. 18\nC. 19\nD. 21\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-1bc191c17eef0e6b5d58",
+      "semantic_sha256": "ffe4fd955b98d1bb9a54b61ca045f38250516852376c5962b40db5d75e63abd3",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "1f8a42ae8b29a43387030554d0fd74ecfba49413fe8dc3404c8e1a66c1b93531",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 31 + 12. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 43",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-2135f27497171e2528dc",
+      "semantic_sha256": "3509c883fe6956c198e8a36bdb7ba419274ae9f74ec8fe48713a276544e10e7f",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "1928056f004a6adb21af3f1011c6ae0adf5995c60526573d2446a011430af028",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 36 + 11.\nA. 45\nB. 47\nC. 48\nD. 49\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-215f6d13cfc5f684c410",
+      "semantic_sha256": "633480e34e629fbc4cb284a1556a62f088de2d24056a9b6686d2c001c9686c5f",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "d5fbdeeaf5f22fda81d674c0f667205c4b9a4f26735539d02fbc6cd2127c3c4b",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 49 + 8 * 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 89",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-22fa45508a596bc14b15",
+      "semantic_sha256": "04a4982602eed90beaf52b4a0db43d56d33097ef7d8fd15999d7ca629fbb89f9",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "10ea05e11110875a620345ad8d9137eee30d4e201b0df7d254827d24068a18da",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 44 + 17.\nA. 59\nB. 61\nC. 62\nD. 63\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-27b2c3c67cb20889389e",
+      "semantic_sha256": "e0982f7f0e65f6051615591569f7fbb2abd7b61487b86938481bb2629e6162a4",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "21bcf16c5b3d823b5faf96cb7e9481493027f53587c6306b1610a13129aae373",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 62 + 5.\nA. 65\nB. 66\nC. 68\nD. 67\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-2955d82deeaebe02f4c2",
+      "semantic_sha256": "f00e8c17ae7911f8119ddd233e237c9aaef64adc9e860f72b00f623e4ba94c27",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "79bedb19310ceb65c9fe83ba23951a600037ee09412ec3b7fc1db3f090847293",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (18 + 12) * 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 60",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-2c6a681cdf836e737684",
+      "semantic_sha256": "7914036ef023cf1ff51465926d611c07cd56fa6c2bda26821a3b415eb8274e9e",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "a170a7e1b6fc0febfd6b68fe3216149b40613b256b4c68eac6ffcc2feda7510b",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 32 * 6. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 192",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-2d7de94505e1046752a3",
+      "semantic_sha256": "11b5f0a5343991da3ad5da2cb7c7e48211cf85bca35379d0671d85ac5bf88e9b",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "937ddaf7a94e36320db7993f7c4385cd72ae02737eda2b3c432a6a6dd9979128",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 64 * 9. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 576",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-30e9e068d727ae748da4",
+      "semantic_sha256": "b7a8ab679230ca71934dce128b8519d6d3af42cd679a566f7620c816d94b0599",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "37bcd37967ebeb63d3780fb839093ea66e32b533adf5661c018c9aa75363da68",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 38 + 4.\nA. 40\nB. 41\nC. 43\nD. 42\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-361043539e92bf1f6362",
+      "semantic_sha256": "3a605a6320afee51dbb1b3c321c78c2e64b8e3fdb8821818b8b2d5638b0acbb7",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "7552e2cf312014b8b1699dc5c8653b3a46f9316a16ba426027150b7bb3fecc3c",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 22 + 9.\nA. 29\nB. 30\nC. 32\nD. 31\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-394d6e79efb7be5e7902",
+      "semantic_sha256": "a25460e6a118832989535d910385b197b31a959e24a8a4b1631b19bfd4a6e9c6",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "2c67ceccb6ec1deedb79e325737cdf2faee5701946e1965ed9e23b479d7f6385",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 40 * 10. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 400",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-3c1895e0b3a1a2eb10f7",
+      "semantic_sha256": "5adf05cbf507f1199e0018007be3650107690d56a942c066066f87c98a37ae2d",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "62efd398fb763fb1648e0ea0b2cf0becae254ac28ebe4bab76c6f532454368a2",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 51 - 18.\nA. 33\nB. 32\nC. 34\nD. 35\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-3d2f805672ea9c878dea",
+      "semantic_sha256": "5cf854598a4565276ce6d7c4d8478352b2bcfa867fa2e781af9ed4a7075f095b",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "a068a2424e669104ce97a71d3489ecdf470b9a0190cdd34bb8b24a2ba8046516",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (38 + 9) * 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 94",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-3d7079a4f72dfaddbbea",
+      "semantic_sha256": "c5fe9873358f553480627bbcdcc1425f784cfb4f732ba8eeaf87b8dff3a54a07",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "257b04e425e4060d28667438139b225efcf5240dec151baf6f7fd701d981fc4b",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 12 * 9. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 108",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-3f1a84ac21756283d6d8",
+      "semantic_sha256": "64965a464d0580dad98dcada293e085abbd74dc5c9cfc79f1b87ac9f099be3f5",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "5078b4cb43cbbb2d0aae3d8dd8a8661226ae59e5f4a1b72b1eac79c738386038",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 23 - 14.\nA. 9\nB. 8\nC. 10\nD. 11\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4364d11bf39878ee96e0",
+      "semantic_sha256": "e29ba81fdf6d3399bc9968237171d63fc8bf80777fc607030531899f4fbbc98f",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "da4b58e6fb7897ced2d5e3af5a0f2612e7c36459310ec2746d743ebbd720c7fe",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 11 + 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 13",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-44572e857bf78453f696",
+      "semantic_sha256": "08a7c4f64ebdd313a4b708b26710f0393022f1b70af2fd9c6ce64a793d22ae8f",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "46d551ece6594888f0c7f98fdfd379f486846279ed09717fb7dc5871f87cf681",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 40 + 14.\nA. 52\nB. 54\nC. 55\nD. 56\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-46b04e6abb7bf249ab45",
+      "semantic_sha256": "b2e0e782d83af8bbe81cc0b9106652c11e19bf7f011ac10cfde3fc595c71b2aa",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "60a5a5eb565bf51a9e08d28cfea429695aa66913a24d7ca20bc09dc6bd53ee5f",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 52 + 6.\nA. 56\nB. 58\nC. 59\nD. 60\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-46d8cdaabb8b86b5a41a",
+      "semantic_sha256": "122e82ce1fb9d3893ac44bc02d78770d5a70ef04bc03b303913755a16c3c8abe",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "76734ac24fa44f7965f86de1bfde2224ae7a69f6e2eb68039ce8f4026a7f7439",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 57 - 14.\nA. 41\nB. 42\nC. 43\nD. 45\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-472290ff0823300389df",
+      "semantic_sha256": "27ed08fc479e101145a4c9e84c9da04376ea3593e6bfb14d2675463e3e12c5f3",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "9fc662975312505f02a28085b836011afa6c6c017867fcb42f2d75653359561c",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 56 + 9.\nA. 63\nB. 65\nC. 66\nD. 67\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-472594290fd23ef81e13",
+      "semantic_sha256": "8c02f905caca07be0fa44e7a76aa0fcb6b534690f45a11fbf91c3224bbff2278",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "ca78f86c59251a8d81e83c6568a501faf830c994159e2a3b02083f460e1ad6b0",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (42 + 11) * 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 212",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-47278c7856c4cb547787",
+      "semantic_sha256": "69acf92f88071fed49f4346a2f9161992ec3b28a9bbaa0b7e8f5ab5232498257",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "21d7e2fddb0f9ef6ff613c5d9dffc7dd795f128472e17a04b3ea6c2d8ed4570e",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 20 + 16.\nA. 34\nB. 36\nC. 37\nD. 38\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-49f34a7bb76469d917c1",
+      "semantic_sha256": "94232beadc1dbd6f13d710d856f9f9603fd96f900c5c4c490efc67ff0d7bf992",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "8d040a75d4ba948480a4b7c593de248a855456bb139b9517c79a58cd9ddca6e1",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 73 + 7 * 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 87",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4a0e21dc0286aa35d6cc",
+      "semantic_sha256": "293f1cece40ec852931ce5ecfe0719e69ec9e82ae34a4eff7f762381c44181fd",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "6a3852e858dbf7080cbd45bf04c6365d833b95699cf12caecd089b66692b58cb",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 50 + 13.\nA. 61\nB. 62\nC. 64\nD. 63\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4bd0fa91e5b219e63c82",
+      "semantic_sha256": "293b005981a907af1194ed4d302223fd1cdcf90f9410f41242f17c72701f4b82",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "ee8d3fd30df5869b28dd3de759b35710421e4077606ff9c66e6b71f84e155311",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (62 + 8) * 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 280",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4c1d6323debe44925d6b",
+      "semantic_sha256": "4231bbb7eca3d6059dd3a3ab3fa53ea35ad6ff3288e9a440c6fc47091802d4ca",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "cf5a9ecc6b0255ec297d6e40d81c25433fca4e0578353a33209ddb2153004725",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 53 + 10 * 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 73",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4e5369e993bcda437647",
+      "semantic_sha256": "f38afb4f30385051489f75e548e69af2ddd1a86308d7fa32b99974e277fe1460",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "c0820c20e89e10bd9818e67f03945a5cccc0b1b7c352fa3bfebfe67326fb4e4a",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 13 + 3 * 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 19",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4ea5139a086b3702a8d7",
+      "semantic_sha256": "3a0db333b85f2ffac4efec1504a0e2e62a2033618d7374db692a03755d23f1bf",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "af093324fb50c79370b296bfc9dcad42359f7c648a4208b9d5d8530212050132",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 19 + 6. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 25",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-536d1f977b3d87f39346",
+      "semantic_sha256": "e84dcc9eb8bb9a3bdde77b6b7d0d484120ea1dac19cc79f29524065ec46b12e0",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "285776e5423e023327b1c9acac31dc5d6a156904bc400e0ad67adf8cc484526b",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 17 + 5 * 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 37",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-6092d79a9a794b404ad3",
+      "semantic_sha256": "1236dd6f8e1509034f5a7a887bcaae7acf2219e6e9624779ead31bc4bc8686d8",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "d9058052537465825c5dd2a62d13af6771e18640a08ea82f57140693f5b24252",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 11 - 5.\nA. 6\nB. 5\nC. 7\nD. 8\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-68e0297d585285d00793",
+      "semantic_sha256": "9fbbcf97fae5d87b88f596fbe19a36ed383dee9c22067e987848fb99fe6bba47",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "bd639202c08fcc92e64aedad9a6449eb6ebc23d2e5ed13cb8b5ece9d71ea6fca",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 60 + 12.\nA. 70\nB. 72\nC. 73\nD. 74\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-6c14a37acc58d2de4c52",
+      "semantic_sha256": "1ec0fc935a21a0597da75a9354a477687dc5dc2305afe8cbb01ba515c49e2721",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "bcd88c928bec588cff66f74abd51b1c208e1ef253d45434af55b64c3d31720a1",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 61 - 17.\nA. 42\nB. 43\nC. 44\nD. 46\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-6ee55fde0148c87b7a01",
+      "semantic_sha256": "fe951b2ae361da8c8f2a212e0392a274f43aa544f244496cd70c1e9d4d9c5996",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "fe08c0f79437497efff6884ae65f5c8a0d797a2a7383de1cb2b37632797507a3",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 21 + 7 * 1. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 28",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-7290dd6ac30c86b01834",
+      "semantic_sha256": "ac32faba81d4fa9df5bdbe915adb1718dbb8b7e435c47a777dde62ea59ca2d7d",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "902d0821876627585803bbde9f72f28addc66094403c1ac175125ea1d287fde9",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 54 + 16.\nA. 68\nB. 69\nC. 71\nD. 70\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-73149ed733f25b5caa0c",
+      "semantic_sha256": "b5381473ed74b40a803bf21fcc76ac6265fcfe4d80bc0daf3605e2001973e106",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "32648f2dc08980ca59298aebd3000e412ae0fc3f4ca0ef02ace644e918210f3d",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 59 - 7.\nA. 52\nB. 51\nC. 53\nD. 54\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-73fcd62c5d2ec6c3e154",
+      "semantic_sha256": "15bb90d416bdd14cc4c4d1fc824f562b284cee35dc451b881fa6654e6938edfa",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "788bee362f3c1e2ccbeafc886e965673e7c2aeaef407a3184aca6765df78d9c6",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 19 - 11.\nA. 8\nB. 7\nC. 9\nD. 10\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-75155e8ddf017ea9e764",
+      "semantic_sha256": "c03790b2b5692979274e1e38ce2a7585920ea68be0f43832d36d5c1dfcb9b359",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "a99d2abc7fd932992b68434eccc7da192e670aae685ae6a31d9c68d4c7241ade",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (22 + 14) * 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 144",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-7768e9b669a451bcbff9",
+      "semantic_sha256": "eabb34600a0d406cc831cf7fb631991615a39a11b35c73a4ab61d90d636617e4",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "93a3e152e79734ba3c460efa8396c2fbab7f7c9c323e03906dd48d079ac2ba1b",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 43 - 12.\nA. 31\nB. 30\nC. 32\nD. 33\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-78139026580baf28418d",
+      "semantic_sha256": "97e76fe82af55e657481faeca455abd56f441970de6c808ff501d6e07969dde1",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "ce25a67e93bec133df5c1915ebe3cdb7b0f265f20d3d01fdfac8cc21deb6174e",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 30 + 15.\nA. 43\nB. 44\nC. 46\nD. 45\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-7af60766e4bb84322f64",
+      "semantic_sha256": "bd380474afa997a8c71ee8fb86f6e09e763e06c263f2d2eebbb6316cfe959176",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "885908baff03c6e4a41e52935e2659b36ffcc9db65ed0333eb4877dbf3182afd",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 39 - 9.\nA. 30\nB. 29\nC. 31\nD. 32\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-7b4a90a7ea6aa2db5c30",
+      "semantic_sha256": "a3bf64c0e379b951855e46133cb7b1dd9986f1ad534fa1a3df644baa699250b1",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "e5378a354f7bb6225d2f9fea38f2067465069f918abd3d15b12c59fb4cc48f2a",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 57 + 12 * 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 105",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-7cb250e80acf4e104d44",
+      "semantic_sha256": "dd4db23f79d7851faced78d70434db45fae39b88eb57ea818c6ea656ec66870a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "12a5c7e5bebfec8995ebe374648838c04c7e9d4e0d0a412395700724f8fa6b90",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 46 + 10.\nA. 54\nB. 55\nC. 57\nD. 56\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-7facd53c80c3d8f61f39",
+      "semantic_sha256": "38138f800655328fb470072dc9cd9c355a7e741406875ddce1ed0fecf518bf08",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "f2a19b30a1cfd6ad430c8d8f9285db61df07acddfa5c634d3225bf0db8c5fd49",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (50 + 2) * 3. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 156",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-82a730b6f2d1948f64a1",
+      "semantic_sha256": "15a43b2f0fcc3f38e0870a03d711adad664d41baf36f13d405a2ae802b38d422",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "a96f32fbedb799e77f3e601f50ad65826da28829f91a58841480a0eb5c054034",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 69 + 5 * 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 94",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-85bca66344c52b534910",
+      "semantic_sha256": "674a0de975ba6cf00ca3a27286b2f747aed5d5d0743ba5f336f12b515d43bb9a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "9acbb980dbe9c55b569851d57e43e523d8629a9ac9634b0c5e00ea7cea76cc4d",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 27 - 17.\nA. 10\nB. 9\nC. 11\nD. 12\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-87802f9378a44a67f13d",
+      "semantic_sha256": "763a3f5b8131746c60097ef8e01f324be362f77af382b7aeec137ecd6c72c163",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "df81dc12fc35d736795068919b928be69c4de9e797d16c70d8c717296cad032f",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (66 + 10) * 1. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 76",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8b4c0ed054297bf6479c",
+      "semantic_sha256": "174b8d5c923d5fb5b54c0f059d1bcc98c41665ec35384cb759ecfef10c8edf31",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "a1f784b6985e6b08815dcc873260513d7ab835ca8e366c87236087eacef4e0c5",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 55 + 11. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 66",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8d2bc527dd7874beb3db",
+      "semantic_sha256": "d1dd7acb4ccdf7ba93e1fec6db5f0208e9f934101adb3f185534acad2651aa22",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "2e0e718402a8daf7394e73cbdb95ab231242bfcd52d1a742ccb355bbf910b124",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 16 + 13.\nA. 27\nB. 29\nC. 30\nD. 31\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8da630d8fd132679c2e9",
+      "semantic_sha256": "5f9592882799402e34dc56ef7e2453dfc3ccc59675a97c7a62cbd6e325728457",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "b1cb23bc7a21fa96bcbdb6048b362a038fa2404922438fe5337d8cc875a15d42",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 65 - 3.\nA. 60\nB. 61\nC. 62\nD. 64\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8dcdf0bfbfd1f1cd8985",
+      "semantic_sha256": "4addb118b52e7d89e4cf65e24ab35fcf638c99a9fa3ee4150f493cb37b277b2b",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "1d63bd3b56189b43d8d2f4ac666854caaace088c7b2571ac69853943ed6d06be",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (54 + 4) * 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 290",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8e747761be92d014e2ca",
+      "semantic_sha256": "becdba328056ff75b2aab3308650a55ff6fa15944eda2abf26f469206bcf47aa",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "419514848f1f9485593931d2250c43cc0e6d8dc19b6abac1756de4ad558647e1",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 68 + 18.\nA. 84\nB. 86\nC. 87\nD. 88\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8ed1051a74b732a72c94",
+      "semantic_sha256": "f196df681eb1c87d18b038291c72961d7d32f332d29a2c4ad5bcc60b00d28c86",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "9c68ba0d976fa5260c07a2efb062a2a9278c0d3a73e33a588aeac3c8f812dd80",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (30 + 5) * 3. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 105",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8f254b58194f5f30797f",
+      "semantic_sha256": "e23d461273c64b53bbebf962aa9839b89f3c2600ba08e7165b11c4990e05a635",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "0c90aa8e6ca37fe5ada9e31c8b212a94a6fe7eb9108833014ccb33cd9c6b8829",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (34 + 7) * 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 205",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8f8fbf005a62aae643b2",
+      "semantic_sha256": "41828f6eac441074e9d2d026c9a34c68ac7be3b76a022b462dc527ac60c5b44f",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "1d8174f6012296ae4bb1ca5dc0496710ffeb7cb3d1d94a0fb0b20c8893572c0a",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 41 + 4 * 1. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 45",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8fcd69e4583228c050ce",
+      "semantic_sha256": "8fbcc9c9da4f8c0d326b35a9d9c08869a3874e150ddbfea62882b78d52943125",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "ea413a899ca48418e5652932a045a555b3cdb4137ff3f58c6cad07a460915beb",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 56 * 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 280",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-900e39a01398eb6e08b8",
+      "semantic_sha256": "eb6fcae5c1b52261618a217367c87b2e3a42698bb4b1007a81ad44456861bc69",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "d9a8ac7c4bad61fd8587bf62e1b4b8da18963f10967b6f2206a5b3fcb95b26e7",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 59 + 13. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 72",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-90cdd624cf1fddbde7c1",
+      "semantic_sha256": "822bebab629868eea6891a909fdefff273593f8a375f51e19b969e4763220cb1",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "87a76439a209128bb02ff21bd28c2a76a82e58946ce6fda75471ba2aee5236c9",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 69 - 6.\nA. 61\nB. 62\nC. 63\nD. 65\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-94a2e6563e3ae5381b0e",
+      "semantic_sha256": "c72263bdd92ae0db38b6f496f7737bfa2c5563e2f16bb2f486d36e4e19ceb001",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "edc3c70e3c2be38b9156e4c267aad37f4a62447f40458c65f4e8f3ccea3f4863",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 12 + 10.\nA. 20\nB. 22\nC. 23\nD. 24\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-97dcf90d85e06530d309",
+      "semantic_sha256": "57c030854ccdd35bfa467216cfbd78c555d2286219263afacfb2833515862b49",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "91dc8900a0c431e6d9e4464cde1c650d1ad8245dbd314c9f5e577c66264e257c",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 45 - 5.\nA. 38\nB. 39\nC. 40\nD. 42\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-9decb6948012655f2dbf",
+      "semantic_sha256": "b55ade3b9b86f37a65447ed7ca64266800e79b31eec2085ed75678de9a3fdf1f",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "1d71910a1f52cebf42ba96755b6b72b21eecaddf2ea303e5261a04a67c3977e3",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 41 - 2.\nA. 37\nB. 38\nC. 39\nD. 41\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a1112b2e019b3d3cac14",
+      "semantic_sha256": "490894822a9f9ae0283fbb5e050f4a4edf0f0a94e319aac6c895072fcc13263b",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "1fb245f9054baa1eee2489c60fb2edcfe7df363786b8dba27be3f6044131ff48",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 67 - 13.\nA. 54\nB. 53\nC. 55\nD. 56\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a5660fd4243b3f110bbe",
+      "semantic_sha256": "4171fd91efe7583b32e08a343fdc30814da4ae8662bc3366b7738ce778e48a72",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "5280140b240062eecc9f0263a015524fcb0352abb690880ffca52bafce0d6b33",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 47 + 7. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 54",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a62efa1908a97c18afec",
+      "semantic_sha256": "e08b7bc2828afa7678720bdcf90d2bd2349c6183a6f09ecb18d659edae7724b0",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "e5f42dcdb97f7dc3c88d8c6a387807c27ed01d9d12aebb696d638b60372e8181",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 10 + 17.\nA. 25\nB. 26\nC. 28\nD. 27\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a7bc22ef79a0792d2b1c",
+      "semantic_sha256": "4fed364dfe4376c40a1f9c5986f770805da999c8ee018d8e46f3f22b9676ffe5",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "d63ef19d7871a3ad24cb2a86969ef595b63e00276863b5bd730a5a67b39030f4",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 48 * 14. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 672",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a8d0d8fc4f3233c19d78",
+      "semantic_sha256": "65fc8ebc3707c4a5ecd9aa2a8807bc2f774205e62e4afd9122cb3b053c8c7cd9",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "9f44e1b7b2b7b82ceb6515a3b780fd6ca97deafac6a55e700de2ecdf6d8c95e1",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 65 + 3 * 3. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 74",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a92b6be358ae66c4c021",
+      "semantic_sha256": "6edbe6b877282f8e7886404977aa35a928d6d9b6aabf2c4fcbf34a2fcf133003",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "48936c7d230b5d3c2368a95a638df226450d415306c5a4bf96ad962763396527",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 42 + 7.\nA. 47\nB. 48\nC. 50\nD. 49\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-aaecbbe9f0df9331be43",
+      "semantic_sha256": "9218ec2f90d671e6a5f2aceffa1a48c43b084f57502d65c419cf49320152400a",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "3385872fd7c0835f4537d15b5943fa1f2a3b95da6fcffbbee26dc2a232fc655e",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 27 + 10. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 37",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ab28ebcfaf5f57d8d37d",
+      "semantic_sha256": "45de64ff1fb57204b3a92d7fcbf771a31f7e8071101d3a664d42f2bcf9211775",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "a5f21a67390f9466ac9770141382383e95ad97b9bfe25c04d481cd48fac1b48c",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 15 - 8.\nA. 7\nB. 6\nC. 8\nD. 9\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ac18ddb9960143953af2",
+      "semantic_sha256": "14825044a5ff6aec967eebb2b9f99b8238dd8c7291e2c91353e7b0110c47dd13",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "0eec5a17aa39024ea0b9e976edca34a0ffe482b58bdca6fe326a371a8e5e549c",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 44 * 12. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 528",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-acb64d873fdcb57eac9e",
+      "semantic_sha256": "f0485a90f1c810c4934f73b2db75bc0e1db0421beaf9a1fc684a80dd54e5823d",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "d112d1395a06545f3402a59ff4262a188d4924a43aaf548ae3578ea1debe3c65",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 21 - 4.\nA. 15\nB. 16\nC. 17\nD. 19\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ad15b02a6a2df2348e3a",
+      "semantic_sha256": "dd95a26eaecff2cd8d49a0d297051bc3913bf7b4881e0653376dd754517747c2",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "e7f667fb6e38c0dc7695a509c807ce072817bde95ffb3b2269e9de3364ef6370",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 66 + 8.\nA. 72\nB. 73\nC. 75\nD. 74\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ad9c62337478af22dffb",
+      "semantic_sha256": "87d790edab256e93ce83552e7c316f315ef9aa68d3ee4744534244f2ce8e5a4a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "6bcf201ea122aea394439889b5f3319f121d18358365e825eff5e7d89f92b085",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 15 + 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 19",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-af5e072f204600e8cb48",
+      "semantic_sha256": "ff6973e532ec2995906dca18f97fc2f23406f1810e89acccce704eda08558f38",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "019bb8d14b354e639f116d7b32dca14ef54ee1ca23524fe753ade5be6e498805",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 18 + 6.\nA. 22\nB. 23\nC. 25\nD. 24\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-b40b639bf14530127e4b",
+      "semantic_sha256": "4f3842b5ff490b2a66868edc35b843fa85a18a4943780df23d3670ac2175ebcd",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "0155c65ce5ea320feb9073e3fe6d9965a59afa21624a3ca73b5b527deaa97bcd",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 36 * 8. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 288",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-b5682ba65f69b8730b17",
+      "semantic_sha256": "2e1c6cb9c36456ec652f6056160d01216825eb7db8651fe89e0f2686f8073528",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "426862fb7ad3291405eedb5850cb264ea11fe4c64d01a0ae22880dfe92739759",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (46 + 13) * 1. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 59",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-b61747360e6de4ba0ece",
+      "semantic_sha256": "dcd0371f58f94ad217a557226bbf14d7acf3129ab789b0aa14df96d0ef0a32af",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "e446987bc84d22e61bd84efdbf880a3e0995caee343d44512176ab22746b10be",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (58 + 6) * 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 128",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-bbf5a8435fed05e436e9",
+      "semantic_sha256": "1a700bc6ea0a7913d6cc05486139be7fbdc6d04d5f8fc008fdf0f7344d4aaf6d",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "becb45a1128f9abc913defca2309948e711483ca38f97712479ab932fdf3ce34",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (14 + 10) * 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 120",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-bd386dfca1919e3492ff",
+      "semantic_sha256": "bfaf8a0e30c1682f364cf2d56f2d6f58cff1721101880a6830e226625e0c1396",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "eceb1d488e58f3458e614a4059e26e4423bdfaa3fde71637a874022416753b0c",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 31 - 3.\nA. 28\nB. 27\nC. 29\nD. 30\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-bdec185d151cacbbed20",
+      "semantic_sha256": "54a83449d4e1805501450b39019b356655dd49fe182239a421a534a0a49a36d5",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "7a0b506ad6c7faebbd0569bb4f84108c1b745fd0c69df10f7585f5c1fcfe76e9",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 37 + 2 * 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 45",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c3602900f5058a162929",
+      "semantic_sha256": "7533fe6ff9f87a8cb3b41c816d52d83e5551cb8ac6b8169b2ac08b76fcb91c59",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "b6ad0dbd1b27a505d47ddf1a5081abd8543341dc2ff4e3c6ae82a2ff884b462d",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 25 - 7.\nA. 16\nB. 17\nC. 18\nD. 20\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c40d58813fd422741b3f",
+      "semantic_sha256": "00dbc15dd1d14ce2d14277f581ec58788126b316410be029d00a1b0e6a783e9a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "a011d7a7ffa7b62c51b31efc9e514a49f038b6f3865f6419cacd65089be34f0d",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (74 + 14) * 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 440",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c4dc160e5f7f85f7d39c",
+      "semantic_sha256": "934bd388b65cf8dcd3c3ef524b702f4219fe73937ddbd144ef975492ad6d3a4e",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "c3b39e47998f06e6012ab9ed733885f94bf70481451f1f7d676203916b9f099a",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 35 - 6.\nA. 29\nB. 28\nC. 30\nD. 31\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c7131aa50511a1cb0b94",
+      "semantic_sha256": "ee5dfd974940841880ef0d959de9d0f9a14c2f5d0912229968624df86cb42d89",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "c3ac558416fdf5832bb9ec3ee54b2ca1da092d7a0b5dc05e86af1d6ebf284679",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 16 * 11. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 176",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c8de852295ffeff3d594",
+      "semantic_sha256": "88d8e5a5f0b7200887eefaaa7d063b0817a98c88f960547300eca59a25d895d7",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "4664155a8314617419375e523d2cc445d0d409b9b22e0b24c96569bcda57809d",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 52 * 3. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 156",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-caaf9c9e8300cb6a8a42",
+      "semantic_sha256": "9b976a8bf499dc4a3f8f9ad73ce50dfa7efdadb223ef57f87ec8a0cd354d7d10",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "0c018d5b2775c82a1bc184b9dc1dd8368318b40e51a58e7c1f7e96f25867f885",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 48 + 3.\nA. 49\nB. 51\nC. 52\nD. 53\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-cbdbc0ee7e54c3871e14",
+      "semantic_sha256": "7dae847604f2d0d983b150ac79fc7118773c8e323dc4520c7eed6071a4536f8f",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "d9823fb32ec11922280006e473d60c4e91fd10c2e651716a0d567025373b8a41",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 70 + 11.\nA. 79\nB. 80\nC. 82\nD. 81\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-cc7d7d6c4b9861fa4f55",
+      "semantic_sha256": "7388de52353072e7b53687d99073798ecda03d3c09f8e4c66daab3c554c896f9",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "e04a065884acb572a969d92287201386dee88fe027dbb41aa087fd34d1ee98f9",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 67 + 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 71",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-cdb435568f5dcdfdbc3a",
+      "semantic_sha256": "7b49e363b156fe14980a3e85e2ec0c52150135d9379d2ebe868f3c957e7fb749",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "72fddce575520165220e51ea3d6a806ea17f6f692fea8cafe4cd42ae3df0da27",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 9 - 12.\nA. -5\nB. -4\nC. -3\nD. -1\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-cf58d2eda14b6d7cc608",
+      "semantic_sha256": "08c2b36b85081e306deae87ceba5aa46b3283ab7bebde3846c31df383bf36aef",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "a26febb7ee8ea042fdbf293aa7ac721d0466c10ef7bf3c97f733e3b08642c009",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 20 * 13. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 260",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d401602c9f43c015b635",
+      "semantic_sha256": "c2ec55093045564793828268f905663358b6199335d835d272ee21471111e82a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "bbd89bae69185a9a74b8282248aa49a0c3f698f50eff6004372ca27a1195bb40",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 60 * 7. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 420",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d42ab94cca18efc96b82",
+      "semantic_sha256": "1867e1258f8bfd16e57df6bba3cb94b497de85d47c7ac70ad0345ec0c5675e77",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "df11971e6c4c3746d879f3da2c0c8eaec6458ab64225349a2621238037066c9b",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (26 + 3) * 1. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 29",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d5005d9ed02195882ad8",
+      "semantic_sha256": "cdb8600851a3817f0053c9f2f6721cf295b452a37ac959222391c136841869ab",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "11a5eaef97bd4e747837c61ac6a7617cac274e52fce82297495c4d9460996c92",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 14 + 3.\nA. 15\nB. 16\nC. 18\nD. 17\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d520aa5eb063188c318c",
+      "semantic_sha256": "02351530e38f4688794c6852a8e1e41f25ab894d756406ab9e5396c46f815a0e",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "d611d20fec2b7fa38537276523ef587bafe95671eb3fc2fdf35f644524d6c256",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 47 - 15.\nA. 32\nB. 31\nC. 33\nD. 34\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d53c9cc39d76933a586d",
+      "semantic_sha256": "91bff3515c40bd74e483c911a82f00062cc3e81586ff0ea975de9a0b1967c7be",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "597275af395277d541d8ebeb779c000b455bf40c86857f13f70339af1c48695d",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 35 + 14. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 49",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d5de9026e1bd5480e802",
+      "semantic_sha256": "1d3e12dbd083072c76b871fca8c48b69afc976319a8d528d7c26c1bf92e5e21e",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "11b35b707a2df514e260553a7d20045bdb669e64d2fd2d5fb88f114b3e19cbf9",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 63 - 10.\nA. 53\nB. 52\nC. 54\nD. 55\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d75e38545835cb4af907",
+      "semantic_sha256": "22f175356fb5078d8c11e5015ffec6c01699d51ba7c8e85fbb2873ca84ae1886",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "248e0a8e23496b8555b8c2b6782882acf524cd4585a66950db7b3926c5aad89d",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 53 - 11.\nA. 40\nB. 41\nC. 42\nD. 44\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d962c7812231ce15d018",
+      "semantic_sha256": "cfde5df504f741c349eaa176c64f9402207bda7c8eccb9c20b9981dfdad860c6",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "ba3c8a7da6c0416388125bc7a015db0e16eb32f9a1d2f75c04487bf52a11fe2d",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 43 + 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 48",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d9914cce17ef03283184",
+      "semantic_sha256": "b6b24f6b372868edb45df2e4dc6c9716beafed873d58ffcbc39b0d1bf1a1af57",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "294b1cdbca125c6a35018f746970a3307014243964f297b2a0b3bc60aa546974",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 68 * 11. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 748",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d9ebac926c0c2e7bc73f",
+      "semantic_sha256": "de28e34ba6aeb2006ff1e88837cebef65fc24aec60a1623301667ba1ffbba756",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "e05635b913eabe0818fbbf7c578eb66b1f479cb64624dfd0f714c2d4d8eb3647",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 61 + 14 * 1. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 75",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-db1039faf1f1b223cfb5",
+      "semantic_sha256": "18c18aa8c7c619cee62fac3c01124d251530d81ae91ecb3f1436979bbc911ed0",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "1ae5bb87a90c76da20453c3ec41437c276022c1d8f4eda0fa27f645acae161bb",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 24 + 2.\nA. 24\nB. 26\nC. 27\nD. 28\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e1c2aacdb83f240d12ff",
+      "semantic_sha256": "b7adb4999974ff02a06a5dc971c0918ab87ab0e12bf23af57eb05d2090a9ad4a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "e562e813a566a8fb2ff6820528d37ed74100e457293468c1e5b5f0be3de9af4e",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 58 + 2.\nA. 58\nB. 59\nC. 61\nD. 60\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e1e4be16bbd7dbac863d",
+      "semantic_sha256": "e89c8db6770d3e56e6ed43c7f4f7a8112401e73a1e080cbb1b1f38ca32312e9a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "c2f9c5434ac43b077c32d92a822b73d9e0639500410ea1b897421c76793b760f",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 24 * 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 48",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e323b128848e87fb74e8",
+      "semantic_sha256": "fb67015971493c613e10c5ac8001893ae4491f197e78dc18fbf383131379057a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "58d48f5bc102182b9029ebc49ad3a304c92090246b53f98c6ffa015ad3f7518c",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 29 + 11 * 5. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 84",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e46f3411e07f7f93665c",
+      "semantic_sha256": "7e59d43113b72641e311500799da9095d4e08ea4d585a0387c8d0c53337888b0",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "62914805fa786720aa8559b8bf22879b168aefe11b7f02690ff34023103f929d",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 28 * 4. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 112",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e720a1875300a097ab43",
+      "semantic_sha256": "45a9f0bd36700112bae2f6b1456f637efee6d835a01b0f807b27f442800d2e4b",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "7645d6515c699b4aa889370d6d17ace3740c47c6267bd99c42418069506b1344",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 51 + 9. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 60",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e90038d9ea906e8f6ef4",
+      "semantic_sha256": "3bd2dd2a9c8326c0187a05ba9912b7688fdcdbd4f2e1380b04c4cb85f0586958",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "453e2eafe2b25d55db6fe42015c70387243317febf8a835b081e4283bd2c6fb4",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_multiplication_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 72 * 13. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 936",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e9ba08746cdf00a88c28",
+      "semantic_sha256": "2bfce671732848954736e0c1bd3d44dc6c48dd8a8511d7b037cdbc68a1bdc8ba",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "67c3009c4dd99bc733f93bb38f7c75e39be83d6153eac48cb148c8d67f0f67f8",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 39 + 3. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 42",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-eacd8091530e9da57bca",
+      "semantic_sha256": "9f1c166c2bfd0fb4a6f1a9dfb57aa783cc04d71b88f342a39ba60b4557d8b63d",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "b84aecb89cac4daf445c66ea3dfaab0e1ba9557147d2cd5c8065d172880d2940",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_addition_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 71 + 6. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 77",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ed334bb423fbecccdd4b",
+      "semantic_sha256": "38546cdf54d9a8617f78430ccebf982caf70134580ca495683eb9ade4c0b0417",
+      "source_kind": "deterministic_synthetic",
+      "split": "validation",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "b8fa562ca4704e3b9800d827912219c28e5dac2a3af1e7a2a054ae1f40b7020f",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_subtraction_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 13 - 15.\nA. -4\nB. -3\nC. -2\nD. 0\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ee8152dd4edb9e2119ed",
+      "semantic_sha256": "771ab7ecaebec41b58140d0cf9939774c500e536fa71880368430954a34d75e8",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "6609c2172e673806c041f8ed84c49b2c0ba08c4b6d075acf623ae4e4df696e64",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 25 + 9 * 3. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 52",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ef1b56fe49fe91a09ed0",
+      "semantic_sha256": "16465c5ec075dc2eaea679b68c6591f492aaffba49af017ac479b60c63c31c7a",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "c40aab278ef29e7f4961acde77824d2ececd3b5d95460343d5866587b33d5400",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 8 + 7.\nA. 13\nB. 15\nC. 16\nD. 17\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-f6abc440e03fd2cd3bdf",
+      "semantic_sha256": "be0fa1a396cffd89d2e34f77bf08252733defe6a6365d5a2bc298fbd22844902",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "single_step",
+      "exact_sha256": "46d182ac93a86d9ee19c707181f1dc18ebf4e23d69551c3c4c9c5257911e2c3a",
+      "format_family": "final_choice",
+      "generation_rule": "arithmetic_addition_choice_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 34 + 18.\nA. 50\nB. 51\nC. 53\nD. 52\nReturn exactly one line in the form FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-fc7a8c7dded85f552b14",
+      "semantic_sha256": "635578e480b40355b12e79b10c85b179c036b880f6cf67b99377f377cd61612f",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "choice_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "fcd38c72f46f31fc024d7847f8625944c8f37fb948981fd5c65366a1fe8c5044",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_precedence_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 33 + 13 * 2. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 59",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-fcb3dc5334cf89cbdfa7",
+      "semantic_sha256": "20139b20fc2915ad9b10f4d444bd04c18dec9398eba4de357d57ddf72f68db73",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "ce6fb241b4a959b0b080c2b28276157bfe82d4384682d7e9edfeb266d2834c29",
+      "format_family": "final_numeric",
+      "generation_rule": "arithmetic_parenthesized_numeric_v1",
+      "messages": [
+        {
+          "content": "Follow the requested answer contract exactly. Return one FINAL line and no additional text.",
+          "role": "system"
+        },
+        {
+          "content": "Compute (70 + 12) * 3. Return exactly one line in the form FINAL: <number>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: 246",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ff94a7fe1ead61281baa",
+      "semantic_sha256": "6b4123e34396c4bd98d406cc1527cee0104bf363b8c2f84ffd307b2427c525ea",
+      "source_kind": "deterministic_synthetic",
+      "split": "train",
+      "task_family": "numeric_contract",
+      "training_eligible": true
+    }
+  ],
+  "schema_version": "nano_analog_dataset_v1",
+  "source": {
+    "benchmark_content_used": false,
+    "feedback_manifest_sha256": "c08c6bedd4c42688765c17d32f7ca62db74c6c32cfff671faa977631787e20d7",
+    "feedback_requirement_id": "qwen35-large-confirmation-feedback-v1",
+    "generator": "nano_data_pipeline.analog",
+    "sealed_case_ids_used": false,
+    "source_kind": "deterministic_synthetic"
+  },
+  "summary": {
+    "by_difficulty": {
+      "single_step": 96,
+      "two_step": 32
+    },
+    "by_split": {
+      "train": 102,
+      "validation": 26
+    },
+    "by_task_family": {
+      "choice_contract": 64,
+      "numeric_contract": 64
+    },
+    "samples": 128,
+    "training_eligible_samples": 128,
+    "unique_exact_hashes": 128,
+    "unique_semantic_hashes": 128
+  },
+  "version": "v1"
+}
