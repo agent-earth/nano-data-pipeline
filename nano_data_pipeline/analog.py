@@ -2284,6 +2284,61 @@ def build_schedule_isolation_preservation_mix_dataset(
     return dataset
 
 
+def build_choice_replay_dataset(base_dataset_path: Path) -> dict[str, Any]:
+    base = json.loads(base_dataset_path.read_text(encoding="utf-8"))
+    validate_analog_dataset(base)
+    if base.get("dataset_id") != "targeted-preservation-mix-v6":
+        raise ValueError("choice replay base must be v6")
+    train = [
+        copy.deepcopy(sample)
+        for sample in base["samples"]
+        if sample["split"] == "train"
+        and sample["task_family"] == "capability_preservation_choice"
+    ]
+    validation = [
+        copy.deepcopy(sample)
+        for sample in base["samples"]
+        if sample["split"] == "validation"
+    ]
+    if len(train) != 40 or len(validation) != 32:
+        raise ValueError("choice replay base counts differ from contract")
+    samples = [*train, *validation]
+    dataset = {
+        "schema_version": SCHEMA_VERSION,
+        "dataset_id": "generic-choice-replay-v11",
+        "version": "v11",
+        "source": {
+            "source_kind": "deterministic_synthetic",
+            "generator": "nano_data_pipeline.analog",
+            "base_dataset": {
+                "dataset_id": base["dataset_id"],
+                "sha256": sha256_file(base_dataset_path),
+            },
+            "benchmark_content_used": False,
+            "sealed_case_ids_used": False,
+            "train_rows_reused": len(train),
+            "validation_rows_reused": len(validation),
+        },
+        "policy": {
+            "source_split": "non_eval_analog_only",
+            "training_allowed": True,
+            "contains_benchmark_content": False,
+            "contains_model_outputs": False,
+            "contains_teacher_outputs": False,
+            "purpose": "generic_choice_preservation_replay",
+            "observed_validation_reused": True,
+            "validation_role": "development_gate_only",
+            "sealed_canary_used_for_training": False,
+            "independent_holdout_used_for_training": False,
+            "benchmark_feedback_used_for_training": False,
+        },
+        "samples": samples,
+    }
+    dataset["summary"] = summarize_analog_dataset(dataset)
+    validate_analog_dataset(dataset)
+    return dataset
+
+
 def summarize_analog_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
     samples = dataset["samples"]
     return {

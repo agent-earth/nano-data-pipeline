@@ -7,6 +7,7 @@ from pathlib import Path
 
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
+    build_choice_replay_dataset,
     build_failure_targeted_preservation_mix_dataset,
     build_format_analog_dataset,
     build_packing_isolation_preservation_mix_dataset,
@@ -43,6 +44,7 @@ PACKING_ISOLATION = (
 SCHEDULE_ISOLATION = (
     ROOT / "datasets/schedule_isolation_preservation_mix_v10.json"
 )
+CHOICE_REPLAY = ROOT / "datasets/generic_choice_replay_v11.json"
 FAILURE_FAMILIES = (
     ROOT.parent
     / "nano-harness/configs/feedback/v11_base_only_failure_families_v1.json"
@@ -188,6 +190,11 @@ def main() -> None:
     )
     if schedule_isolation != expected_schedule_isolation:
         raise SystemExit("committed schedule-isolation mix is not reproducible")
+    choice_replay = json.loads(CHOICE_REPLAY.read_text(encoding="utf-8"))
+    validate_analog_dataset(choice_replay)
+    expected_choice_replay = build_choice_replay_dataset(TARGETED)
+    if choice_replay != expected_choice_replay:
+        raise SystemExit("committed choice replay is not reproducible")
     print(
         json.dumps(
             {
@@ -290,6 +297,14 @@ def main() -> None:
                 "schedule_isolation_replacement_count": schedule_isolation[
                     "source"
                 ]["replacement_count"],
+                "choice_replay_dataset_id": choice_replay["dataset_id"],
+                "choice_replay_samples": choice_replay["summary"]["samples"],
+                "choice_replay_train_samples": choice_replay["summary"][
+                    "by_split"
+                ]["train"],
+                "choice_replay_validation_samples": choice_replay["summary"][
+                    "by_split"
+                ]["validation"],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
@@ -301,6 +316,7 @@ def main() -> None:
                 "percentage_isolation_byte_reproducible": True,
                 "packing_isolation_byte_reproducible": True,
                 "schedule_isolation_byte_reproducible": True,
+                "choice_replay_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,

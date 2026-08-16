@@ -184,3 +184,17 @@ Packing-efficiency isolation is available through
 `build-packing-isolation-preservation-mix`. It applies the same eight-row,
 train-only contract to the packing family while restoring the percentage and
 schedule rows to v6.
+
+Build the generic choice-preservation replay:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli \
+  build-choice-replay \
+  --base-dataset datasets/targeted_preservation_mix_v6.json \
+  --output datasets/generic_choice_replay_v11.json
+```
+
+V11 selects the 40 deterministic synthetic choice train rows from v6 and
+retains the unchanged 32-row development split for local gating. Training
+must select `split=train`; no benchmark, model-output, canary, or independent
+holdout payload is used.

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
+    build_choice_replay_dataset,
     build_failure_targeted_preservation_mix_dataset,
     build_format_analog_dataset,
     build_packing_isolation_preservation_mix_dataset,
@@ -879,6 +880,43 @@ class AnalogTests(unittest.TestCase):
         self.assertEqual(
             [row for row in v10["samples"] if row["split"] == "validation"],
             [row for row in v6["samples"] if row["split"] == "validation"],
+        )
+
+    def test_builds_generic_choice_replay(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            report_path = root / "v10.public.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            v5 = build_preservation_mix_dataset(feedback, priors)
+            v5_path = root / "v5.json"
+            v5_path.write_text(json.dumps(v5), encoding="utf-8")
+            self._development_report(report_path, v5)
+            v6 = build_targeted_preservation_mix_dataset(
+                feedback, v5_path, report_path, priors
+            )
+            v6_path = root / "v6.json"
+            v6_path.write_text(json.dumps(v6), encoding="utf-8")
+            replay = build_choice_replay_dataset(v6_path)
+        self.assertEqual(replay["summary"]["samples"], 72)
+        self.assertEqual(
+            replay["summary"]["by_split"],
+            {"train": 40, "validation": 32},
+        )
+        self.assertTrue(
+            all(
+                row["task_family"] == "capability_preservation_choice"
+                for row in replay["samples"]
+                if row["split"] == "train"
+            )
+        )
+        self.assertEqual(
+            [row for row in replay["samples"] if row["split"] == "validation"],
+            [row for row in v6["samples"] if row["split"] == "validation"],
+        )
+        self.assertFalse(
+            replay["policy"]["independent_holdout_used_for_training"]
         )
 
 

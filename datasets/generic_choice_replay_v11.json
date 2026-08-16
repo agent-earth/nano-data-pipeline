@@ -1,0 +1,2212 @@
+{
+  "dataset_id": "generic-choice-replay-v11",
+  "policy": {
+    "benchmark_feedback_used_for_training": false,
+    "contains_benchmark_content": false,
+    "contains_model_outputs": false,
+    "contains_teacher_outputs": false,
+    "independent_holdout_used_for_training": false,
+    "observed_validation_reused": true,
+    "purpose": "generic_choice_preservation_replay",
+    "sealed_canary_used_for_training": false,
+    "source_split": "non_eval_analog_only",
+    "training_allowed": true,
+    "validation_role": "development_gate_only"
+  },
+  "samples": [
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "17c9e7ac4fe3d767c1b0df1e124b16e41cb09ffa09a258ebb24a465480d3c537",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 12 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 25\nB. 33\nC. 37\nD. 51\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-01929a7bd31efbed8d68",
+      "semantic_sha256": "7eacc8f5dce20f6706335bbefa615da9a1511a6dd7981a4fb630f22ad47f773a",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:0",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "6704aaac17f8e7c65fbf03b318e53b83316a17863b3a1b8cdaf85ba471d416af",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 30 * 7 and 28 * 5. What is the average of the two player totals?\nA. 175\nB. 171\nC. 181\nD. 189\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-17cf933d4e2d46ff0c54",
+      "semantic_sha256": "568c8074feee8e0935b42106621520334eb1f481988448f6571372a390a1b1a5",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:10",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "7c04dea8756410c8346c2a20d0178db01dc6ab2ad726130f910bd88cc17dd2b8",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 624 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 312\nB. 308\nC. 318\nD. 326\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-1c45e86b14db442685ae",
+      "semantic_sha256": "afd4abf39b170e7804c5f045e1028811828ac23ee6d5958656daed1a739ade1f",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:2",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "1b55e18e092d113af49431f3cb001e4f87d2ae2299c9010f6a8e6f6e99ff87d3",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 768 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 384\nB. 380\nC. 390\nD. 398\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-277eed99cbf7d7cff3b5",
+      "semantic_sha256": "35d2c1d5109b7e2726d935af201ba9893a541ff718d404511f75f4c782a5c515",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:14",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "85c81e5136ca313357f70a77897183c0fbf7df3fe0f6a92c4431c62ae8cdef7b",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 21 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 52\nB. 60\nC. 70\nD. 64\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-2fbe1d2212562b58b7fc",
+      "semantic_sha256": "b525cabdb7f9cf83af96973441fac453e8c9c07077d8472c3aa752e05f0a2040",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:9",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "9e51ab8eb694eec2fe7d07a1769f0cf7f85ff3891721d3cb271bbdf157f16d43",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 18 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 55\nB. 51\nC. 61\nD. 69\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-35e422e38563b30fb3a7",
+      "semantic_sha256": "6cea4537aa885db680399d1e7f19a6ca1a129bdb28705294d9db075305c35385",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:6",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "792b667680619fac2c53af9f31976d9cccba83857ce86c67b8f0687b7e5658cf",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 42 * 5 and 40 * 7. What is the average of the two player totals?\nA. 245\nB. 241\nC. 251\nD. 259\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-385beeda3030e85ec081",
+      "semantic_sha256": "6dea96fce2fb1afdaeadbebb7370d82e0ccb11f5d9cc2f0046a4ac3b0b71ec56",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:22",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "ea69ab9e828df8c3f4d803f5cb2667213fb6fa69f64044c54c1a855dc8d77594",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 1056 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 528\nB. 524\nC. 534\nD. 542\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4bac9ccabcc29b3bf1e3",
+      "semantic_sha256": "0394df0284093769aaf831c691bcd182029e2c260ea9a051cbdea8995a487467",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:38",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "e8b3249cec568e555e9aa555a93adc352785d8862449d094c89400f70e745e10",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 15 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 34\nB. 46\nC. 52\nD. 60\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4f9c7cc6a9176ad7ab24",
+      "semantic_sha256": "421d88bc84068bcfbcd07cb2799a6f1bf8246014ff9df2af4d909ace83c5baab",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:3",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "e128980b23e28dcecf88a8b7e289329b6790f8dccec5086eee0b369670d5bd9f",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 984 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 480\nB. 488\nC. 492\nD. 506\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-516148887401bb1bd79b",
+      "semantic_sha256": "6886e1b298d1399b26b5b0bda2edf5613459b12aa251c6b20c9a50ef7b4d268c",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:32",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "934e78677b10750ea2879c59b6f6cbf91a908e05412ba5e8c0f290a60bd0fa15",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 876 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 426\nB. 438\nC. 444\nD. 452\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-5ac17351c79552843747",
+      "semantic_sha256": "5bc661786e174a742a31acb4e760ab5fe47b6b0df69c343d0d0d066a11e11519",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:23",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "678f548981e570e2542ab2d75b246aef07fb50b57997c3cea9fa7e3f3963a46d",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 24 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 61\nB. 69\nC. 73\nD. 87\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-5b8465e60d60c036be7b",
+      "semantic_sha256": "4cb9a3de270278ac18872c224b49fca65efadfe87f1e2295fcaa5cca17a23894",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:12",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "4a74314aff76c7a4a55a41e941269dce10ad2fa7cd2326393048274058f8bcd6",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 66 * 8 and 64 * 6. What is the average of the two player totals?\nA. 456\nB. 452\nC. 462\nD. 470\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-6d62a4e69d8dfab2661a",
+      "semantic_sha256": "365d5d3c5d124f59c2348706e91c77491016be63a7bb8056dd761e9c869d476a",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:46",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "57037c50b0eeebd4021f71308b15ff8ef00939c92109d41054f06730a4d33e58",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 1128 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 552\nB. 560\nC. 564\nD. 578\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-73cd32ca0f3c1113d234",
+      "semantic_sha256": "7899afec25d74c2ff4b537d9a77cd96de07b5a1fb7504f4673443856bcb2ca3d",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:44",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "3021731556ff71f2e71a31fb87b1f694bbb5ae86b9a01562b09af3b1576f569a",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 840 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 408\nB. 416\nC. 420\nD. 434\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-7cb0a4a5ff6507093f9b",
+      "semantic_sha256": "97f7b233ebdb9de5d37859091990658b9297572423b36c50d3aad0b96a8098eb",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:20",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "ac09b566da4b349e0ec9705fcdeeb49464aeb60e961b34cca1b94f9d0e183465",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 48 * 4 and 46 * 8. What is the average of the two player totals?\nA. 268\nB. 276\nC. 280\nD. 294\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-7fb2eb777261fafbb72e",
+      "semantic_sha256": "81c554811cb4c65bbafcd35ce1402c908d5124b94e607d26d28ac357029d0cda",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:28",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "7a663b8b10ff7fe1761f8f34fc9438a42330700915899e69294b7d4c71114ade",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 1164 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 570\nB. 582\nC. 588\nD. 596\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-815c32d78fd1c270f11a",
+      "semantic_sha256": "78b31eff14767cdfa492d6a88fd14443a4e28b12408fa6594bf5153c6563e1fd",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:47",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "8edf42957acd47f5d13ca0884fb1ca245693c68b4bede7a70ac1869b14a99c01",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 36 * 6 and 34 * 6. What is the average of the two player totals?\nA. 198\nB. 206\nC. 210\nD. 224\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-84b530bee57adacbf9d8",
+      "semantic_sha256": "f11d02aee16ab6e4d7440625456cc4783aa08143562e32531ebd279239f6624e",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:16",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "0139f8fefbf62acb3572c7a2f9c9d6c949ed5bf7020bef2bdc565fde99c6de9b",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 48 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 133\nB. 141\nC. 145\nD. 159\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8bfc6f115cc63e049a7f",
+      "semantic_sha256": "4c9279d93f532978daf237002f7425ffaadc2cd92cd7735b5afa5a0a223cbd86",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:36",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "1334dedc1beb9b14316d787bb94834edb28ce431325391a5f0aefbbc1e3641be",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 948 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 462\nB. 470\nC. 480\nD. 474\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-90a770b2eeb2edd1dec4",
+      "semantic_sha256": "8232e8590f6954af597ebda82403f57723051c5c91e5c9152de7a43630551d5c",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:29",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "5172ecdecac985def23caa59b35e0ea891cccee36687a60f786f41ed0c9ac7c0",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 54 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 163\nB. 159\nC. 169\nD. 177\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-943f8deb3270af0921c8",
+      "semantic_sha256": "ec0e6456ffc96fb4fa001c80306362cedf5830f16421d38e7dbeee1025923468",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:42",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "75cc6fc781d07d7b5136da254106bae81f3d5f4dbca98a9f0bf7169125d65a87",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 696 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 336\nB. 344\nC. 348\nD. 362\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-96aa68c2f8f8ba66a7f3",
+      "semantic_sha256": "d692c8c443f87b48403efe6297cae77f714523b14eb371e1409ca699b8042cd4",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:8",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "68aa17fec0da07b682bcf840181b3299d9c7384bcd4b7fd5b74f96fcfabd4e8d",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 42 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 127\nB. 123\nC. 133\nD. 141\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-9d8fcf7a4424f14df58c",
+      "semantic_sha256": "899835a6dbcbcfdbeb399e947cc0d747bee5010376d3d94550b3d82aced302d5",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:30",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "6412d2bb866cf20d570f318bcda88a1531561bc6b53e54c31a0972966736b311",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 39 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 106\nB. 118\nC. 124\nD. 132\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a523d70446f1caa0b51c",
+      "semantic_sha256": "e38542d5ebf6eba826cfd248c78694619a047b523e223a2eb73555b3cb16b933",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:27",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "436a4cef8c083319e3451bf211cba3a8c2d930a87ffdc0d95fdee29c4c14c4d6",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 30 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 91\nB. 87\nC. 97\nD. 105\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a8c747cf328bb9168ad6",
+      "semantic_sha256": "e0eae197f91f59a27826dd7014888dd6b1e314ab50cebc058e5524bf03625d8d",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:18",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "bf1de409d0bd64ca4545064186d2858f94e18de9acd82e6b43681a906cd5a821",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 1092 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 534\nB. 542\nC. 552\nD. 546\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a9c5920849277638a71a",
+      "semantic_sha256": "f8c71b920f005061b3367ffa443af9d239969ca2aa57ef97af1833b84e51be36",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:41",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "ccdb4d593a42b22c94ff118cef9fe45d539a7283f1ed22571b527b50c2cac0b3",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 36 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 97\nB. 105\nC. 109\nD. 123\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-bef356968a895fedb5dd",
+      "semantic_sha256": "d5974f2b5eca83d583372a9dfcae4767223a7202c7d7226ebab19bc740c4d3b1",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:24",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "7aec9ab54d950b50cbe709bc8ad2a7639d3fb61cc57fbda104badeab8bf281df",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 912 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 456\nB. 452\nC. 462\nD. 470\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c302de483f4dfae88a91",
+      "semantic_sha256": "99bc697c3f95a1ff6501af8c3ff2a03e5ebbca6e1021b625e20a7483c4773086",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:26",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "ac879125c06f14f49563da0994b5169b10815ec7b8f0ef0ae51ac065a46306f6",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 33 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 88\nB. 96\nC. 106\nD. 100\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c51d5e07b61921c962e2",
+      "semantic_sha256": "4fc92a6e395a20c2552b3282c4ae08d97934e56a245b5122144d1e6ca77ead6e",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:21",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "c308c131136c56923724696e23c1bc17bfbbc82fdb632bc743a076ab0b0304cd",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 732 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 354\nB. 366\nC. 372\nD. 380\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ccefefe3c909a6525621",
+      "semantic_sha256": "1c6d2bc697b109ceeef2fa411a1d2d0600dbe8ca4eee4287526326670f616116",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:11",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "1a24dbeeab033ac5278dcb413724c7bf641ea9a85968673239fc25be82fe14e9",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 1020 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 498\nB. 510\nC. 516\nD. 524\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-cdb1021880fed3b20e38",
+      "semantic_sha256": "aba67328f524269fe3a6c6bab5665ee5d84de827ae6c40e99436c88d357392e0",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:35",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "9314e02adb848ee14a9dd78b9fcd41b427d6e9ab323deed98b435fe7efac4f77",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 24 * 8 and 22 * 9. What is the average of the two player totals?\nA. 183\nB. 191\nC. 195\nD. 209\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-cedf3ca8f1d187a999f9",
+      "semantic_sha256": "170c4daafd9e8f49388d9b1883e0004bfc7ccf2d744c809b58a6db4d8518b58a",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:4",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "2a178a512d8270cdbbb8a139c7e8bae22b9183ed72838b1bf093a3c93eb3fb06",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 51 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 142\nB. 154\nC. 160\nD. 168\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d063e3bd7d3c66649ef9",
+      "semantic_sha256": "daa403291a0289eff5c1208907cd584d847131a1b0f1871beba7086999428f68",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:39",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "178f70aa6885c4f0d0ea3e7cbe816c9615e13f878718ee7528ddec755b1aa47a",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 660 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 318\nB. 326\nC. 336\nD. 330\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d3765d2899c057206952",
+      "semantic_sha256": "00c7d09258bf745948f966a2a3c27b1f048057811ae24a097625c60b36a25775",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:5",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "8b9621be4a84cf5b188d056637dad976b81223e97217a36e0da21a1de52fb648",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 27 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 70\nB. 82\nC. 88\nD. 96\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-dbd5067a7c5b2e053193",
+      "semantic_sha256": "a09b5848cef81c61d6dec8cd2d092813493ae1e4c46aa2c1d9a223f2b4a0a45e",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:15",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "f917dd2b908b05beab1836bf9400a2966e56bdca9984864b28be4fac2328cba3",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 57 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 160\nB. 168\nC. 178\nD. 172\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-dca1877e05a19099ace5",
+      "semantic_sha256": "de8986514a7d6e7cb15fdf189145e7073341f9c8ded4e790e58cdff5558fa4f2",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:45",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "9e631ac7d5163ba370a73fddb494e0a2166b30a6e68737ed31306d0f7039dd37",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 60 * 9 and 58 * 5. What is the average of the two player totals?\nA. 403\nB. 411\nC. 415\nD. 429\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: C",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e5e306617f1ce8328b0a",
+      "semantic_sha256": "5e48ea250d757c73f40608e75456ee9f887743764be3ba2ac2b8034522152acb",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:40",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "47304708447f84ec3d3269c87d384a7a570da81c8cf792f22a8fa44ffd7ebc7d",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_host_count_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A host attends an event, invites 45 people, and each invitee brings 2 additional guests. Including the host, how many people attend?\nA. 124\nB. 132\nC. 142\nD. 136\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-e84ab18bc6d39905daca",
+      "semantic_sha256": "9ca8a7053ca38a07d0cee1d37b3d7929f1bd43af0ccc7b5c9d153768b22a85ad",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_count:33",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "0f92efca76d06692ca25ad2bd3bb383951063ab0b5288ebd82291ec048e857ad",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 54 * 10 and 52 * 9. What is the average of the two player totals?\nA. 504\nB. 500\nC. 510\nD. 518\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: A",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-f4ae859e10a70488935c",
+      "semantic_sha256": "8328280bd1fc9089b309ae865bcb3f34ca02a0703613ad2064f427bdfb31ccb7",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:34",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "ca35c076811a58897a19c0e8798d665049bfdb5a0ee4d4ae10a51b36674bd22a",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_sequential_fraction_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "A collection has 804 items. One quarter are removed, then one third of the remaining items are removed. How many remain?\nA. 390\nB. 398\nC. 408\nD. 402\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-facf124fa1f8d5384595",
+      "semantic_sha256": "160e432719fd897845c546b5a5eccf8509bb0f41327c03ff30a77a8406bac5df",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "sequential_fraction:17",
+      "split": "train",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "b0fd4e3bae54b8d9a95b1cf1f5ec59051cfee0e4ef02fc104fc18501ab28239e",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_average_participant_totals_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "In a two-person throwing contest, Imani throws 96 markers 6 meters each. Pavel throws 93 markers 14 meters each. What is the average of the two contestants' total distances? Average the two contestant totals, not the individual markers. Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: (576 + 1302) / 2 = 939\nFINAL: 939",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-0709234d9cb212370701",
+      "semantic_sha256": "e74473a5a209b0d587e2c6b8f8f9983706e953c50f100eee4cfdae02f2fbcb2d",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "average_participant_totals:78",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "939",
+        "expression": "(576 + 1302) / 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "6ee992b43a48cb2a56e517e4abfa6f04ff7ea038930b2cc175efa178fa0bb62d",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 45 * 8 and 44 * 5. What is the average of the two player totals?\nA. 278\nB. 286\nC. 296\nD. 290\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-0e85915fc657932c5e67",
+      "semantic_sha256": "78ed70d1b9e501390e0e6184ffb0c8aa055895903458c2cd018a674221e309d1",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:25",
+      "split": "validation",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "dd1bc7dc11cef027c7b30a31563151f3d295b37f5153395724d6679e77b63149",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 33 * 10 and 31 * 8. What is the average of the two player totals?\nA. 277\nB. 285\nC. 295\nD. 289\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-131282e9564acfa56afc",
+      "semantic_sha256": "70cd3f1d852389a4a897ecdd5f810f89808e1257f09883e3bf4a89011e504101",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:13",
+      "split": "validation",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "adeb42bf72d2146aa1f5d5e8581222dc90acc644c89c4ffa18a811cbb69e0f6d",
+      "format_family": "process_trace_numeric",
+      "generation_rule": "preservation_process_precedence_add_multiply_v5",
+      "messages": [
+        {
+          "content": "Follow the arithmetic process contract exactly. Execute and verify every STEP before returning FINAL.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 7043 + 40 * 5. Execute one operation per line in evaluation order using exactly 2 STEP lines, then FINAL. Use:\nSTEP 1: <expression> = <result>\nSTEP 2: <expression> = <result>\nFINAL: <number>",
+          "role": "user"
+        },
+        {
+          "content": "STEP 1: 40 * 5 = 200\nSTEP 2: 7043 + 200 = 7243\nFINAL: 7243",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-142c84e42c7fdb03ad47",
+      "semantic_sha256": "e37e1b2db35ff9badac225a145af5f54fad369fc03b9efe907dcfed5589edec1",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "process:20",
+      "split": "validation",
+      "task_family": "semantic_arithmetic_process",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "7243",
+        "kind": "safe_ast_arithmetic_process_v2",
+        "source_expression": "7043 + 40 * 5",
+        "steps": [
+          {
+            "expected_result": "200",
+            "expression": "40 * 5"
+          },
+          {
+            "expected_result": "7243",
+            "expression": "7043 + 200"
+          }
+        ]
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "5df06800cdc677e0810f431fb20cd19101bccbd262405d53a708786d33478e27",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 51 * 7 and 50 * 6. What is the average of the two player totals?\nA. 316\nB. 328\nC. 334\nD. 342\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-1a7b299fb729cd67bd71",
+      "semantic_sha256": "397c223e346da6a788105144ef98eb62af254cca1e5f2d95e98074eef8b95321",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:31",
+      "split": "validation",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "770166c1981bbffd6810436957a76b9d90a87fe8a9935638eb24fdb22213be59",
+      "format_family": "process_trace_numeric",
+      "generation_rule": "preservation_process_precedence_add_multiply_v5",
+      "messages": [
+        {
+          "content": "Follow the arithmetic process contract exactly. Execute and verify every STEP before returning FINAL.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 6959 + 17 * 3. Execute one operation per line in evaluation order using exactly 2 STEP lines, then FINAL. Use:\nSTEP 1: <expression> = <result>\nSTEP 2: <expression> = <result>\nFINAL: <number>",
+          "role": "user"
+        },
+        {
+          "content": "STEP 1: 17 * 3 = 51\nSTEP 2: 6959 + 51 = 7010\nFINAL: 7010",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-1cc88dacd91cb4fd462a",
+      "semantic_sha256": "d8c60afe37f6ded821a8d1b510bded58a6525dd18301f83b737c8e9e0fefa19a",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "process:8",
+      "split": "validation",
+      "task_family": "semantic_arithmetic_process",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "7010",
+        "kind": "safe_ast_arithmetic_process_v2",
+        "source_expression": "6959 + 17 * 3",
+        "steps": [
+          {
+            "expected_result": "51",
+            "expression": "17 * 3"
+          },
+          {
+            "expected_result": "7010",
+            "expression": "6959 + 51"
+          }
+        ]
+      }
+    },
+    {
+      "difficulty": "three_step",
+      "exact_sha256": "72ceb9551eac42ddb537eb20c5649fc8c247f66fe4677feb291cd1a77fa551b0",
+      "format_family": "process_trace_numeric",
+      "generation_rule": "preservation_process_precedence_add_multiply_subtract_v5",
+      "messages": [
+        {
+          "content": "Follow the arithmetic process contract exactly. Execute and verify every STEP before returning FINAL.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 7085 + 31 * 6 - 19. Execute one operation per line in evaluation order using exactly 3 STEP lines, then FINAL. Use:\nSTEP 1: <expression> = <result>\nSTEP 2: <expression> = <result>\nSTEP 3: <expression> = <result>\nFINAL: <number>",
+          "role": "user"
+        },
+        {
+          "content": "STEP 1: 31 * 6 = 186\nSTEP 2: 7085 + 186 = 7271\nSTEP 3: 7271 - 19 = 7252\nFINAL: 7252",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-20b4f9ab272cd2fdfb46",
+      "semantic_sha256": "a23e0ec5053bc19dd84b7af22621f5e297d67ebc6400bcdd3168378d4f5505f1",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "process:26",
+      "split": "validation",
+      "task_family": "semantic_arithmetic_process",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "7252",
+        "kind": "safe_ast_arithmetic_process_v2",
+        "source_expression": "7085 + 31 * 6 - 19",
+        "steps": [
+          {
+            "expected_result": "186",
+            "expression": "31 * 6"
+          },
+          {
+            "expected_result": "7271",
+            "expression": "7085 + 186"
+          },
+          {
+            "expected_result": "7252",
+            "expression": "7271 - 19"
+          }
+        ]
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "956da4bf4791d28f22d9b9910ada54591e0ceaf3c084fcf98f185afeb007cb25",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 21 * 5 and 20 * 6. What is the average of the two player totals?\nA. 100\nB. 108\nC. 118\nD. 112\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-246040a36078c4dba1f6",
+      "semantic_sha256": "c7114d28dc116577325970b908a6531d56d0a23ea4377d042b4fa2994e3600f7",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:1",
+      "split": "validation",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "796962fd6571d2c7d9a169a3a58c44f33673abf6a31bd09ceba67ec61cc13ec6",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_host_and_companion_count_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Nora hosts a community dinner and attends it herself. She invites 88 neighbors, and each neighbor brings 2 additional guests. Nora separately invites 9 coworkers, and 2 of those coworkers bring one partner each. How many seats are needed in total, including Nora? Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: 1 + 88 + 88 * 2 + 9 + 2 = 276\nFINAL: 276",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-33e0eb52e48e0c3d5634",
+      "semantic_sha256": "05a618a552872d362aeab91caf4e75fb494f8364da415f1714160bc3477939a6",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_and_companion_count:24",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "276",
+        "expression": "1 + 88 + 88 * 2 + 9 + 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "656896dd55adeeca9fe3e97b5955c9a6b6c688acf535f83380b2823ff45928d0",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_host_and_companion_count_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Nora hosts a community dinner and attends it herself. She invites 40 neighbors, and each neighbor brings 2 additional guests. Nora separately invites 5 coworkers, and 2 of those coworkers bring one partner each. How many seats are needed in total, including Nora? Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: 1 + 40 + 40 * 2 + 5 + 2 = 128\nFINAL: 128",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-3c3b215d2977ecf9e2db",
+      "semantic_sha256": "865bd520dffc1005f3b0593a534ca68d1bcef0d5e6070205100dcfce61d9466a",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_and_companion_count:0",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "128",
+        "expression": "1 + 40 + 40 * 2 + 5 + 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "aebb4dda358e312520b10e1049eb338422c950e403183f2c3a01ad9fa020a4e0",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_host_and_companion_count_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Nora hosts a community dinner and attends it herself. She invites 184 neighbors, and each neighbor brings 2 additional guests. Nora separately invites 17 coworkers, and 10 of those coworkers bring one partner each. How many seats are needed in total, including Nora? Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: 1 + 184 + 184 * 2 + 17 + 10 = 580\nFINAL: 580",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-3d1e1bb4aabc306febd9",
+      "semantic_sha256": "6a20b98fb37955296b31a61cfb289b327b7b7ac5f724568786b8fd93d93cbeba",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_and_companion_count:72",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "580",
+        "expression": "1 + 184 + 184 * 2 + 17 + 10",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "533407ce48a46d2a1f1d9414749485615d144b179298cd2c89d8c453e1d3af98",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_average_participant_totals_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "In a two-person throwing contest, Imani throws 24 markers 10 meters each. Pavel throws 21 markers 16 meters each. What is the average of the two contestants' total distances? Average the two contestant totals, not the individual markers. Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: (240 + 336) / 2 = 288\nFINAL: 288",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-4e05b5f9c88b88acf4b2",
+      "semantic_sha256": "4d3e79e9637f17a2bb4ce0ecebba27baf11478417d8ee19c49ea80deb81196bf",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "average_participant_totals:6",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "288",
+        "expression": "(240 + 336) / 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "67158db59755c63b17caabceaad3df4250117598d24b625a400506febdb4c65e",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_average_participant_totals_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "In a two-person throwing contest, Imani throws 36 markers 18 meters each. Pavel throws 33 markers 12 meters each. What is the average of the two contestants' total distances? Average the two contestant totals, not the individual markers. Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: (648 + 396) / 2 = 522\nFINAL: 522",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-6acb64d64d214f6dc7a2",
+      "semantic_sha256": "01f569d500969bc4a4d351ba5d6df9650ab90a63d287263148a1cc3480bc8faf",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "average_participant_totals:18",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "522",
+        "expression": "(648 + 396) / 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "018a68924f7c8fdc1be12deb5e2d61e8cc8216fd26a848ff04b70064bd327481",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_host_and_companion_count_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Nora hosts a community dinner and attends it herself. She invites 64 neighbors, and each neighbor brings 2 additional guests. Nora separately invites 7 coworkers, and 2 of those coworkers bring one partner each. How many seats are needed in total, including Nora? Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: 1 + 64 + 64 * 2 + 7 + 2 = 202\nFINAL: 202",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-6ff963588953d733c5a3",
+      "semantic_sha256": "d70854b8c3f8530109656c6fbd2bf0f920d679cdec7ab819be2b772556abb7b7",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_and_companion_count:12",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "202",
+        "expression": "1 + 64 + 64 * 2 + 7 + 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "three_step",
+      "exact_sha256": "98dea2b521ca6935141eb81d7461be1a5ac881e6cddce85efe03e2f911520a47",
+      "format_family": "process_trace_numeric",
+      "generation_rule": "preservation_process_precedence_add_multiply_subtract_v5",
+      "messages": [
+        {
+          "content": "Follow the arithmetic process contract exactly. Execute and verify every STEP before returning FINAL.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 7001 + 49 * 4 - 15. Execute one operation per line in evaluation order using exactly 3 STEP lines, then FINAL. Use:\nSTEP 1: <expression> = <result>\nSTEP 2: <expression> = <result>\nSTEP 3: <expression> = <result>\nFINAL: <number>",
+          "role": "user"
+        },
+        {
+          "content": "STEP 1: 49 * 4 = 196\nSTEP 2: 7001 + 196 = 7197\nSTEP 3: 7197 - 15 = 7182\nFINAL: 7182",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-744ddaafd028c5f0db87",
+      "semantic_sha256": "8aa86df5e509693c5cc0ee4b5a0d21c0ea2b4cb34bea2feb4e0cdb68d30bd799",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "process:14",
+      "split": "validation",
+      "task_family": "semantic_arithmetic_process",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "7182",
+        "kind": "safe_ast_arithmetic_process_v2",
+        "source_expression": "7001 + 49 * 4 - 15",
+        "steps": [
+          {
+            "expected_result": "196",
+            "expression": "49 * 4"
+          },
+          {
+            "expected_result": "7197",
+            "expression": "7001 + 196"
+          },
+          {
+            "expected_result": "7182",
+            "expression": "7197 - 15"
+          }
+        ]
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "5984333c0a2110c193c798a9aa23298f3be499f5f16400e5df6007c53814380d",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_average_participant_totals_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "In a two-person throwing contest, Imani throws 48 markers 13 meters each. Pavel throws 45 markers 8 meters each. What is the average of the two contestants' total distances? Average the two contestant totals, not the individual markers. Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: (624 + 360) / 2 = 492\nFINAL: 492",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-806ef83ba2912d38c746",
+      "semantic_sha256": "42a3967d5e47bc775bac61b82d302fbd3b5dead967c1cc19475579fa94fa3caa",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "average_participant_totals:30",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "492",
+        "expression": "(624 + 360) / 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "86a8953814e255932bc74246dc86182027e2866f3584cc0cc62dc2339f60f544",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 63 * 5 and 62 * 8. What is the average of the two player totals?\nA. 393\nB. 405\nC. 411\nD. 419\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-85ea95503842e7640cfc",
+      "semantic_sha256": "bf3cd01985e5e1a4679b8e449c6d314f1f5a84a234e0551ec76581850eb4f05d",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:43",
+      "split": "validation",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "cfc5871f3148a73b8be9f5f80725e17776eb5b48b690aa565a11dddfd03ddc7a",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 57 * 6 and 56 * 7. What is the average of the two player totals?\nA. 355\nB. 363\nC. 373\nD. 367\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: D",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-8d42bc65194f32bcdd8e",
+      "semantic_sha256": "b18af47aeb5280643cfebfa76c54af3b2812b9e670b04d5347649b49fec183fd",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:37",
+      "split": "validation",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "75f0d89c6473012421b14998a492fdeffaf68665587bd4beee3a5686c27f8166",
+      "format_family": "process_trace_numeric",
+      "generation_rule": "preservation_process_precedence_add_multiply_v5",
+      "messages": [
+        {
+          "content": "Follow the arithmetic process contract exactly. Execute and verify every STEP before returning FINAL.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 7211 + 45 * 9. Execute one operation per line in evaluation order using exactly 2 STEP lines, then FINAL. Use:\nSTEP 1: <expression> = <result>\nSTEP 2: <expression> = <result>\nFINAL: <number>",
+          "role": "user"
+        },
+        {
+          "content": "STEP 1: 45 * 9 = 405\nSTEP 2: 7211 + 405 = 7616\nFINAL: 7616",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-9095eca2ec0f1f44a939",
+      "semantic_sha256": "9ff24355d80a9b5844db1c95ff69a46168a7ec30f538dff8c197920994498fd3",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "process:44",
+      "split": "validation",
+      "task_family": "semantic_arithmetic_process",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "7616",
+        "kind": "safe_ast_arithmetic_process_v2",
+        "source_expression": "7211 + 45 * 9",
+        "steps": [
+          {
+            "expected_result": "405",
+            "expression": "45 * 9"
+          },
+          {
+            "expected_result": "7616",
+            "expression": "7211 + 405"
+          }
+        ]
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "8f3380d6cf8deaf2d484599e15df3af9b3770f17e4dcd6251fd1e3cb97328fc9",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_host_and_companion_count_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Nora hosts a community dinner and attends it herself. She invites 160 neighbors, and each neighbor brings 2 additional guests. Nora separately invites 15 coworkers, and 8 of those coworkers bring one partner each. How many seats are needed in total, including Nora? Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: 1 + 160 + 160 * 2 + 15 + 8 = 504\nFINAL: 504",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-926e2a5acdb5db04b881",
+      "semantic_sha256": "5913861f6742b57462fa237e0eea5aef2404e3845076cdb678a2980d67dd9b1c",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_and_companion_count:60",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "504",
+        "expression": "1 + 160 + 160 * 2 + 15 + 8",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "467740df0ebe2e43d87316c66792c2c539314f40af2ba7fb2bf52bde34af9d7f",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_average_participant_totals_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "In a two-person throwing contest, Imani throws 108 markers 14 meters each. Pavel throws 105 markers 10 meters each. What is the average of the two contestants' total distances? Average the two contestant totals, not the individual markers. Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: (1512 + 1050) / 2 = 1281\nFINAL: 1281",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-935daa9738c039fcbb0f",
+      "semantic_sha256": "348234f810b6b43411ac0f5483a3d3aa5122c7a0e5e99dec4d6e6fd366a86307",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "average_participant_totals:90",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "1281",
+        "expression": "(1512 + 1050) / 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "three_step",
+      "exact_sha256": "788e9273d0947d8359bb7ee8900e2dd58c28b78629ff4739551deecf51752412",
+      "format_family": "process_trace_numeric",
+      "generation_rule": "preservation_process_precedence_add_multiply_subtract_v5",
+      "messages": [
+        {
+          "content": "Follow the arithmetic process contract exactly. Execute and verify every STEP before returning FINAL.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 7169 + 13 * 8 - 23. Execute one operation per line in evaluation order using exactly 3 STEP lines, then FINAL. Use:\nSTEP 1: <expression> = <result>\nSTEP 2: <expression> = <result>\nSTEP 3: <expression> = <result>\nFINAL: <number>",
+          "role": "user"
+        },
+        {
+          "content": "STEP 1: 13 * 8 = 104\nSTEP 2: 7169 + 104 = 7273\nSTEP 3: 7273 - 23 = 7250\nFINAL: 7250",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-a306af324eb0040adec0",
+      "semantic_sha256": "3dd296efa3f6958fd0d9b26aeb5378613a926aa140ec5e9bd416bd377cce5f7c",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "process:38",
+      "split": "validation",
+      "task_family": "semantic_arithmetic_process",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "7250",
+        "kind": "safe_ast_arithmetic_process_v2",
+        "source_expression": "7169 + 13 * 8 - 23",
+        "steps": [
+          {
+            "expected_result": "104",
+            "expression": "13 * 8"
+          },
+          {
+            "expected_result": "7273",
+            "expression": "7169 + 104"
+          },
+          {
+            "expected_result": "7250",
+            "expression": "7273 - 23"
+          }
+        ]
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "1ce62c90469124dfc61e2d8ab14c9683c261e0327474cbd95ade025273dc22e9",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_average_participant_totals_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "In a two-person throwing contest, Imani throws 84 markers 11 meters each. Pavel throws 82 markers 7 meters each. What is the average of the two contestants' total distances? Average the two contestant totals, not the individual markers. Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: (924 + 574) / 2 = 749\nFINAL: 749",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ace9ddd7bfd07e20ce96",
+      "semantic_sha256": "84b42825d26937b37029fb2ac3bf83a6a85a2e0b1404eb1052aad9720901342e",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "average_participant_totals:66",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "749",
+        "expression": "(924 + 574) / 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "3930ab07f830e9aab4bd6d3920747657585e3dd7dc56687a7f76125e2e4dd3a5",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_host_and_companion_count_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Nora hosts a community dinner and attends it herself. She invites 208 neighbors, and each neighbor brings 2 additional guests. Nora separately invites 19 coworkers, and 8 of those coworkers bring one partner each. How many seats are needed in total, including Nora? Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: 1 + 208 + 208 * 2 + 19 + 8 = 652\nFINAL: 652",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-b84be4098f2c5fba218a",
+      "semantic_sha256": "b5b8eab8d2592eb4264b82b40c24e20518bb1c781712e0e1714855915613ca71",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_and_companion_count:84",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "652",
+        "expression": "1 + 208 + 208 * 2 + 19 + 8",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "three_step",
+      "exact_sha256": "a597a59588682dfca1d21793d2bd562703602253292071fb74e0b5ffb401073e",
+      "format_family": "process_trace_numeric",
+      "generation_rule": "preservation_process_precedence_add_multiply_subtract_v5",
+      "messages": [
+        {
+          "content": "Follow the arithmetic process contract exactly. Execute and verify every STEP before returning FINAL.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 6917 + 26 * 2 - 11. Execute one operation per line in evaluation order using exactly 3 STEP lines, then FINAL. Use:\nSTEP 1: <expression> = <result>\nSTEP 2: <expression> = <result>\nSTEP 3: <expression> = <result>\nFINAL: <number>",
+          "role": "user"
+        },
+        {
+          "content": "STEP 1: 26 * 2 = 52\nSTEP 2: 6917 + 52 = 6969\nSTEP 3: 6969 - 11 = 6958\nFINAL: 6958",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c26d5d53c869fc6169eb",
+      "semantic_sha256": "b8c3934d9e92de299632ceca0984da93ed673400698c499c5e44507d9402e162",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "process:2",
+      "split": "validation",
+      "task_family": "semantic_arithmetic_process",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "6958",
+        "kind": "safe_ast_arithmetic_process_v2",
+        "source_expression": "6917 + 26 * 2 - 11",
+        "steps": [
+          {
+            "expected_result": "52",
+            "expression": "26 * 2"
+          },
+          {
+            "expected_result": "6969",
+            "expression": "6917 + 52"
+          },
+          {
+            "expected_result": "6958",
+            "expression": "6969 - 11"
+          }
+        ]
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "096504d72384beed46a88d7c273382bb69ef0bee3672a56c623dad9bbd74b39c",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_host_and_companion_count_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Nora hosts a community dinner and attends it herself. She invites 136 neighbors, and each neighbor brings 2 additional guests. Nora separately invites 13 coworkers, and 2 of those coworkers bring one partner each. How many seats are needed in total, including Nora? Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: 1 + 136 + 136 * 2 + 13 + 2 = 424\nFINAL: 424",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-c3daf536f8bd333e8555",
+      "semantic_sha256": "586ac106ac50bc86e5d82128b8681478676ef5ebb35f0558e1ddb8b13edcb7b5",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_and_companion_count:48",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "424",
+        "expression": "1 + 136 + 136 * 2 + 13 + 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "408b744714a5746afd79b73877027338eadf90bda2b9aab0a92b40c6ed6dbbbb",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 27 * 4 and 26 * 7. What is the average of the two player totals?\nA. 133\nB. 145\nC. 151\nD. 159\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-cb1b63a543f33dcb72fe",
+      "semantic_sha256": "b058043c040dfa985f72b7df59741230f060e10a6b933236b426666714851699",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:7",
+      "split": "validation",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "8a9339f7a3e64ae9fe37863a01ced7edd6e89d1482c941ee3d22065e7ae370f2",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_average_participant_totals_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "In a two-person throwing contest, Imani throws 60 markers 8 meters each. Pavel throws 58 markers 15 meters each. What is the average of the two contestants' total distances? Average the two contestant totals, not the individual markers. Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: (480 + 870) / 2 = 675\nFINAL: 675",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-cea6bc124f10a7665e68",
+      "semantic_sha256": "1dfa368f385ae8c516b03532fb0fa68e4a23afdc125012e52013692d1d3b5409",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "average_participant_totals:42",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "675",
+        "expression": "(480 + 870) / 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "5df18424dfdb89eb69bedb02ecd5ebfa5dbc063f16698865bed8adb988325e6b",
+      "format_family": "final_choice",
+      "generation_rule": "preservation_participant_average_choice_v5",
+      "messages": [
+        {
+          "content": "Solve internally and return only the required standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Two players have total scores 39 * 9 and 37 * 9. What is the average of the two player totals?\nA. 330\nB. 342\nC. 348\nD. 356\nReturn only one standalone line: FINAL: <letter>.",
+          "role": "user"
+        },
+        {
+          "content": "FINAL: B",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-d3902d28ebf8554f0c6a",
+      "semantic_sha256": "133aec60b3eb49b3f6c18f273d381c1c3c2c68571d3a4592fe4b3f9116bac8c1",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "participant_average:19",
+      "split": "validation",
+      "task_family": "capability_preservation_choice",
+      "training_eligible": true
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "78f317d832e3b217fb27c386ca56bf09344bf2d337f4c4f4fb24a7c1b7259471",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_host_and_companion_count_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "Nora hosts a community dinner and attends it herself. She invites 112 neighbors, and each neighbor brings 2 additional guests. Nora separately invites 11 coworkers, and 2 of those coworkers bring one partner each. How many seats are needed in total, including Nora? Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: 1 + 112 + 112 * 2 + 11 + 2 = 350\nFINAL: 350",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ded38e17d41cc5a613da",
+      "semantic_sha256": "b13cbecbe7a21ac1171bc49b6913e043c9d58c4f269b51c48ee428473a169d6d",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "host_and_companion_count:36",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "350",
+        "expression": "1 + 112 + 112 * 2 + 11 + 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    },
+    {
+      "difficulty": "two_step",
+      "exact_sha256": "0fdfca316ca04de6cc4c1da9c4cef4558f86556916e5ec2aeea68b44c8ef63ce",
+      "format_family": "process_trace_numeric",
+      "generation_rule": "preservation_process_precedence_add_multiply_v5",
+      "messages": [
+        {
+          "content": "Follow the arithmetic process contract exactly. Execute and verify every STEP before returning FINAL.",
+          "role": "system"
+        },
+        {
+          "content": "Compute 7127 + 22 * 7. Execute one operation per line in evaluation order using exactly 2 STEP lines, then FINAL. Use:\nSTEP 1: <expression> = <result>\nSTEP 2: <expression> = <result>\nFINAL: <number>",
+          "role": "user"
+        },
+        {
+          "content": "STEP 1: 22 * 7 = 154\nSTEP 2: 7127 + 154 = 7281\nFINAL: 7281",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-eea88fb2eaf14fcc38e7",
+      "semantic_sha256": "f50df172c7f3bd47716b1d33b92d0a446e39a89b8b8531ac8a53f5dd04557791",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "process:32",
+      "split": "validation",
+      "task_family": "semantic_arithmetic_process",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "7281",
+        "kind": "safe_ast_arithmetic_process_v2",
+        "source_expression": "7127 + 22 * 7",
+        "steps": [
+          {
+            "expected_result": "154",
+            "expression": "22 * 7"
+          },
+          {
+            "expected_result": "7281",
+            "expression": "7127 + 154"
+          }
+        ]
+      }
+    },
+    {
+      "difficulty": "hard_multi_step",
+      "exact_sha256": "b9a48a93e3bcabaae757944eb49c09b40c1f5994a36d6fec1ee825b93e1c45ef",
+      "format_family": "reasoning_numeric",
+      "generation_rule": "preservation_average_participant_totals_v5",
+      "messages": [
+        {
+          "content": "Solve from the stated facts. Return one executable WORK line and then a standalone FINAL line.",
+          "role": "system"
+        },
+        {
+          "content": "In a two-person throwing contest, Imani throws 72 markers 16 meters each. Pavel throws 70 markers 11 meters each. What is the average of the two contestants' total distances? Average the two contestant totals, not the individual markers. Show one WORK line, then put FINAL on its own line.",
+          "role": "user"
+        },
+        {
+          "content": "WORK: (1152 + 770) / 2 = 961\nFINAL: 961",
+          "role": "assistant"
+        }
+      ],
+      "sample_id": "synthetic-ffba3e636d5c7eb11e9c",
+      "semantic_sha256": "82c954ba83cdb18ad7b904af2fefac1ada237d98a8b91ab205217b34b04d2ef1",
+      "source_kind": "deterministic_synthetic",
+      "source_signature": "average_participant_totals:54",
+      "split": "validation",
+      "task_family": "capability_preservation_numeric",
+      "training_eligible": true,
+      "verifier": {
+        "expected_result": "961",
+        "expression": "(1152 + 770) / 2",
+        "kind": "safe_ast_reasoning_numeric_v1"
+      }
+    }
+  ],
+  "schema_version": "nano_analog_dataset_v1",
+  "source": {
+    "base_dataset": {
+      "dataset_id": "targeted-preservation-mix-v6",
+      "sha256": "ab51a1be5f45d7f71796fbf98ef6cce83ff9cb0f0a756fed01cb1e7aea55651d"
+    },
+    "benchmark_content_used": false,
+    "generator": "nano_data_pipeline.analog",
+    "sealed_case_ids_used": false,
+    "source_kind": "deterministic_synthetic",
+    "train_rows_reused": 40,
+    "validation_rows_reused": 32
+  },
+  "summary": {
+    "by_difficulty": {
+      "hard_multi_step": 64,
+      "three_step": 4,
+      "two_step": 4
+    },
+    "by_split": {
+      "train": 40,
+      "validation": 32
+    },
+    "by_task_family": {
+      "capability_preservation_choice": 48,
+      "capability_preservation_numeric": 16,
+      "semantic_arithmetic_process": 8
+    },
+    "samples": 72,
+    "training_eligible_samples": 72,
+    "unique_exact_hashes": 72,
+    "unique_semantic_hashes": 72
+  },
+  "version": "v11"
+}
