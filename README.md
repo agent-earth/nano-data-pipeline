@@ -114,3 +114,24 @@ PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-preservation-mi
 The mix combines hard numeric boundary problems, answer-only choice contract
 examples, and a smaller process-trace stratum. It contains no benchmark or
 sealed canary content.
+
+Build the targeted numeric covariate repair:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli \
+  build-targeted-preservation-mix \
+  --feedback-manifest manifests/qwen35_large_confirmation_feedback_v1.json \
+  --base-dataset datasets/hard_preservation_mix_v5.json \
+  --development-report \
+    ../nano-train/docs/results/hard_preservation_sft_smoke_v10.public.json \
+  --prior-dataset datasets/format_contract_analog_v1.json \
+  --prior-dataset datasets/format_contract_curriculum_analog_v2.json \
+  --prior-dataset datasets/verified_semantic_arithmetic_traces_v3.json \
+  --prior-dataset datasets/verified_arithmetic_process_traces_v4.json \
+  --output datasets/targeted_preservation_mix_v6.json
+```
+
+V6 replaces only the 16 host-count training slots with fresh companion-count
+2 examples. The observed 32-row development split and every other v5 row stay
+byte-identical. Because development failures informed this intervention, that
+split is a development gate only, not independent quality evidence.

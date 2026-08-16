@@ -10,6 +10,7 @@ from nano_data_pipeline.analog import (
     build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
+    build_targeted_preservation_mix_dataset,
     validate_analog_dataset,
 )
 from nano_data_pipeline.feedback import (
@@ -63,6 +64,17 @@ def main() -> None:
         required=True,
     )
     preservation.add_argument("--output", required=True)
+
+    targeted = subparsers.add_parser("build-targeted-preservation-mix")
+    targeted.add_argument("--feedback-manifest", required=True)
+    targeted.add_argument("--base-dataset", required=True)
+    targeted.add_argument("--development-report", required=True)
+    targeted.add_argument(
+        "--prior-dataset",
+        action="append",
+        required=True,
+    )
+    targeted.add_argument("--output", required=True)
 
     args = parser.parse_args()
     if args.command == "build-feedback":
@@ -126,6 +138,19 @@ def main() -> None:
     elif args.command == "build-preservation-mix":
         manifest = build_preservation_mix_dataset(
             Path(args.feedback_manifest),
+            [Path(path) for path in args.prior_dataset],
+        )
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    elif args.command == "build-targeted-preservation-mix":
+        manifest = build_targeted_preservation_mix_dataset(
+            Path(args.feedback_manifest),
+            Path(args.base_dataset),
+            Path(args.development_report),
             [Path(path) for path in args.prior_dataset],
         )
         output = Path(args.output)

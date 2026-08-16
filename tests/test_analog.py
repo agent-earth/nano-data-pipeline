@@ -12,6 +12,7 @@ from nano_data_pipeline.analog import (
     build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
+    build_targeted_preservation_mix_dataset,
     evaluate_arithmetic,
     validate_analog_dataset,
 )
@@ -335,6 +336,26 @@ class AnalogTests(unittest.TestCase):
         paths.append(v4_path)
         return paths
 
+    def _development_report(self, path: Path, base: dict) -> None:
+        host_validation_ids = [
+            sample["sample_id"]
+            for sample in base["samples"]
+            if sample["split"] == "validation"
+            and sample["generation_rule"]
+            == "preservation_host_and_companion_count_v5"
+        ]
+        report = {
+            "experiment_id": "hard-preservation-sft-smoke-v10",
+            "post_sft_validation": {
+                "by_family": {
+                    "capability_preservation_numeric": {
+                        "semantic_failure_sample_ids": host_validation_ids[:7],
+                    }
+                }
+            },
+        }
+        path.write_text(json.dumps(report), encoding="utf-8")
+
     def test_builds_hard_preservation_mix(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -400,6 +421,109 @@ class AnalogTests(unittest.TestCase):
             feedback.write_text(json.dumps(manifest), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "sealed case IDs leaked"):
                 build_preservation_mix_dataset(feedback, priors)
+
+    def test_builds_targeted_preservation_mix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            base_path = root / "v5.json"
+            report_path = root / "v10.public.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            base = build_preservation_mix_dataset(feedback, priors)
+            base_path.write_text(json.dumps(base), encoding="utf-8")
+            self._development_report(report_path, base)
+            targeted = build_targeted_preservation_mix_dataset(
+                feedback,
+                base_path,
+                report_path,
+                priors,
+            )
+
+        self.assertEqual(targeted["summary"], base["summary"])
+        self.assertEqual(targeted["source"]["replacement_count"], 16)
+        self.assertEqual(targeted["source"]["prior_sample_id_overlap"], 0)
+        self.assertEqual(targeted["source"]["prior_exact_overlap"], 0)
+        self.assertEqual(targeted["source"]["prior_semantic_overlap"], 0)
+        self.assertEqual(
+            targeted["source"]["prior_source_signature_overlap"],
+            0,
+        )
+        self.assertEqual(
+            targeted["source"]["development_evidence"][
+                "base_host_multiplier_support"
+            ],
+            {"train": {"3": 8, "4": 8}, "validation": {"2": 8}},
+        )
+        self.assertEqual(
+            targeted["source"]["development_evidence"][
+                "failure_generation_rules"
+            ],
+            {"preservation_host_and_companion_count_v5": 7},
+        )
+        self.assertTrue(targeted["policy"]["observed_validation_reused"])
+        self.assertEqual(
+            targeted["policy"]["validation_role"],
+            "development_gate_only",
+        )
+        base_validation = [
+            sample for sample in base["samples"] if sample["split"] == "validation"
+        ]
+        targeted_validation = [
+            sample
+            for sample in targeted["samples"]
+            if sample["split"] == "validation"
+        ]
+        self.assertEqual(targeted_validation, base_validation)
+        changed_positions = [
+            index
+            for index, (before, after) in enumerate(
+                zip(base["samples"], targeted["samples"])
+            )
+            if before != after
+        ]
+        self.assertEqual(len(changed_positions), 16)
+        for index in changed_positions:
+            before = base["samples"][index]
+            after = targeted["samples"][index]
+            self.assertEqual(before["split"], "train")
+            self.assertEqual(
+                before["generation_rule"],
+                "preservation_host_and_companion_count_v5",
+            )
+            self.assertEqual(
+                after["generation_rule"],
+                "targeted_host_two_count_v6",
+            )
+            self.assertIn(
+                "every participant arrives with exactly 2 helpers",
+                after["messages"][1]["content"],
+            )
+
+    def test_targeted_preservation_build_is_deterministic(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            base_path = root / "v5.json"
+            report_path = root / "v10.public.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            base = build_preservation_mix_dataset(feedback, priors)
+            base_path.write_text(json.dumps(base), encoding="utf-8")
+            self._development_report(report_path, base)
+            first = build_targeted_preservation_mix_dataset(
+                feedback,
+                base_path,
+                report_path,
+                priors,
+            )
+            second = build_targeted_preservation_mix_dataset(
+                feedback,
+                base_path,
+                report_path,
+                priors,
+            )
+        self.assertEqual(first, second)
 
 
 if __name__ == "__main__":

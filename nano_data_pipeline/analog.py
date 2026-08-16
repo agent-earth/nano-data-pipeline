@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import copy
 import hashlib
 import json
 import math
@@ -749,6 +750,66 @@ def _preservation_process_sample(index: int) -> dict[str, Any]:
     return sample
 
 
+def _targeted_host_two_sample(index: int) -> dict[str, Any]:
+    participants = 260 + index * 8
+    staff = 23 + (index * 5 % 19)
+    assistants = 3 + (index * 7 % max(4, staff - 2))
+    expression = (
+        f"1 + {participants} + {participants} * 2 + "
+        f"{staff} + {assistants}"
+    )
+    result = 1 + participants + participants * 2 + staff + assistants
+    expected = format_number(result)
+    return {
+        "task_family": "capability_preservation_numeric",
+        "format_family": "reasoning_numeric",
+        "difficulty": "hard_multi_step",
+        "generation_rule": "targeted_host_two_count_v6",
+        "source_signature": f"targeted_host_two_count:{index}",
+        "verifier": {
+            "kind": "safe_ast_reasoning_numeric_v1",
+            "expression": expression,
+            "expected_result": expected,
+        },
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "Solve from the stated facts. Return one executable WORK "
+                    "line and then a standalone FINAL line."
+                ),
+            },
+            {
+                "role": "user",
+                "content": (
+                    "Elena coordinates a field day and counts herself. She "
+                    f"registers {participants} participants, and every "
+                    "participant arrives with exactly 2 helpers. A separate "
+                    f"logistics team has {staff} members, and {assistants} "
+                    "of those members each bring one assistant. How many "
+                    "people are present in total, including Elena? Show one "
+                    "WORK line, then put FINAL on its own line."
+                ),
+            },
+            {
+                "role": "assistant",
+                "content": f"WORK: {expression} = {expected}\nFINAL: {expected}",
+            },
+        ],
+    }
+
+
+def _host_multiplier(sample: dict[str, Any]) -> int:
+    expression = str(sample.get("verifier", {}).get("expression", ""))
+    match = re.fullmatch(
+        r"1 \+ ([0-9]+) \+ \1 \* ([0-9]+) \+ [0-9]+ \+ [0-9]+",
+        expression,
+    )
+    if match is None:
+        raise ValueError("host-count expression does not match its contract")
+    return int(match.group(2))
+
+
 def build_semantic_trace_dataset(
     feedback_manifest_path: Path,
     prior_dataset_paths: list[Path],
@@ -1094,6 +1155,219 @@ def build_preservation_mix_dataset(
             "contains_teacher_outputs": False,
             "purpose": "hard_capability_preservation_sft_smoke",
             "observed_validation_reused": False,
+            "all_numeric_targets_deterministically_verified": True,
+            "all_intermediate_steps_verified": True,
+            "sealed_canary_used_for_training": False,
+        },
+        "samples": samples,
+    }
+    dataset["summary"] = summarize_analog_dataset(dataset)
+    validate_analog_dataset(dataset)
+    return dataset
+
+
+def build_targeted_preservation_mix_dataset(
+    feedback_manifest_path: Path,
+    base_dataset_path: Path,
+    development_report_path: Path,
+    prior_dataset_paths: list[Path],
+) -> dict[str, Any]:
+    feedback = json.loads(feedback_manifest_path.read_text(encoding="utf-8"))
+    validate_feedback_manifest(feedback)
+    base = json.loads(base_dataset_path.read_text(encoding="utf-8"))
+    validate_analog_dataset(base)
+    if base.get("dataset_id") != "hard-preservation-mix-v5":
+        raise ValueError("targeted preservation base must be v5")
+    development = json.loads(
+        development_report_path.read_text(encoding="utf-8")
+    )
+    if development.get("experiment_id") != "hard-preservation-sft-smoke-v10":
+        raise ValueError("targeted preservation requires the frozen v10 report")
+    numeric_failures = set(
+        development["post_sft_validation"]["by_family"][
+            "capability_preservation_numeric"
+        ]["semantic_failure_sample_ids"]
+    )
+    failure_rows = [
+        sample
+        for sample in base["samples"]
+        if sample["sample_id"] in numeric_failures
+    ]
+    if (
+        len(numeric_failures) != 7
+        or len(failure_rows) != 7
+        or any(sample["split"] != "validation" for sample in failure_rows)
+        or {
+            sample["generation_rule"] for sample in failure_rows
+        }
+        != {"preservation_host_and_companion_count_v5"}
+    ):
+        raise ValueError(
+            "v10 numeric failures do not match the frozen host-count diagnosis"
+        )
+    host_support = {
+        split: dict(
+            sorted(
+                Counter(
+                    str(_host_multiplier(sample))
+                    for sample in base["samples"]
+                    if sample["split"] == split
+                    and sample["generation_rule"]
+                    == "preservation_host_and_companion_count_v5"
+                ).items()
+            )
+        )
+        for split in ("train", "validation")
+    }
+    if host_support != {
+        "train": {"3": 8, "4": 8},
+        "validation": {"2": 8},
+    }:
+        raise ValueError(f"unexpected v5 host-count support: {host_support}")
+
+    prior_ids: set[str] = set()
+    prior_exact: set[str] = set()
+    prior_semantic: set[str] = set()
+    prior_signatures: set[str] = set()
+    priors = []
+    for path in [*prior_dataset_paths, base_dataset_path]:
+        prior = json.loads(path.read_text(encoding="utf-8"))
+        validate_analog_dataset(prior)
+        priors.append(
+            {
+                "dataset_id": prior["dataset_id"],
+                "sha256": sha256_file(path),
+            }
+        )
+        prior_ids.update(sample["sample_id"] for sample in prior["samples"])
+        prior_exact.update(sample["exact_sha256"] for sample in prior["samples"])
+        prior_semantic.update(
+            sample["semantic_sha256"] for sample in prior["samples"]
+        )
+        prior_signatures.update(
+            str(sample["source_signature"])
+            for sample in prior["samples"]
+            if sample.get("source_signature") is not None
+        )
+
+    samples = copy.deepcopy(base["samples"])
+    replaced_ids = []
+    replacement_index = 0
+    for position, existing in enumerate(samples):
+        if (
+            existing["split"] != "train"
+            or existing["generation_rule"]
+            != "preservation_host_and_companion_count_v5"
+        ):
+            continue
+        sample = _targeted_host_two_sample(replacement_index)
+        identity = {
+            "dataset_version": "v6",
+            "position": position,
+            "generation_rule": sample["generation_rule"],
+            "messages": sample["messages"],
+        }
+        sample["sample_id"] = (
+            f"synthetic-{_hash(_canonical_json(identity))[:20]}"
+        )
+        sample["split"] = "train"
+        sample["source_kind"] = "deterministic_synthetic"
+        sample["training_eligible"] = True
+        sample["exact_sha256"] = _hash(_canonical_json(sample["messages"]))
+        sample["semantic_sha256"] = _hash(
+            _normalized_text(sample["messages"])
+        )
+        replaced_ids.append(existing["sample_id"])
+        samples[position] = sample
+        replacement_index += 1
+
+    if replacement_index != 16:
+        raise ValueError(
+            f"targeted preservation expected 16 replacements, got "
+            f"{replacement_index}"
+        )
+    replacements = [
+        sample
+        for sample in samples
+        if sample["generation_rule"] == "targeted_host_two_count_v6"
+    ]
+    overlaps = {
+        "prior_sample_id_overlap": sum(
+            sample["sample_id"] in prior_ids for sample in replacements
+        ),
+        "prior_exact_overlap": sum(
+            sample["exact_sha256"] in prior_exact for sample in replacements
+        ),
+        "prior_semantic_overlap": sum(
+            sample["semantic_sha256"] in prior_semantic
+            for sample in replacements
+        ),
+        "prior_source_signature_overlap": sum(
+            sample["source_signature"] in prior_signatures
+            for sample in replacements
+        ),
+    }
+    if any(overlaps.values()):
+        raise ValueError(
+            f"targeted preservation replacements overlap priors: {overlaps}"
+        )
+    rendered_replacements = _canonical_json(replacements)
+    leaked_case_ids = [
+        row["case_id"]
+        for row in feedback["rows"]
+        if str(row["case_id"]) in rendered_replacements
+    ]
+    if leaked_case_ids:
+        raise ValueError(
+            "sealed case IDs leaked into targeted data: "
+            f"{leaked_case_ids[:5]}"
+        )
+
+    dataset = {
+        "schema_version": SCHEMA_VERSION,
+        "dataset_id": "targeted-preservation-mix-v6",
+        "version": "v6",
+        "source": {
+            "source_kind": "deterministic_synthetic",
+            "generator": "nano_data_pipeline.analog",
+            "feedback_requirement_id": feedback["dataset_id"],
+            "feedback_manifest_sha256": sha256_file(
+                feedback_manifest_path
+            ),
+            "base_dataset": {
+                "dataset_id": base["dataset_id"],
+                "sha256": sha256_file(base_dataset_path),
+            },
+            "development_evidence": {
+                "experiment_id": development["experiment_id"],
+                "report_sha256": sha256_file(development_report_path),
+                "numeric_failure_count": len(numeric_failures),
+                "numeric_failure_ids_sha256": _hash(
+                    _canonical_json(sorted(numeric_failures))
+                ),
+                "failure_generation_rules": {
+                    "preservation_host_and_companion_count_v5": 7
+                },
+                "base_host_multiplier_support": host_support,
+            },
+            "prior_datasets": priors,
+            "benchmark_content_used": False,
+            "sealed_case_ids_used": False,
+            "replacement_count": replacement_index,
+            "replaced_sample_ids_sha256": _hash(
+                _canonical_json(sorted(replaced_ids))
+            ),
+            **overlaps,
+        },
+        "policy": {
+            "source_split": "non_eval_analog_only",
+            "training_allowed": True,
+            "contains_benchmark_content": False,
+            "contains_model_outputs": False,
+            "contains_teacher_outputs": False,
+            "purpose": "targeted_numeric_covariate_sft_smoke",
+            "observed_validation_reused": True,
+            "validation_role": "development_gate_only",
             "all_numeric_targets_deterministically_verified": True,
             "all_intermediate_steps_verified": True,
             "sealed_canary_used_for_training": False,

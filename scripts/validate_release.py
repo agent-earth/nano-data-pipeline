@@ -11,6 +11,7 @@ from nano_data_pipeline.analog import (
     build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
+    build_targeted_preservation_mix_dataset,
     validate_analog_dataset,
 )
 from nano_data_pipeline.feedback import (
@@ -27,6 +28,11 @@ CURRICULUM = ROOT / "datasets/format_contract_curriculum_analog_v2.json"
 SEMANTIC = ROOT / "datasets/verified_semantic_arithmetic_traces_v3.json"
 PROCESS = ROOT / "datasets/verified_arithmetic_process_traces_v4.json"
 PRESERVATION = ROOT / "datasets/hard_preservation_mix_v5.json"
+TARGETED = ROOT / "datasets/targeted_preservation_mix_v6.json"
+V10_REPORT = (
+    ROOT.parent
+    / "nano-train/docs/results/hard_preservation_sft_smoke_v10.public.json"
+)
 
 
 def main() -> None:
@@ -89,6 +95,18 @@ def main() -> None:
     )
     if preservation != expected_preservation:
         raise SystemExit("committed preservation mix is not reproducible")
+    targeted = json.loads(TARGETED.read_text(encoding="utf-8"))
+    validate_analog_dataset(targeted)
+    expected_targeted = build_targeted_preservation_mix_dataset(
+        COMMITTED,
+        PRESERVATION,
+        V10_REPORT,
+        [ANALOG, CURRICULUM, SEMANTIC, PROCESS],
+    )
+    if targeted != expected_targeted:
+        raise SystemExit(
+            "committed targeted preservation mix is not reproducible"
+        )
     print(
         json.dumps(
             {
@@ -132,12 +150,24 @@ def main() -> None:
                 "preservation_validation_samples": preservation["summary"][
                     "by_split"
                 ]["validation"],
+                "targeted_dataset_id": targeted["dataset_id"],
+                "targeted_samples": targeted["summary"]["samples"],
+                "targeted_train_samples": targeted["summary"]["by_split"][
+                    "train"
+                ],
+                "targeted_validation_samples": targeted["summary"]["by_split"][
+                    "validation"
+                ],
+                "targeted_replacement_count": targeted["source"][
+                    "replacement_count"
+                ],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
                 "semantic_byte_reproducible": True,
                 "process_byte_reproducible": True,
                 "preservation_byte_reproducible": True,
+                "targeted_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,
