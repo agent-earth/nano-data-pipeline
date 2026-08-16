@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
+import math
+import operator
 import re
 from collections import Counter
 from pathlib import Path
@@ -39,6 +42,49 @@ def _normalized_text(messages: list[dict[str, str]]) -> str:
 
 def _hash(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+ARITHMETIC_OPERATORS = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.USub: operator.neg,
+    ast.UAdd: operator.pos,
+}
+
+
+def evaluate_arithmetic(expression: str) -> int | float:
+    tree = ast.parse(expression, mode="eval")
+
+    def evaluate(node: ast.AST) -> int | float:
+        if isinstance(node, ast.Expression):
+            return evaluate(node.body)
+        if (
+            isinstance(node, ast.Constant)
+            and type(node.value) in {int, float}
+        ):
+            return node.value
+        if isinstance(node, ast.BinOp) and type(node.op) in ARITHMETIC_OPERATORS:
+            return ARITHMETIC_OPERATORS[type(node.op)](
+                evaluate(node.left),
+                evaluate(node.right),
+            )
+        if isinstance(node, ast.UnaryOp) and type(node.op) in ARITHMETIC_OPERATORS:
+            return ARITHMETIC_OPERATORS[type(node.op)](evaluate(node.operand))
+        raise ValueError(f"unsafe arithmetic node: {type(node).__name__}")
+
+    result = evaluate(tree)
+    if not isinstance(result, (int, float)) or not math.isfinite(float(result)):
+        raise ValueError("arithmetic result is not finite")
+    return result
+
+
+def format_number(value: int | float) -> str:
+    number = float(value)
+    if number.is_integer():
+        return str(int(number))
+    return format(number, ".12g")
 
 
 def _choice_sample(index: int) -> dict[str, Any]:
@@ -367,6 +413,159 @@ def build_curriculum_analog_dataset(
     return dataset
 
 
+def _semantic_trace_sample(index: int) -> dict[str, Any]:
+    left = 701 + index * 5
+    middle = 11 + (index * 17 % 37)
+    right = 2 + (index * 7 % 13)
+    extra = 3 + (index * 11 % 17)
+    mode = index % 4
+    if mode == 0:
+        expression = f"{left} + {middle} * {right}"
+        rule = "precedence_add_multiply"
+        difficulty = "two_step"
+    elif mode == 1:
+        expression = f"({left} - {middle}) * {right}"
+        rule = "parenthesized_subtract_multiply"
+        difficulty = "two_step"
+    elif mode == 2:
+        expression = f"{left} + {middle} * {right} - {extra}"
+        rule = "precedence_add_multiply_subtract"
+        difficulty = "three_step"
+    else:
+        expression = f"({left} + {middle}) * {right} - {extra}"
+        rule = "parenthesized_add_multiply_subtract"
+        difficulty = "three_step"
+    result = format_number(evaluate_arithmetic(expression))
+    user = (
+        f"Compute {expression}. Show one executable calculation line, then the "
+        "numeric final. Use exactly:\nCALC: <expression> = <result>\n"
+        "FINAL: <number>"
+    )
+    return {
+        "task_family": "semantic_arithmetic",
+        "format_family": "trace_numeric",
+        "difficulty": difficulty,
+        "generation_rule": f"verified_{rule}_v3",
+        "verifier": {
+            "kind": "safe_ast_arithmetic_v1",
+            "expression": expression,
+            "expected_result": result,
+        },
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "Follow the arithmetic trace contract exactly. The CALC "
+                    "expression and FINAL value must agree."
+                ),
+            },
+            {"role": "user", "content": user},
+            {
+                "role": "assistant",
+                "content": f"CALC: {expression} = {result}\nFINAL: {result}",
+            },
+        ],
+    }
+
+
+def build_semantic_trace_dataset(
+    feedback_manifest_path: Path,
+    prior_dataset_paths: list[Path],
+) -> dict[str, Any]:
+    feedback = json.loads(feedback_manifest_path.read_text(encoding="utf-8"))
+    validate_feedback_manifest(feedback)
+    priors = []
+    prior_ids: set[str] = set()
+    prior_exact: set[str] = set()
+    prior_semantic: set[str] = set()
+    for path in prior_dataset_paths:
+        prior = json.loads(path.read_text(encoding="utf-8"))
+        validate_analog_dataset(prior)
+        priors.append(
+            {
+                "dataset_id": prior["dataset_id"],
+                "sha256": sha256_file(path),
+            }
+        )
+        prior_ids.update(sample["sample_id"] for sample in prior["samples"])
+        prior_exact.update(sample["exact_sha256"] for sample in prior["samples"])
+        prior_semantic.update(
+            sample["semantic_sha256"] for sample in prior["samples"]
+        )
+
+    samples = []
+    for index in range(192):
+        sample = _semantic_trace_sample(index)
+        identity = {
+            "dataset_version": "v3",
+            "generation_rule": sample["generation_rule"],
+            "messages": sample["messages"],
+        }
+        sample["sample_id"] = f"synthetic-{_hash(_canonical_json(identity))[:20]}"
+        validation_offset = (index // 6) % 6
+        sample["split"] = (
+            "validation" if index % 6 == validation_offset else "train"
+        )
+        sample["source_kind"] = "deterministic_synthetic"
+        sample["training_eligible"] = True
+        sample["exact_sha256"] = _hash(_canonical_json(sample["messages"]))
+        sample["semantic_sha256"] = _hash(_normalized_text(sample["messages"]))
+        samples.append(sample)
+    samples.sort(key=lambda sample: sample["sample_id"])
+
+    overlaps = {
+        "prior_sample_id_overlap": sum(
+            sample["sample_id"] in prior_ids for sample in samples
+        ),
+        "prior_exact_overlap": sum(
+            sample["exact_sha256"] in prior_exact for sample in samples
+        ),
+        "prior_semantic_overlap": sum(
+            sample["semantic_sha256"] in prior_semantic for sample in samples
+        ),
+    }
+    if any(overlaps.values()):
+        raise ValueError(f"semantic trace data overlaps prior analogs: {overlaps}")
+    rendered_samples = _canonical_json(samples)
+    leaked_case_ids = [
+        row["case_id"]
+        for row in feedback["rows"]
+        if str(row["case_id"]) in rendered_samples
+    ]
+    if leaked_case_ids:
+        raise ValueError(f"sealed case IDs leaked into analog data: {leaked_case_ids[:5]}")
+
+    dataset = {
+        "schema_version": SCHEMA_VERSION,
+        "dataset_id": "verified-semantic-arithmetic-traces-v3",
+        "version": "v3",
+        "source": {
+            "source_kind": "deterministic_synthetic",
+            "generator": "nano_data_pipeline.analog",
+            "feedback_requirement_id": feedback["dataset_id"],
+            "feedback_manifest_sha256": sha256_file(feedback_manifest_path),
+            "prior_datasets": priors,
+            "benchmark_content_used": False,
+            "sealed_case_ids_used": False,
+            **overlaps,
+        },
+        "policy": {
+            "source_split": "non_eval_analog_only",
+            "training_allowed": True,
+            "contains_benchmark_content": False,
+            "contains_model_outputs": False,
+            "contains_teacher_outputs": False,
+            "purpose": "verified_semantic_arithmetic_sft_smoke",
+            "observed_validation_reused": False,
+            "all_targets_deterministically_verified": True,
+        },
+        "samples": samples,
+    }
+    dataset["summary"] = summarize_analog_dataset(dataset)
+    validate_analog_dataset(dataset)
+    return dataset
+
+
 def summarize_analog_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
     samples = dataset["samples"]
     return {
@@ -429,6 +628,33 @@ def validate_analog_dataset(dataset: dict[str, Any]) -> None:
                 assistant,
             ) is None:
                 raise ValueError("invalid numeric target")
+            if "verifier" in sample:
+                raise ValueError("format-only sample must not include a verifier")
+        elif sample["format_family"] == "trace_numeric":
+            verifier = sample.get("verifier", {})
+            if set(verifier) != {"kind", "expression", "expected_result"}:
+                raise ValueError("trace sample verifier fields are invalid")
+            if verifier["kind"] != "safe_ast_arithmetic_v1":
+                raise ValueError("unknown trace verifier")
+            match = re.fullmatch(
+                (
+                    r"CALC: (.+) = "
+                    r"([-+]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))\n"
+                    r"FINAL: ([-+]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))"
+                ),
+                assistant,
+            )
+            if match is None:
+                raise ValueError("invalid trace target")
+            expression, calc_result, final_result = match.groups()
+            verified = format_number(evaluate_arithmetic(expression))
+            if (
+                expression != verifier["expression"]
+                or calc_result != verifier["expected_result"]
+                or final_result != verifier["expected_result"]
+                or verified != verifier["expected_result"]
+            ):
+                raise ValueError("trace verifier mismatch")
         else:
             raise ValueError("unknown analog format family")
         if sample["exact_sha256"] != _hash(_canonical_json(messages)):

@@ -9,6 +9,8 @@ from pathlib import Path
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_format_analog_dataset,
+    build_semantic_trace_dataset,
+    evaluate_arithmetic,
     validate_analog_dataset,
 )
 
@@ -158,6 +160,70 @@ class AnalogTests(unittest.TestCase):
         self.assertEqual(curriculum["source"]["prior_semantic_overlap"], 0)
         self.assertEqual(curriculum["source"]["prior_sample_id_overlap"], 0)
         self.assertFalse(curriculum["policy"]["observed_validation_reused"])
+
+    def test_safe_arithmetic_rejects_code(self):
+        self.assertEqual(evaluate_arithmetic("(7 + 5) * 3"), 36)
+        with self.assertRaisesRegex(ValueError, "unsafe"):
+            evaluate_arithmetic("__import__('os').system('id')")
+        with self.assertRaisesRegex(ValueError, "unsafe"):
+            evaluate_arithmetic("2 ** 10")
+
+    def test_builds_verified_semantic_trace_dataset(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            v1_path = root / "v1.json"
+            v2_path = root / "v2.json"
+            self._feedback(feedback)
+            v1 = build_format_analog_dataset(feedback)
+            v1_path.write_text(json.dumps(v1), encoding="utf-8")
+            v2 = build_curriculum_analog_dataset(feedback, v1_path)
+            v2_path.write_text(json.dumps(v2), encoding="utf-8")
+            traces = build_semantic_trace_dataset(
+                feedback,
+                [v1_path, v2_path],
+            )
+
+        self.assertEqual(traces["summary"]["samples"], 192)
+        self.assertEqual(
+            traces["summary"]["by_split"],
+            {"train": 160, "validation": 32},
+        )
+        self.assertEqual(
+            traces["summary"]["by_task_family"],
+            {"semantic_arithmetic": 192},
+        )
+        self.assertEqual(traces["source"]["prior_sample_id_overlap"], 0)
+        self.assertEqual(traces["source"]["prior_exact_overlap"], 0)
+        self.assertEqual(traces["source"]["prior_semantic_overlap"], 0)
+        self.assertTrue(
+            traces["policy"]["all_targets_deterministically_verified"]
+        )
+        self.assertTrue(
+            all(
+                sample["format_family"] == "trace_numeric"
+                for sample in traces["samples"]
+            )
+        )
+
+    def test_trace_validator_rejects_tampered_final(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            v1_path = root / "v1.json"
+            v2_path = root / "v2.json"
+            self._feedback(feedback)
+            v1 = build_format_analog_dataset(feedback)
+            v1_path.write_text(json.dumps(v1), encoding="utf-8")
+            v2 = build_curriculum_analog_dataset(feedback, v1_path)
+            v2_path.write_text(json.dumps(v2), encoding="utf-8")
+            traces = build_semantic_trace_dataset(feedback, [v1_path, v2_path])
+        sample = traces["samples"][0]
+        sample["messages"][-1]["content"] = sample["messages"][-1][
+            "content"
+        ].replace("FINAL: ", "FINAL: 999")
+        with self.assertRaisesRegex(ValueError, "trace verifier mismatch|invalid trace"):
+            validate_analog_dataset(traces)
 
 
 if __name__ == "__main__":

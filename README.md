@@ -71,3 +71,15 @@ PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-curriculum-anal
 
 Curriculum v2 has zero sample-ID, exact-hash, or semantic-hash overlap with v1
 and uses an independent validation split.
+
+Build verifier-backed semantic arithmetic traces:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-semantic-traces \
+  --feedback-manifest manifests/qwen35_large_confirmation_feedback_v1.json \
+  --prior-dataset datasets/format_contract_analog_v1.json \
+  --prior-dataset datasets/format_contract_curriculum_analog_v2.json \
+  --output datasets/verified_semantic_arithmetic_traces_v3.json
+```
+
+Every trace is executed by a restricted AST arithmetic verifier before release.
