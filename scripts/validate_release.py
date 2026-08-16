@@ -8,6 +8,7 @@ from pathlib import Path
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_format_analog_dataset,
+    build_process_trace_dataset,
     build_semantic_trace_dataset,
     validate_analog_dataset,
 )
@@ -23,6 +24,7 @@ COMMITTED = ROOT / "manifests/qwen35_large_confirmation_feedback_v1.json"
 ANALOG = ROOT / "datasets/format_contract_analog_v1.json"
 CURRICULUM = ROOT / "datasets/format_contract_curriculum_analog_v2.json"
 SEMANTIC = ROOT / "datasets/verified_semantic_arithmetic_traces_v3.json"
+PROCESS = ROOT / "datasets/verified_arithmetic_process_traces_v4.json"
 
 
 def main() -> None:
@@ -69,6 +71,14 @@ def main() -> None:
     )
     if semantic != expected_semantic:
         raise SystemExit("committed semantic trace dataset is not reproducible")
+    process = json.loads(PROCESS.read_text(encoding="utf-8"))
+    validate_analog_dataset(process)
+    expected_process = build_process_trace_dataset(
+        COMMITTED,
+        [ANALOG, CURRICULUM, SEMANTIC],
+    )
+    if process != expected_process:
+        raise SystemExit("committed process trace dataset is not reproducible")
     print(
         json.dumps(
             {
@@ -98,10 +108,17 @@ def main() -> None:
                 "semantic_validation_samples": semantic["summary"]["by_split"][
                     "validation"
                 ],
+                "process_dataset_id": process["dataset_id"],
+                "process_samples": process["summary"]["samples"],
+                "process_train_samples": process["summary"]["by_split"]["train"],
+                "process_validation_samples": process["summary"]["by_split"][
+                    "validation"
+                ],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
                 "semantic_byte_reproducible": True,
+                "process_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,

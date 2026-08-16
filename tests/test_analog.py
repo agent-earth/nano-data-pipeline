@@ -9,6 +9,7 @@ from pathlib import Path
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_format_analog_dataset,
+    build_process_trace_dataset,
     build_semantic_trace_dataset,
     evaluate_arithmetic,
     validate_analog_dataset,
@@ -224,6 +225,94 @@ class AnalogTests(unittest.TestCase):
         ].replace("FINAL: ", "FINAL: 999")
         with self.assertRaisesRegex(ValueError, "trace verifier mismatch|invalid trace"):
             validate_analog_dataset(traces)
+
+    def test_builds_fresh_verified_process_trace_dataset(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            prior_paths = []
+            self._feedback(feedback)
+            v1 = build_format_analog_dataset(feedback)
+            v1_path = root / "v1.json"
+            v1_path.write_text(json.dumps(v1), encoding="utf-8")
+            prior_paths.append(v1_path)
+            v2 = build_curriculum_analog_dataset(feedback, v1_path)
+            v2_path = root / "v2.json"
+            v2_path.write_text(json.dumps(v2), encoding="utf-8")
+            prior_paths.append(v2_path)
+            v3 = build_semantic_trace_dataset(
+                feedback,
+                [v1_path, v2_path],
+            )
+            v3_path = root / "v3.json"
+            v3_path.write_text(json.dumps(v3), encoding="utf-8")
+            prior_paths.append(v3_path)
+            process = build_process_trace_dataset(feedback, prior_paths)
+
+        self.assertEqual(process["summary"]["samples"], 192)
+        self.assertEqual(
+            process["summary"]["by_split"],
+            {"train": 160, "validation": 32},
+        )
+        self.assertEqual(
+            process["summary"]["by_task_family"],
+            {"semantic_arithmetic_process": 192},
+        )
+        self.assertEqual(
+            process["summary"]["by_difficulty"],
+            {"three_step": 96, "two_step": 96},
+        )
+        self.assertTrue(
+            process["policy"]["all_intermediate_steps_verified"]
+        )
+        self.assertEqual(process["source"]["prior_sample_id_overlap"], 0)
+        self.assertEqual(process["source"]["prior_exact_overlap"], 0)
+        self.assertEqual(process["source"]["prior_semantic_overlap"], 0)
+        self.assertEqual(
+            process["source"]["prior_source_expression_overlap"],
+            0,
+        )
+        self.assertTrue(
+            all(
+                sample["format_family"] == "process_trace_numeric"
+                for sample in process["samples"]
+            )
+        )
+
+    def test_process_validator_rejects_tampered_intermediate_step(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            v1_path = root / "v1.json"
+            v2_path = root / "v2.json"
+            v3_path = root / "v3.json"
+            self._feedback(feedback)
+            v1 = build_format_analog_dataset(feedback)
+            v1_path.write_text(json.dumps(v1), encoding="utf-8")
+            v2 = build_curriculum_analog_dataset(feedback, v1_path)
+            v2_path.write_text(json.dumps(v2), encoding="utf-8")
+            v3 = build_semantic_trace_dataset(
+                feedback,
+                [v1_path, v2_path],
+            )
+            v3_path.write_text(json.dumps(v3), encoding="utf-8")
+            process = build_process_trace_dataset(
+                feedback,
+                [v1_path, v2_path, v3_path],
+            )
+        sample = process["samples"][0]
+        target = sample["messages"][-1]["content"]
+        first_result = sample["verifier"]["steps"][0]["expected_result"]
+        sample["messages"][-1]["content"] = target.replace(
+            f"= {first_result}",
+            f"= {int(first_result) + 1}",
+            1,
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "process step verifier mismatch",
+        ):
+            validate_analog_dataset(process)
 
 
 if __name__ == "__main__":

@@ -468,6 +468,105 @@ def _semantic_trace_sample(index: int) -> dict[str, Any]:
     }
 
 
+def _process_trace_sample(index: int) -> dict[str, Any]:
+    left = 2003 + index * 7
+    middle = 13 + (index * 19 % 41)
+    right = 2 + (index * 11 % 13)
+    extra = 5 + (index * 13 % 19)
+    mode = index % 4
+    if mode == 0:
+        expression = f"{left} + {middle} * {right}"
+        first = middle * right
+        final = left + first
+        steps = [
+            (f"{middle} * {right}", first),
+            (f"{left} + {first}", final),
+        ]
+        rule = "precedence_add_multiply"
+        difficulty = "two_step"
+    elif mode == 1:
+        expression = f"({left} - {middle}) * {right}"
+        first = left - middle
+        final = first * right
+        steps = [
+            (f"{left} - {middle}", first),
+            (f"{first} * {right}", final),
+        ]
+        rule = "parenthesized_subtract_multiply"
+        difficulty = "two_step"
+    elif mode == 2:
+        expression = f"{left} + {middle} * {right} - {extra}"
+        first = middle * right
+        second = left + first
+        final = second - extra
+        steps = [
+            (f"{middle} * {right}", first),
+            (f"{left} + {first}", second),
+            (f"{second} - {extra}", final),
+        ]
+        rule = "precedence_add_multiply_subtract"
+        difficulty = "three_step"
+    else:
+        expression = f"({left} + {middle}) * {right} - {extra}"
+        first = left + middle
+        second = first * right
+        final = second - extra
+        steps = [
+            (f"{left} + {middle}", first),
+            (f"{first} * {right}", second),
+            (f"{second} - {extra}", final),
+        ]
+        rule = "parenthesized_add_multiply_subtract"
+        difficulty = "three_step"
+    expected_result = format_number(final)
+    verifier_steps = [
+        {
+            "expression": step_expression,
+            "expected_result": format_number(step_result),
+        }
+        for step_expression, step_result in steps
+    ]
+    rendered_steps = "\n".join(
+        f"STEP {number}: {step['expression']} = {step['expected_result']}"
+        for number, step in enumerate(verifier_steps, start=1)
+    )
+    user = (
+        f"Compute {expression}. Execute one operation per line in evaluation "
+        f"order using exactly {len(steps)} STEP lines, then FINAL. Use:\n"
+        "STEP 1: <expression> = <result>\n"
+        "STEP 2: <expression> = <result>\n"
+    )
+    if len(steps) == 3:
+        user += "STEP 3: <expression> = <result>\n"
+    user += "FINAL: <number>"
+    return {
+        "task_family": "semantic_arithmetic_process",
+        "format_family": "process_trace_numeric",
+        "difficulty": difficulty,
+        "generation_rule": f"verified_process_{rule}_v4",
+        "verifier": {
+            "kind": "safe_ast_arithmetic_process_v2",
+            "source_expression": expression,
+            "steps": verifier_steps,
+            "expected_result": expected_result,
+        },
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "Follow the arithmetic process contract exactly. Execute "
+                    "and verify every STEP before returning FINAL."
+                ),
+            },
+            {"role": "user", "content": user},
+            {
+                "role": "assistant",
+                "content": f"{rendered_steps}\nFINAL: {expected_result}",
+            },
+        ],
+    }
+
+
 def build_semantic_trace_dataset(
     feedback_manifest_path: Path,
     prior_dataset_paths: list[Path],
@@ -566,6 +665,120 @@ def build_semantic_trace_dataset(
     return dataset
 
 
+def build_process_trace_dataset(
+    feedback_manifest_path: Path,
+    prior_dataset_paths: list[Path],
+) -> dict[str, Any]:
+    feedback = json.loads(feedback_manifest_path.read_text(encoding="utf-8"))
+    validate_feedback_manifest(feedback)
+    priors = []
+    prior_ids: set[str] = set()
+    prior_exact: set[str] = set()
+    prior_semantic: set[str] = set()
+    prior_expressions: set[str] = set()
+    for path in prior_dataset_paths:
+        prior = json.loads(path.read_text(encoding="utf-8"))
+        validate_analog_dataset(prior)
+        priors.append(
+            {
+                "dataset_id": prior["dataset_id"],
+                "sha256": sha256_file(path),
+            }
+        )
+        prior_ids.update(sample["sample_id"] for sample in prior["samples"])
+        prior_exact.update(sample["exact_sha256"] for sample in prior["samples"])
+        prior_semantic.update(
+            sample["semantic_sha256"] for sample in prior["samples"]
+        )
+        prior_expressions.update(
+            str(sample.get("verifier", {}).get("expression"))
+            for sample in prior["samples"]
+            if sample.get("verifier", {}).get("expression") is not None
+        )
+        prior_expressions.update(
+            str(sample.get("verifier", {}).get("source_expression"))
+            for sample in prior["samples"]
+            if sample.get("verifier", {}).get("source_expression") is not None
+        )
+
+    samples = []
+    for index in range(192):
+        sample = _process_trace_sample(index)
+        identity = {
+            "dataset_version": "v4",
+            "generation_rule": sample["generation_rule"],
+            "messages": sample["messages"],
+        }
+        sample["sample_id"] = f"synthetic-{_hash(_canonical_json(identity))[:20]}"
+        validation_offset = (index // 6 + 1) % 6
+        sample["split"] = (
+            "validation" if index % 6 == validation_offset else "train"
+        )
+        sample["source_kind"] = "deterministic_synthetic"
+        sample["training_eligible"] = True
+        sample["exact_sha256"] = _hash(_canonical_json(sample["messages"]))
+        sample["semantic_sha256"] = _hash(_normalized_text(sample["messages"]))
+        samples.append(sample)
+    samples.sort(key=lambda sample: sample["sample_id"])
+
+    overlaps = {
+        "prior_sample_id_overlap": sum(
+            sample["sample_id"] in prior_ids for sample in samples
+        ),
+        "prior_exact_overlap": sum(
+            sample["exact_sha256"] in prior_exact for sample in samples
+        ),
+        "prior_semantic_overlap": sum(
+            sample["semantic_sha256"] in prior_semantic for sample in samples
+        ),
+        "prior_source_expression_overlap": sum(
+            sample["verifier"]["source_expression"] in prior_expressions
+            for sample in samples
+        ),
+    }
+    if any(overlaps.values()):
+        raise ValueError(f"process trace data overlaps prior analogs: {overlaps}")
+    rendered_samples = _canonical_json(samples)
+    leaked_case_ids = [
+        row["case_id"]
+        for row in feedback["rows"]
+        if str(row["case_id"]) in rendered_samples
+    ]
+    if leaked_case_ids:
+        raise ValueError(f"sealed case IDs leaked into analog data: {leaked_case_ids[:5]}")
+
+    dataset = {
+        "schema_version": SCHEMA_VERSION,
+        "dataset_id": "verified-arithmetic-process-traces-v4",
+        "version": "v4",
+        "source": {
+            "source_kind": "deterministic_synthetic",
+            "generator": "nano_data_pipeline.analog",
+            "feedback_requirement_id": feedback["dataset_id"],
+            "feedback_manifest_sha256": sha256_file(feedback_manifest_path),
+            "prior_datasets": priors,
+            "benchmark_content_used": False,
+            "sealed_case_ids_used": False,
+            **overlaps,
+        },
+        "policy": {
+            "source_split": "non_eval_analog_only",
+            "training_allowed": True,
+            "contains_benchmark_content": False,
+            "contains_model_outputs": False,
+            "contains_teacher_outputs": False,
+            "purpose": "verified_arithmetic_process_sft_smoke",
+            "observed_validation_reused": False,
+            "all_targets_deterministically_verified": True,
+            "all_intermediate_steps_verified": True,
+        },
+        "samples": samples,
+    }
+    dataset["summary"] = summarize_analog_dataset(dataset)
+    validate_analog_dataset(dataset)
+    return dataset
+
+
 def summarize_analog_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
     samples = dataset["samples"]
     return {
@@ -655,6 +868,72 @@ def validate_analog_dataset(dataset: dict[str, Any]) -> None:
                 or verified != verifier["expected_result"]
             ):
                 raise ValueError("trace verifier mismatch")
+        elif sample["format_family"] == "process_trace_numeric":
+            verifier = sample.get("verifier", {})
+            if set(verifier) != {
+                "kind",
+                "source_expression",
+                "steps",
+                "expected_result",
+            }:
+                raise ValueError("process trace verifier fields are invalid")
+            if verifier["kind"] != "safe_ast_arithmetic_process_v2":
+                raise ValueError("unknown process trace verifier")
+            steps = verifier["steps"]
+            if not isinstance(steps, list) or len(steps) not in {2, 3}:
+                raise ValueError("process trace must contain two or three steps")
+            lines = assistant.splitlines()
+            if len(lines) != len(steps) + 1:
+                raise ValueError("process trace line count mismatch")
+            previous_result = None
+            for index, (line, step) in enumerate(
+                zip(lines[:-1], steps),
+                start=1,
+            ):
+                if set(step) != {"expression", "expected_result"}:
+                    raise ValueError("process step verifier fields are invalid")
+                match = re.fullmatch(
+                    (
+                        rf"STEP {index}: (.+) = "
+                        r"([-+]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))"
+                    ),
+                    line,
+                )
+                if match is None:
+                    raise ValueError("invalid process trace step")
+                expression, result = match.groups()
+                verified = format_number(evaluate_arithmetic(expression))
+                if (
+                    expression != step["expression"]
+                    or result != step["expected_result"]
+                    or verified != step["expected_result"]
+                ):
+                    raise ValueError("process step verifier mismatch")
+                if (
+                    previous_result is not None
+                    and previous_result not in expression.split()
+                ):
+                    raise ValueError(
+                        "process step does not consume the prior result"
+                    )
+                previous_result = step["expected_result"]
+            final_match = re.fullmatch(
+                (
+                    r"FINAL: "
+                    r"([-+]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))"
+                ),
+                lines[-1],
+            )
+            source_result = format_number(
+                evaluate_arithmetic(verifier["source_expression"])
+            )
+            if (
+                final_match is None
+                or previous_result != verifier["expected_result"]
+                or final_match.group(1) != verifier["expected_result"]
+                or source_result != verifier["expected_result"]
+            ):
+                raise ValueError("process final verifier mismatch")
         else:
             raise ValueError("unknown analog format family")
         if sample["exact_sha256"] != _hash(_canonical_json(messages)):

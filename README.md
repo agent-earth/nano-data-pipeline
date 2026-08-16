@@ -83,3 +83,18 @@ PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-semantic-traces
 ```
 
 Every trace is executed by a restricted AST arithmetic verifier before release.
+
+Build fresh verifier-backed intermediate process traces:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-process-traces \
+  --feedback-manifest manifests/qwen35_large_confirmation_feedback_v1.json \
+  --prior-dataset datasets/format_contract_analog_v1.json \
+  --prior-dataset datasets/format_contract_curriculum_analog_v2.json \
+  --prior-dataset datasets/verified_semantic_arithmetic_traces_v3.json \
+  --output datasets/verified_arithmetic_process_traces_v4.json
+```
+
+Each target executes two or three individually verified `STEP` lines. Every
+later step consumes the preceding result, and the last step, source expression,
+and `FINAL` must agree.
