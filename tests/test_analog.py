@@ -22,6 +22,7 @@ from nano_data_pipeline.analog import (
     validate_analog_dataset,
 )
 from nano_data_pipeline.choice_matrix import build_choice_capability_matrix
+from nano_data_pipeline.choice_matrix_v2 import build_choice_verifier_matrix_v2
 
 
 class AnalogTests(unittest.TestCase):
@@ -979,6 +980,64 @@ class AnalogTests(unittest.TestCase):
             )
         )
         self.assertFalse(matrix["policy"]["training_allowed"])
+
+    def test_builds_history_disjoint_choice_verifier_matrix_v2(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            report_path = root / "v10.public.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            v5 = build_preservation_mix_dataset(feedback, priors)
+            v5_path = root / "v5.json"
+            v5_path.write_text(json.dumps(v5), encoding="utf-8")
+            self._development_report(report_path, v5)
+            v6 = build_targeted_preservation_mix_dataset(
+                feedback, v5_path, report_path, priors
+            )
+            v6_path = root / "v6.json"
+            v6_path.write_text(json.dumps(v6), encoding="utf-8")
+            matrix_v1 = build_choice_capability_matrix(
+                [*priors, v5_path, v6_path]
+            )
+            matrix_v1_path = root / "matrix-v1.json"
+            matrix_v1_path.write_text(json.dumps(matrix_v1), encoding="utf-8")
+            matrix_v2 = build_choice_verifier_matrix_v2(
+                [*priors, v5_path, v6_path],
+                [matrix_v1_path],
+            )
+        self.assertEqual(matrix_v2["summary"]["cases"], 48)
+        self.assertEqual(
+            set(matrix_v2["summary"]["by_family"].values()),
+            {8},
+        )
+        self.assertEqual(matrix_v2["summary"]["scored_cases"], 16)
+        self.assertEqual(matrix_v2["summary"]["ambiguity_cases"], 32)
+        self.assertEqual(matrix_v2["summary"]["training_eligible_cases"], 0)
+        self.assertEqual(
+            matrix_v2["summary"]["by_expected_route"],
+            {"ambiguous_fallback": 32, "verified_override": 16},
+        )
+        self.assertTrue(
+            all(
+                matrix_v2["source"][key] == 0
+                for key in (
+                    "prior_case_id_overlap",
+                    "prior_exact_overlap",
+                    "prior_semantic_overlap",
+                    "prior_prompt_overlap",
+                    "prior_source_signature_overlap",
+                )
+            )
+        )
+        self.assertTrue(
+            all(
+                row["reference"] is None
+                for row in matrix_v2["cases"]
+                if row["expected_route"] == "ambiguous_fallback"
+            )
+        )
+        self.assertFalse(matrix_v2["policy"]["training_allowed"])
 
 
 if __name__ == "__main__":

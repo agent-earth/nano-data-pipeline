@@ -220,3 +220,26 @@ PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli \
 
 The 48-row matrix is history-disjoint and explicitly ineligible for training,
 preference optimization, RL, reward-model training, or verifier training.
+
+Build the fresh host-count and verbal-average verifier matrix:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli \
+  build-choice-verifier-matrix-v2 \
+  --prior-dataset datasets/format_contract_analog_v1.json \
+  --prior-dataset datasets/format_contract_curriculum_analog_v2.json \
+  --prior-dataset datasets/verified_semantic_arithmetic_traces_v3.json \
+  --prior-dataset datasets/verified_arithmetic_process_traces_v4.json \
+  --prior-dataset datasets/hard_preservation_mix_v5.json \
+  --prior-dataset datasets/targeted_preservation_mix_v6.json \
+  --prior-dataset datasets/failure_targeted_preservation_mix_v7.json \
+  --prior-dataset datasets/percentage_isolation_preservation_mix_v8.json \
+  --prior-dataset datasets/packing_isolation_preservation_mix_v9.json \
+  --prior-dataset datasets/schedule_isolation_preservation_mix_v10.json \
+  --prior-dataset datasets/generic_choice_replay_v11.json \
+  --prior-matrix datasets/generic_choice_capability_matrix_v1.json \
+  --output datasets/generic_choice_verifier_matrix_v2.json
+```
+
+Matrix v2 has 16 scored exact cases and 32 ambiguity cases. It is
+evaluation-only and carries the same hard prohibition on every training use.
