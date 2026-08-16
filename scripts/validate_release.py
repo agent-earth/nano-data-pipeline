@@ -9,6 +9,7 @@ from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_failure_targeted_preservation_mix_dataset,
     build_format_analog_dataset,
+    build_packing_isolation_preservation_mix_dataset,
     build_percentage_isolation_preservation_mix_dataset,
     build_preservation_mix_dataset,
     build_process_trace_dataset,
@@ -34,6 +35,9 @@ TARGETED = ROOT / "datasets/targeted_preservation_mix_v6.json"
 FAILURE_TARGETED = ROOT / "datasets/failure_targeted_preservation_mix_v7.json"
 PERCENTAGE_ISOLATION = (
     ROOT / "datasets/percentage_isolation_preservation_mix_v8.json"
+)
+PACKING_ISOLATION = (
+    ROOT / "datasets/packing_isolation_preservation_mix_v9.json"
 )
 FAILURE_FAMILIES = (
     ROOT.parent
@@ -150,6 +154,21 @@ def main() -> None:
         raise SystemExit(
             "committed percentage-isolation mix is not reproducible"
         )
+    packing_isolation = json.loads(
+        PACKING_ISOLATION.read_text(encoding="utf-8")
+    )
+    validate_analog_dataset(packing_isolation)
+    expected_packing_isolation = (
+        build_packing_isolation_preservation_mix_dataset(
+            COMMITTED,
+            FAILURE_FAMILIES,
+            TARGETED,
+            FAILURE_TARGETED,
+            [ANALOG, CURRICULUM, SEMANTIC, PROCESS, PRESERVATION],
+        )
+    )
+    if packing_isolation != expected_packing_isolation:
+        raise SystemExit("committed packing-isolation mix is not reproducible")
     print(
         json.dumps(
             {
@@ -232,6 +251,19 @@ def main() -> None:
                 "percentage_isolation_replacement_count": percentage_isolation[
                     "source"
                 ]["replacement_count"],
+                "packing_isolation_dataset_id": packing_isolation["dataset_id"],
+                "packing_isolation_samples": packing_isolation["summary"][
+                    "samples"
+                ],
+                "packing_isolation_train_samples": packing_isolation["summary"][
+                    "by_split"
+                ]["train"],
+                "packing_isolation_validation_samples": packing_isolation[
+                    "summary"
+                ]["by_split"]["validation"],
+                "packing_isolation_replacement_count": packing_isolation[
+                    "source"
+                ]["replacement_count"],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
@@ -241,6 +273,7 @@ def main() -> None:
                 "targeted_byte_reproducible": True,
                 "failure_targeted_byte_reproducible": True,
                 "percentage_isolation_byte_reproducible": True,
+                "packing_isolation_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,

@@ -179,3 +179,8 @@ PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli \
 V8 changes only eight numeric train slots and keeps the remaining 184 rows
 byte-identical to v6. It isolates percentage-total composition while deferring
 the other failure families and the independent holdout.
+
+Packing-efficiency isolation is available through
+`build-packing-isolation-preservation-mix`. It applies the same eight-row,
+train-only contract to the packing family while restoring the percentage and
+schedule rows to v6.

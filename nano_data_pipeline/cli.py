@@ -8,6 +8,7 @@ from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_failure_targeted_preservation_mix_dataset,
     build_format_analog_dataset,
+    build_packing_isolation_preservation_mix_dataset,
     build_percentage_isolation_preservation_mix_dataset,
     build_preservation_mix_dataset,
     build_process_trace_dataset,
@@ -108,6 +109,20 @@ def main() -> None:
     )
     percentage_isolation.add_argument("--output", required=True)
 
+    packing_isolation = subparsers.add_parser(
+        "build-packing-isolation-preservation-mix"
+    )
+    packing_isolation.add_argument("--feedback-manifest", required=True)
+    packing_isolation.add_argument("--failure-family-receipt", required=True)
+    packing_isolation.add_argument("--base-dataset", required=True)
+    packing_isolation.add_argument("--broad-dataset", required=True)
+    packing_isolation.add_argument(
+        "--prior-dataset",
+        action="append",
+        required=True,
+    )
+    packing_isolation.add_argument("--output", required=True)
+
     args = parser.parse_args()
     if args.command == "build-feedback":
         manifest = build_feedback_manifest(
@@ -206,6 +221,20 @@ def main() -> None:
         )
     elif args.command == "build-percentage-isolation-preservation-mix":
         manifest = build_percentage_isolation_preservation_mix_dataset(
+            Path(args.feedback_manifest),
+            Path(args.failure_family_receipt),
+            Path(args.base_dataset),
+            Path(args.broad_dataset),
+            [Path(path) for path in args.prior_dataset],
+        )
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    elif args.command == "build-packing-isolation-preservation-mix":
+        manifest = build_packing_isolation_preservation_mix_dataset(
             Path(args.feedback_manifest),
             Path(args.failure_family_receipt),
             Path(args.base_dataset),
