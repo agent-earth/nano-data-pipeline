@@ -17,3 +17,32 @@ distillation and preference data.
 Pipeline implementation expands only after the harness establishes a stable,
 matched 4B/9B comparison. Data volume is not evidence of quality; each
 filtering or generation strategy must be tested through downstream ablation.
+
+## First Feedback Asset
+
+`manifests/qwen35_large_confirmation_feedback_v1.json` is a public-safe,
+sealed-evaluation feedback index. It separates format failures from semantic
+discordances without publishing prompts, references, predictions, source
+indices, or raw model outputs.
+
+Every row is excluded from direct training. Only leak-checked analog data from
+non-evaluation sources may become training eligible.
+
+Validate the committed asset:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python scripts/validate_release.py
+PYTHONPATH=. ../.venv/bin/python -m unittest discover -s tests -v
+```
+
+Regenerate it from the local nano-harness checkout:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-feedback \
+  --case-manifest ../nano-harness/configs/generated/qwen35_large_confirmation_v1_cases.json \
+  --four-b-results ../nano-harness/results/harness/qwen35-large-confirmation-v1/4b/cases.jsonl \
+  --nine-b-results ../nano-harness/results/harness/qwen35-large-confirmation-v1/9b/cases.jsonl \
+  --public-report ../nano-harness/docs/results/large_confirmation_v1.public.json \
+  --source-revision 47ee48f \
+  --output manifests/qwen35_large_confirmation_feedback_v1.json
+```
