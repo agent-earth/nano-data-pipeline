@@ -810,6 +810,105 @@ def _host_multiplier(sample: dict[str, Any]) -> int:
     return int(match.group(2))
 
 
+def _failure_targeted_numeric_sample(
+    family: str,
+    index: int,
+) -> dict[str, Any]:
+    if family == "percentage_increase_total_composition":
+        baseline = 120 + index * 20
+        percent = (20, 25, 50, 75)[index % 4]
+        increased = baseline + baseline * percent / 100
+        expression = (
+            f"{baseline} + ({baseline} + {baseline} * {percent} / 100)"
+        )
+        result = baseline + increased
+        user = (
+            f"A records archive stores {baseline} paper files. It stores "
+            f"{percent}% more digital files than paper files. How many files "
+            "are stored altogether across both types? Show one WORK line, "
+            "then put FINAL on its own line."
+        )
+    elif family == "packing_efficiency_effective_volume":
+        packed_items = 120 + index * 12
+        item_volume = 2 + index % 3
+        efficiency = (50, 60, 75, 80)[index % 4]
+        category_percent = (25, 50, 75, 25)[index % 4]
+        volume = packed_items * item_volume * 100 // efficiency
+        expression = (
+            f"{volume} * {efficiency} / 100 / {item_volume} * "
+            f"{category_percent} / 100"
+        )
+        result = (
+            volume
+            * efficiency
+            / 100
+            / item_volume
+            * category_percent
+            / 100
+        )
+        user = (
+            f"A storage chamber has volume {volume} cubic units. Packing uses "
+            f"{efficiency}% of that volume, and each component occupies "
+            f"{item_volume} cubic units. If {category_percent}% of the packed "
+            "components are blue, how many blue components are packed? Show "
+            "one WORK line, then put FINAL on its own line."
+        )
+    elif family == "weighted_recurring_schedule_total":
+        first_days = 2 + index % 3
+        first_sessions = 1 + index % 2
+        first_hours = 1 + index % 3
+        second_days = 1 + index % 2
+        second_sessions = 2
+        second_hours = 2 + index % 2
+        weeks = 10 + index
+        expression = (
+            f"({first_days} * {first_sessions} * {first_hours} + "
+            f"{second_days} * {second_sessions} * {second_hours}) * {weeks}"
+        )
+        result = (
+            first_days * first_sessions * first_hours
+            + second_days * second_sessions * second_hours
+        ) * weeks
+        user = (
+            f"Each week, a technician runs {first_sessions} sessions lasting "
+            f"{first_hours} hours on each of {first_days} days, and "
+            f"{second_sessions} sessions lasting {second_hours} hours on each "
+            f"of {second_days} other days. Over {weeks} weeks, how many total "
+            "session-hours does the technician run? Show one WORK line, then "
+            "put FINAL on its own line."
+        )
+    else:
+        raise ValueError(f"unknown failure-targeted family: {family}")
+
+    expected = format_number(result)
+    return {
+        "task_family": "capability_preservation_numeric",
+        "format_family": "reasoning_numeric",
+        "difficulty": "hard_multi_step",
+        "generation_rule": f"failure_targeted_{family}_v7",
+        "source_signature": f"failure_targeted:{family}:{index}",
+        "verifier": {
+            "kind": "safe_ast_reasoning_numeric_v1",
+            "expression": expression,
+            "expected_result": expected,
+        },
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "Solve from the stated facts. Return one executable WORK "
+                    "line and then a standalone FINAL line."
+                ),
+            },
+            {"role": "user", "content": user},
+            {
+                "role": "assistant",
+                "content": f"WORK: {expression} = {expected}\nFINAL: {expected}",
+            },
+        ],
+    }
+
+
 def build_semantic_trace_dataset(
     feedback_manifest_path: Path,
     prior_dataset_paths: list[Path],
@@ -1371,6 +1470,240 @@ def build_targeted_preservation_mix_dataset(
             "all_numeric_targets_deterministically_verified": True,
             "all_intermediate_steps_verified": True,
             "sealed_canary_used_for_training": False,
+        },
+        "samples": samples,
+    }
+    dataset["summary"] = summarize_analog_dataset(dataset)
+    validate_analog_dataset(dataset)
+    return dataset
+
+
+def build_failure_targeted_preservation_mix_dataset(
+    feedback_manifest_path: Path,
+    failure_family_receipt_path: Path,
+    base_dataset_path: Path,
+    prior_dataset_paths: list[Path],
+) -> dict[str, Any]:
+    feedback = json.loads(feedback_manifest_path.read_text(encoding="utf-8"))
+    validate_feedback_manifest(feedback)
+    receipt = json.loads(
+        failure_family_receipt_path.read_text(encoding="utf-8")
+    )
+    required_families = {
+        "percentage_increase_total_composition",
+        "packing_efficiency_effective_volume",
+        "weighted_recurring_schedule_total",
+        "developmental_perception_experience_choice",
+    }
+    if (
+        receipt.get("schema_version")
+        != "nano_harness_failure_family_receipt_v1"
+        or {row["family"] for row in receipt.get("families", [])}
+        != required_families
+        or receipt.get("policy", {}).get("contains_case_ids") is not False
+        or receipt.get("policy", {}).get("contains_prompts") is not False
+        or receipt.get("policy", {}).get("contains_references") is not False
+        or receipt.get("policy", {}).get("contains_predictions") is not False
+        or receipt.get("policy", {}).get("contains_raw_outputs") is not False
+        or receipt.get("policy", {}).get("direct_training_allowed") is not False
+        or receipt.get("policy", {}).get("fresh_analog_generation_allowed")
+        is not True
+    ):
+        raise ValueError("failure-family receipt violates the v7 boundary")
+
+    base = json.loads(base_dataset_path.read_text(encoding="utf-8"))
+    validate_analog_dataset(base)
+    if base.get("dataset_id") != "targeted-preservation-mix-v6":
+        raise ValueError("failure-targeted preservation base must be v6")
+
+    prior_ids: set[str] = set()
+    prior_exact: set[str] = set()
+    prior_semantic: set[str] = set()
+    prior_signatures: set[str] = set()
+    priors = []
+    for path in [*prior_dataset_paths, base_dataset_path]:
+        prior = json.loads(path.read_text(encoding="utf-8"))
+        validate_analog_dataset(prior)
+        priors.append(
+            {
+                "dataset_id": prior["dataset_id"],
+                "sha256": sha256_file(path),
+            }
+        )
+        prior_ids.update(sample["sample_id"] for sample in prior["samples"])
+        prior_exact.update(sample["exact_sha256"] for sample in prior["samples"])
+        prior_semantic.update(
+            sample["semantic_sha256"] for sample in prior["samples"]
+        )
+        prior_signatures.update(
+            str(sample["source_signature"])
+            for sample in prior["samples"]
+            if sample.get("source_signature") is not None
+        )
+
+    samples = copy.deepcopy(base["samples"])
+    replaced_ids = []
+    family_counts: Counter[str] = Counter()
+    percentage_positions = [
+        position
+        for position, sample in enumerate(samples)
+        if sample["split"] == "train"
+        and sample["generation_rule"]
+        == "preservation_percentage_category_total_v5"
+    ]
+    sequential_positions = [
+        position
+        for position, sample in enumerate(samples)
+        if sample["split"] == "train"
+        and sample["generation_rule"]
+        == "preservation_sequential_remaining_fraction_v5"
+    ]
+    position_families = [
+        *[
+            (position, "percentage_increase_total_composition")
+            for position in percentage_positions[:8]
+        ],
+        *[
+            (position, "packing_efficiency_effective_volume")
+            for position in percentage_positions[8:16]
+        ],
+        *[
+            (position, "weighted_recurring_schedule_total")
+            for position in sequential_positions[:8]
+        ],
+    ]
+    if len(percentage_positions) != 24 or len(sequential_positions) != 24:
+        raise ValueError("v6 numeric support differs from the frozen contract")
+    if len(position_families) != 24:
+        raise ValueError("failure-targeted replacement plan is incomplete")
+
+    for position, family in position_families:
+        existing = samples[position]
+        family_index = family_counts[family]
+        sample = _failure_targeted_numeric_sample(family, family_index)
+        identity = {
+            "dataset_version": "v7",
+            "position": position,
+            "generation_rule": sample["generation_rule"],
+            "messages": sample["messages"],
+        }
+        sample["sample_id"] = (
+            f"synthetic-{_hash(_canonical_json(identity))[:20]}"
+        )
+        sample["split"] = "train"
+        sample["source_kind"] = "deterministic_synthetic"
+        sample["training_eligible"] = True
+        sample["exact_sha256"] = _hash(_canonical_json(sample["messages"]))
+        sample["semantic_sha256"] = _hash(
+            _normalized_text(sample["messages"])
+        )
+        replaced_ids.append(existing["sample_id"])
+        samples[position] = sample
+        family_counts[family] += 1
+
+    expected_family_counts = {
+        "percentage_increase_total_composition": 8,
+        "packing_efficiency_effective_volume": 8,
+        "weighted_recurring_schedule_total": 8,
+    }
+    if dict(sorted(family_counts.items())) != expected_family_counts:
+        raise ValueError(
+            f"failure-targeted family counts differ: {family_counts}"
+        )
+    replacements = [
+        sample
+        for sample in samples
+        if sample["generation_rule"].startswith("failure_targeted_")
+    ]
+    overlaps = {
+        "prior_sample_id_overlap": sum(
+            sample["sample_id"] in prior_ids for sample in replacements
+        ),
+        "prior_exact_overlap": sum(
+            sample["exact_sha256"] in prior_exact for sample in replacements
+        ),
+        "prior_semantic_overlap": sum(
+            sample["semantic_sha256"] in prior_semantic
+            for sample in replacements
+        ),
+        "prior_source_signature_overlap": sum(
+            sample["source_signature"] in prior_signatures
+            for sample in replacements
+        ),
+    }
+    if any(overlaps.values()):
+        raise ValueError(
+            f"failure-targeted replacements overlap priors: {overlaps}"
+        )
+    rendered_replacements = _canonical_json(replacements)
+    leaked_case_ids = [
+        row["case_id"]
+        for row in feedback["rows"]
+        if str(row["case_id"]) in rendered_replacements
+    ]
+    if leaked_case_ids:
+        raise ValueError(
+            "sealed case IDs leaked into failure-targeted data: "
+            f"{leaked_case_ids[:5]}"
+        )
+
+    base_validation = [
+        sample for sample in base["samples"] if sample["split"] == "validation"
+    ]
+    new_validation = [
+        sample for sample in samples if sample["split"] == "validation"
+    ]
+    if new_validation != base_validation:
+        raise ValueError("v7 must preserve all v6 development rows")
+
+    dataset = {
+        "schema_version": SCHEMA_VERSION,
+        "dataset_id": "failure-targeted-preservation-mix-v7",
+        "version": "v7",
+        "source": {
+            "source_kind": "deterministic_synthetic",
+            "generator": "nano_data_pipeline.analog",
+            "feedback_requirement_id": feedback["dataset_id"],
+            "feedback_manifest_sha256": sha256_file(
+                feedback_manifest_path
+            ),
+            "failure_family_receipt": {
+                "receipt_id": receipt["receipt_id"],
+                "sha256": sha256_file(failure_family_receipt_path),
+                "source_case_id_set_sha256": receipt["source"][
+                    "source_case_id_set_sha256"
+                ],
+            },
+            "base_dataset": {
+                "dataset_id": base["dataset_id"],
+                "sha256": sha256_file(base_dataset_path),
+            },
+            "prior_datasets": priors,
+            "benchmark_content_used": False,
+            "sealed_case_ids_used": False,
+            "replacement_count": len(replacements),
+            "replacement_family_counts": dict(sorted(family_counts.items())),
+            "deferred_feedback_families": [
+                "developmental_perception_experience_choice"
+            ],
+            "replaced_sample_ids_sha256": _hash(
+                _canonical_json(sorted(replaced_ids))
+            ),
+            **overlaps,
+        },
+        "policy": {
+            "source_split": "non_eval_analog_only",
+            "training_allowed": True,
+            "contains_benchmark_content": False,
+            "contains_model_outputs": False,
+            "contains_teacher_outputs": False,
+            "purpose": "failure_targeted_preservation_sft_smoke",
+            "observed_validation_reused": True,
+            "validation_role": "development_gate_only",
+            "all_numeric_targets_deterministically_verified": True,
+            "all_intermediate_steps_verified": True,
+            "sealed_canary_used_for_training": False,
+            "independent_holdout_used_for_training": False,
         },
         "samples": samples,
     }

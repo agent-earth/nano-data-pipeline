@@ -6,6 +6,7 @@ from pathlib import Path
 
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
+    build_failure_targeted_preservation_mix_dataset,
     build_format_analog_dataset,
     build_preservation_mix_dataset,
     build_process_trace_dataset,
@@ -75,6 +76,19 @@ def main() -> None:
         required=True,
     )
     targeted.add_argument("--output", required=True)
+
+    failure_targeted = subparsers.add_parser(
+        "build-failure-targeted-preservation-mix"
+    )
+    failure_targeted.add_argument("--feedback-manifest", required=True)
+    failure_targeted.add_argument("--failure-family-receipt", required=True)
+    failure_targeted.add_argument("--base-dataset", required=True)
+    failure_targeted.add_argument(
+        "--prior-dataset",
+        action="append",
+        required=True,
+    )
+    failure_targeted.add_argument("--output", required=True)
 
     args = parser.parse_args()
     if args.command == "build-feedback":
@@ -151,6 +165,19 @@ def main() -> None:
             Path(args.feedback_manifest),
             Path(args.base_dataset),
             Path(args.development_report),
+            [Path(path) for path in args.prior_dataset],
+        )
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    elif args.command == "build-failure-targeted-preservation-mix":
+        manifest = build_failure_targeted_preservation_mix_dataset(
+            Path(args.feedback_manifest),
+            Path(args.failure_family_receipt),
+            Path(args.base_dataset),
             [Path(path) for path in args.prior_dataset],
         )
         output = Path(args.output)

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
+    build_failure_targeted_preservation_mix_dataset,
     build_format_analog_dataset,
     build_preservation_mix_dataset,
     build_process_trace_dataset,
@@ -29,6 +30,11 @@ SEMANTIC = ROOT / "datasets/verified_semantic_arithmetic_traces_v3.json"
 PROCESS = ROOT / "datasets/verified_arithmetic_process_traces_v4.json"
 PRESERVATION = ROOT / "datasets/hard_preservation_mix_v5.json"
 TARGETED = ROOT / "datasets/targeted_preservation_mix_v6.json"
+FAILURE_TARGETED = ROOT / "datasets/failure_targeted_preservation_mix_v7.json"
+FAILURE_FAMILIES = (
+    ROOT.parent
+    / "nano-harness/configs/feedback/v11_base_only_failure_families_v1.json"
+)
 V10_REPORT = (
     ROOT.parent
     / "nano-train/docs/results/hard_preservation_sft_smoke_v10.public.json"
@@ -107,6 +113,22 @@ def main() -> None:
         raise SystemExit(
             "committed targeted preservation mix is not reproducible"
         )
+    failure_targeted = json.loads(
+        FAILURE_TARGETED.read_text(encoding="utf-8")
+    )
+    validate_analog_dataset(failure_targeted)
+    expected_failure_targeted = (
+        build_failure_targeted_preservation_mix_dataset(
+            COMMITTED,
+            FAILURE_FAMILIES,
+            TARGETED,
+            [ANALOG, CURRICULUM, SEMANTIC, PROCESS, PRESERVATION],
+        )
+    )
+    if failure_targeted != expected_failure_targeted:
+        raise SystemExit(
+            "committed failure-targeted preservation mix is not reproducible"
+        )
     print(
         json.dumps(
             {
@@ -161,6 +183,19 @@ def main() -> None:
                 "targeted_replacement_count": targeted["source"][
                     "replacement_count"
                 ],
+                "failure_targeted_dataset_id": failure_targeted["dataset_id"],
+                "failure_targeted_samples": failure_targeted["summary"][
+                    "samples"
+                ],
+                "failure_targeted_train_samples": failure_targeted["summary"][
+                    "by_split"
+                ]["train"],
+                "failure_targeted_validation_samples": failure_targeted[
+                    "summary"
+                ]["by_split"]["validation"],
+                "failure_targeted_replacement_count": failure_targeted[
+                    "source"
+                ]["replacement_count"],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
@@ -168,6 +203,7 @@ def main() -> None:
                 "process_byte_reproducible": True,
                 "preservation_byte_reproducible": True,
                 "targeted_byte_reproducible": True,
+                "failure_targeted_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,

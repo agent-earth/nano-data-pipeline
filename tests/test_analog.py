@@ -8,6 +8,7 @@ from pathlib import Path
 
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
+    build_failure_targeted_preservation_mix_dataset,
     build_format_analog_dataset,
     build_preservation_mix_dataset,
     build_process_trace_dataset,
@@ -524,6 +525,151 @@ class AnalogTests(unittest.TestCase):
                 priors,
             )
         self.assertEqual(first, second)
+
+    def _failure_family_receipt(self, path: Path) -> None:
+        receipt = {
+            "schema_version": "nano_harness_failure_family_receipt_v1",
+            "receipt_id": "test-failure-families-v1",
+            "source": {
+                "source_case_id_set_sha256": "0" * 64,
+            },
+            "families": [
+                {
+                    "family": family,
+                    "count": 1,
+                    "task_kind": task_kind,
+                }
+                for family, task_kind in (
+                    (
+                        "percentage_increase_total_composition",
+                        "numeric_reasoning",
+                    ),
+                    (
+                        "packing_efficiency_effective_volume",
+                        "numeric_reasoning",
+                    ),
+                    (
+                        "weighted_recurring_schedule_total",
+                        "numeric_reasoning",
+                    ),
+                    (
+                        "developmental_perception_experience_choice",
+                        "choice_reasoning",
+                    ),
+                )
+            ],
+            "policy": {
+                "contains_case_ids": False,
+                "contains_prompts": False,
+                "contains_references": False,
+                "contains_predictions": False,
+                "contains_raw_outputs": False,
+                "direct_training_allowed": False,
+                "fresh_analog_generation_allowed": True,
+            },
+        }
+        path.write_text(json.dumps(receipt), encoding="utf-8")
+
+    def test_builds_failure_targeted_preservation_mix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            report_path = root / "v10.public.json"
+            targeted_path = root / "v6.json"
+            receipt_path = root / "families.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            v5 = build_preservation_mix_dataset(feedback, priors)
+            v5_path = root / "v5.json"
+            v5_path.write_text(json.dumps(v5), encoding="utf-8")
+            self._development_report(report_path, v5)
+            v6 = build_targeted_preservation_mix_dataset(
+                feedback,
+                v5_path,
+                report_path,
+                priors,
+            )
+            targeted_path.write_text(json.dumps(v6), encoding="utf-8")
+            self._failure_family_receipt(receipt_path)
+            v7 = build_failure_targeted_preservation_mix_dataset(
+                feedback,
+                receipt_path,
+                targeted_path,
+                [*priors, v5_path],
+            )
+
+        self.assertEqual(v7["summary"], v6["summary"])
+        self.assertEqual(v7["source"]["replacement_count"], 24)
+        self.assertEqual(
+            v7["source"]["replacement_family_counts"],
+            {
+                "packing_efficiency_effective_volume": 8,
+                "percentage_increase_total_composition": 8,
+                "weighted_recurring_schedule_total": 8,
+            },
+        )
+        self.assertEqual(
+            v7["source"]["deferred_feedback_families"],
+            ["developmental_perception_experience_choice"],
+        )
+        self.assertEqual(v7["source"]["prior_sample_id_overlap"], 0)
+        self.assertEqual(v7["source"]["prior_exact_overlap"], 0)
+        self.assertEqual(v7["source"]["prior_semantic_overlap"], 0)
+        self.assertEqual(v7["source"]["prior_source_signature_overlap"], 0)
+        self.assertFalse(
+            v7["policy"]["independent_holdout_used_for_training"]
+        )
+        self.assertEqual(
+            [row for row in v7["samples"] if row["split"] == "validation"],
+            [row for row in v6["samples"] if row["split"] == "validation"],
+        )
+        changed = [
+            (before, after)
+            for before, after in zip(v6["samples"], v7["samples"])
+            if before != after
+        ]
+        self.assertEqual(len(changed), 24)
+        self.assertTrue(
+            all(before["split"] == after["split"] == "train" for before, after in changed)
+        )
+        self.assertTrue(
+            all(
+                after["generation_rule"].startswith("failure_targeted_")
+                for _, after in changed
+            )
+        )
+
+    def test_failure_targeted_builder_rejects_payload_receipt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            report_path = root / "v10.public.json"
+            targeted_path = root / "v6.json"
+            receipt_path = root / "families.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            v5 = build_preservation_mix_dataset(feedback, priors)
+            v5_path = root / "v5.json"
+            v5_path.write_text(json.dumps(v5), encoding="utf-8")
+            self._development_report(report_path, v5)
+            v6 = build_targeted_preservation_mix_dataset(
+                feedback,
+                v5_path,
+                report_path,
+                priors,
+            )
+            targeted_path.write_text(json.dumps(v6), encoding="utf-8")
+            self._failure_family_receipt(receipt_path)
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["policy"]["contains_prompts"] = True
+            receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "boundary"):
+                build_failure_targeted_preservation_mix_dataset(
+                    feedback,
+                    receipt_path,
+                    targeted_path,
+                    [*priors, v5_path],
+                )
 
 
 if __name__ == "__main__":
