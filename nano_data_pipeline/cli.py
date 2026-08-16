@@ -30,6 +30,10 @@ from nano_data_pipeline.choice_matrix_v2 import (
     build_choice_verifier_matrix_v2,
     validate_choice_verifier_matrix_v2,
 )
+from nano_data_pipeline.choice_matrix_v3 import (
+    build_choice_exact_replication_matrix_v3,
+    validate_choice_exact_replication_matrix_v3,
+)
 
 
 def main() -> None:
@@ -169,6 +173,18 @@ def main() -> None:
         "validate-choice-verifier-matrix-v2"
     )
     validate_choice_matrix_v2.add_argument("path")
+
+    choice_matrix_v3 = subparsers.add_parser(
+        "build-choice-exact-replication-matrix-v3"
+    )
+    choice_matrix_v3.add_argument("--prior-dataset", action="append", required=True)
+    choice_matrix_v3.add_argument("--prior-matrix", action="append", required=True)
+    choice_matrix_v3.add_argument("--output", required=True)
+
+    validate_choice_matrix_v3 = subparsers.add_parser(
+        "validate-choice-exact-replication-matrix-v3"
+    )
+    validate_choice_matrix_v3.add_argument("path")
 
     args = parser.parse_args()
     if args.command == "build-feedback":
@@ -343,6 +359,20 @@ def main() -> None:
     elif args.command == "validate-choice-verifier-matrix-v2":
         manifest = json.loads(Path(args.path).read_text(encoding="utf-8"))
         validate_choice_verifier_matrix_v2(manifest)
+    elif args.command == "build-choice-exact-replication-matrix-v3":
+        manifest = build_choice_exact_replication_matrix_v3(
+            [Path(path) for path in args.prior_dataset],
+            [Path(path) for path in args.prior_matrix],
+        )
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    elif args.command == "validate-choice-exact-replication-matrix-v3":
+        manifest = json.loads(Path(args.path).read_text(encoding="utf-8"))
+        validate_choice_exact_replication_matrix_v3(manifest)
     else:
         manifest = json.loads(Path(args.path).read_text(encoding="utf-8"))
         validate_analog_dataset(manifest)

@@ -23,6 +23,9 @@ from nano_data_pipeline.analog import (
 )
 from nano_data_pipeline.choice_matrix import build_choice_capability_matrix
 from nano_data_pipeline.choice_matrix_v2 import build_choice_verifier_matrix_v2
+from nano_data_pipeline.choice_matrix_v3 import (
+    build_choice_exact_replication_matrix_v3,
+)
 
 
 class AnalogTests(unittest.TestCase):
@@ -1038,6 +1041,67 @@ class AnalogTests(unittest.TestCase):
             )
         )
         self.assertFalse(matrix_v2["policy"]["training_allowed"])
+
+    def test_builds_history_disjoint_choice_exact_replication_matrix_v3(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            report_path = root / "v10.public.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            v5 = build_preservation_mix_dataset(feedback, priors)
+            v5_path = root / "v5.json"
+            v5_path.write_text(json.dumps(v5), encoding="utf-8")
+            self._development_report(report_path, v5)
+            v6 = build_targeted_preservation_mix_dataset(
+                feedback, v5_path, report_path, priors
+            )
+            v6_path = root / "v6.json"
+            v6_path.write_text(json.dumps(v6), encoding="utf-8")
+            matrix_v1 = build_choice_capability_matrix(
+                [*priors, v5_path, v6_path]
+            )
+            matrix_v1_path = root / "matrix-v1.json"
+            matrix_v1_path.write_text(json.dumps(matrix_v1), encoding="utf-8")
+            matrix_v2 = build_choice_verifier_matrix_v2(
+                [*priors, v5_path, v6_path],
+                [matrix_v1_path],
+            )
+            matrix_v2_path = root / "matrix-v2.json"
+            matrix_v2_path.write_text(json.dumps(matrix_v2), encoding="utf-8")
+            matrix_v3 = build_choice_exact_replication_matrix_v3(
+                [*priors, v5_path, v6_path],
+                [matrix_v1_path, matrix_v2_path],
+            )
+        self.assertEqual(matrix_v3["summary"]["cases"], 32)
+        self.assertEqual(
+            matrix_v3["summary"]["by_family"],
+            {
+                "host_count_exact_replication": 16,
+                "verbal_average_exact_replication": 16,
+            },
+        )
+        self.assertEqual(matrix_v3["summary"]["scored_cases"], 32)
+        self.assertEqual(matrix_v3["summary"]["ambiguity_cases"], 0)
+        self.assertEqual(matrix_v3["summary"]["training_eligible_cases"], 0)
+        self.assertEqual(
+            matrix_v3["summary"]["by_expected_route"],
+            {"verified_override": 32},
+        )
+        self.assertTrue(
+            all(
+                matrix_v3["source"][key] == 0
+                for key in (
+                    "prior_case_id_overlap",
+                    "prior_exact_overlap",
+                    "prior_semantic_overlap",
+                    "prior_prompt_overlap",
+                    "prior_source_signature_overlap",
+                )
+            )
+        )
+        self.assertTrue(matrix_v3["policy"]["evaluation_only"])
+        self.assertFalse(matrix_v3["policy"]["training_allowed"])
 
 
 if __name__ == "__main__":
