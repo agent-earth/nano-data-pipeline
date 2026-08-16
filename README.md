@@ -157,3 +157,25 @@ V7 replaces 24 numeric training slots with three fresh verifier-backed
 families while preserving all development, targeted-host, choice, and process
 strata. It consumes no benchmark/canary payload and does not read the frozen
 independent holdout.
+
+Build the conservative percentage-family isolation:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli \
+  build-percentage-isolation-preservation-mix \
+  --feedback-manifest manifests/qwen35_large_confirmation_feedback_v1.json \
+  --failure-family-receipt \
+    ../nano-harness/configs/feedback/v11_base_only_failure_families_v1.json \
+  --base-dataset datasets/targeted_preservation_mix_v6.json \
+  --broad-dataset datasets/failure_targeted_preservation_mix_v7.json \
+  --prior-dataset datasets/format_contract_analog_v1.json \
+  --prior-dataset datasets/format_contract_curriculum_analog_v2.json \
+  --prior-dataset datasets/verified_semantic_arithmetic_traces_v3.json \
+  --prior-dataset datasets/verified_arithmetic_process_traces_v4.json \
+  --prior-dataset datasets/hard_preservation_mix_v5.json \
+  --output datasets/percentage_isolation_preservation_mix_v8.json
+```
+
+V8 changes only eight numeric train slots and keeps the remaining 184 rows
+byte-identical to v6. It isolates percentage-total composition while deferring
+the other failure families and the independent holdout.

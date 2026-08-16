@@ -1712,6 +1712,198 @@ def build_failure_targeted_preservation_mix_dataset(
     return dataset
 
 
+def build_percentage_isolation_preservation_mix_dataset(
+    feedback_manifest_path: Path,
+    failure_family_receipt_path: Path,
+    base_dataset_path: Path,
+    broad_dataset_path: Path,
+    prior_dataset_paths: list[Path],
+) -> dict[str, Any]:
+    feedback = json.loads(feedback_manifest_path.read_text(encoding="utf-8"))
+    validate_feedback_manifest(feedback)
+    receipt = json.loads(
+        failure_family_receipt_path.read_text(encoding="utf-8")
+    )
+    if (
+        receipt.get("schema_version")
+        != "nano_harness_failure_family_receipt_v1"
+        or "percentage_increase_total_composition"
+        not in {row["family"] for row in receipt.get("families", [])}
+        or receipt.get("policy", {}).get("contains_case_ids") is not False
+        or receipt.get("policy", {}).get("contains_prompts") is not False
+        or receipt.get("policy", {}).get("contains_references") is not False
+        or receipt.get("policy", {}).get("contains_predictions") is not False
+        or receipt.get("policy", {}).get("contains_raw_outputs") is not False
+        or receipt.get("policy", {}).get("fresh_analog_generation_allowed")
+        is not True
+    ):
+        raise ValueError("failure-family receipt violates the v8 boundary")
+
+    base = json.loads(base_dataset_path.read_text(encoding="utf-8"))
+    broad = json.loads(broad_dataset_path.read_text(encoding="utf-8"))
+    validate_analog_dataset(base)
+    validate_analog_dataset(broad)
+    if base.get("dataset_id") != "targeted-preservation-mix-v6":
+        raise ValueError("percentage-isolation base must be v6")
+    if broad.get("dataset_id") != "failure-targeted-preservation-mix-v7":
+        raise ValueError("percentage-isolation source must be broad v7")
+    if len(base["samples"]) != len(broad["samples"]):
+        raise ValueError("v6 and v7 sample counts differ")
+
+    prior_ids: set[str] = set()
+    prior_exact: set[str] = set()
+    prior_semantic: set[str] = set()
+    prior_signatures: set[str] = set()
+    priors = []
+    for path in [*prior_dataset_paths, base_dataset_path]:
+        prior = json.loads(path.read_text(encoding="utf-8"))
+        validate_analog_dataset(prior)
+        priors.append(
+            {
+                "dataset_id": prior["dataset_id"],
+                "sha256": sha256_file(path),
+            }
+        )
+        prior_ids.update(sample["sample_id"] for sample in prior["samples"])
+        prior_exact.update(sample["exact_sha256"] for sample in prior["samples"])
+        prior_semantic.update(
+            sample["semantic_sha256"] for sample in prior["samples"]
+        )
+        prior_signatures.update(
+            str(sample["source_signature"])
+            for sample in prior["samples"]
+            if sample.get("source_signature") is not None
+        )
+
+    samples = copy.deepcopy(base["samples"])
+    selected_positions = []
+    selected_rows = []
+    for position, (base_row, broad_row) in enumerate(
+        zip(base["samples"], broad["samples"])
+    ):
+        if broad_row["generation_rule"] != (
+            "failure_targeted_"
+            "percentage_increase_total_composition_v7"
+        ):
+            continue
+        if (
+            base_row["split"] != broad_row["split"]
+            or base_row["split"] != "train"
+            or base_row["task_family"] != broad_row["task_family"]
+            or base_row["format_family"] != broad_row["format_family"]
+        ):
+            raise ValueError(
+                "percentage-isolation row changes split or family contract"
+            )
+        samples[position] = copy.deepcopy(broad_row)
+        selected_positions.append(position)
+        selected_rows.append(broad_row)
+    if len(selected_rows) != 8:
+        raise ValueError(
+            f"percentage-isolation expected 8 rows, got {len(selected_rows)}"
+        )
+
+    overlaps = {
+        "prior_sample_id_overlap": sum(
+            sample["sample_id"] in prior_ids for sample in selected_rows
+        ),
+        "prior_exact_overlap": sum(
+            sample["exact_sha256"] in prior_exact for sample in selected_rows
+        ),
+        "prior_semantic_overlap": sum(
+            sample["semantic_sha256"] in prior_semantic
+            for sample in selected_rows
+        ),
+        "prior_source_signature_overlap": sum(
+            sample["source_signature"] in prior_signatures
+            for sample in selected_rows
+        ),
+    }
+    if any(overlaps.values()):
+        raise ValueError(
+            f"percentage-isolation rows overlap v1-v6: {overlaps}"
+        )
+    rendered_selected = _canonical_json(selected_rows)
+    leaked_case_ids = [
+        row["case_id"]
+        for row in feedback["rows"]
+        if str(row["case_id"]) in rendered_selected
+    ]
+    if leaked_case_ids:
+        raise ValueError(
+            "sealed case IDs leaked into percentage-isolation data: "
+            f"{leaked_case_ids[:5]}"
+        )
+    if (
+        [row for row in samples if row["split"] == "validation"]
+        != [row for row in base["samples"] if row["split"] == "validation"]
+    ):
+        raise ValueError("v8 must preserve all v6 development rows")
+
+    dataset = {
+        "schema_version": SCHEMA_VERSION,
+        "dataset_id": "percentage-isolation-preservation-mix-v8",
+        "version": "v8",
+        "source": {
+            "source_kind": "deterministic_synthetic",
+            "generator": "nano_data_pipeline.analog",
+            "feedback_requirement_id": feedback["dataset_id"],
+            "feedback_manifest_sha256": sha256_file(
+                feedback_manifest_path
+            ),
+            "failure_family_receipt": {
+                "receipt_id": receipt["receipt_id"],
+                "sha256": sha256_file(failure_family_receipt_path),
+                "source_case_id_set_sha256": receipt["source"][
+                    "source_case_id_set_sha256"
+                ],
+            },
+            "base_dataset": {
+                "dataset_id": base["dataset_id"],
+                "sha256": sha256_file(base_dataset_path),
+            },
+            "broad_ablation_source": {
+                "dataset_id": broad["dataset_id"],
+                "sha256": sha256_file(broad_dataset_path),
+            },
+            "prior_datasets": priors,
+            "benchmark_content_used": False,
+            "sealed_case_ids_used": False,
+            "replacement_count": len(selected_rows),
+            "replacement_family_counts": {
+                "percentage_increase_total_composition": len(selected_rows)
+            },
+            "selected_positions_sha256": _hash(
+                _canonical_json(selected_positions)
+            ),
+            "deferred_feedback_families": [
+                "packing_efficiency_effective_volume",
+                "weighted_recurring_schedule_total",
+                "developmental_perception_experience_choice",
+            ],
+            **overlaps,
+        },
+        "policy": {
+            "source_split": "non_eval_analog_only",
+            "training_allowed": True,
+            "contains_benchmark_content": False,
+            "contains_model_outputs": False,
+            "contains_teacher_outputs": False,
+            "purpose": "percentage_family_isolation_sft_smoke",
+            "observed_validation_reused": True,
+            "validation_role": "development_gate_only",
+            "all_numeric_targets_deterministically_verified": True,
+            "all_intermediate_steps_verified": True,
+            "sealed_canary_used_for_training": False,
+            "independent_holdout_used_for_training": False,
+        },
+        "samples": samples,
+    }
+    dataset["summary"] = summarize_analog_dataset(dataset)
+    validate_analog_dataset(dataset)
+    return dataset
+
+
 def summarize_analog_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
     samples = dataset["samples"]
     return {

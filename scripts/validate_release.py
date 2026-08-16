@@ -9,6 +9,7 @@ from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_failure_targeted_preservation_mix_dataset,
     build_format_analog_dataset,
+    build_percentage_isolation_preservation_mix_dataset,
     build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
@@ -31,6 +32,9 @@ PROCESS = ROOT / "datasets/verified_arithmetic_process_traces_v4.json"
 PRESERVATION = ROOT / "datasets/hard_preservation_mix_v5.json"
 TARGETED = ROOT / "datasets/targeted_preservation_mix_v6.json"
 FAILURE_TARGETED = ROOT / "datasets/failure_targeted_preservation_mix_v7.json"
+PERCENTAGE_ISOLATION = (
+    ROOT / "datasets/percentage_isolation_preservation_mix_v8.json"
+)
 FAILURE_FAMILIES = (
     ROOT.parent
     / "nano-harness/configs/feedback/v11_base_only_failure_families_v1.json"
@@ -129,6 +133,23 @@ def main() -> None:
         raise SystemExit(
             "committed failure-targeted preservation mix is not reproducible"
         )
+    percentage_isolation = json.loads(
+        PERCENTAGE_ISOLATION.read_text(encoding="utf-8")
+    )
+    validate_analog_dataset(percentage_isolation)
+    expected_percentage_isolation = (
+        build_percentage_isolation_preservation_mix_dataset(
+            COMMITTED,
+            FAILURE_FAMILIES,
+            TARGETED,
+            FAILURE_TARGETED,
+            [ANALOG, CURRICULUM, SEMANTIC, PROCESS, PRESERVATION],
+        )
+    )
+    if percentage_isolation != expected_percentage_isolation:
+        raise SystemExit(
+            "committed percentage-isolation mix is not reproducible"
+        )
     print(
         json.dumps(
             {
@@ -196,6 +217,21 @@ def main() -> None:
                 "failure_targeted_replacement_count": failure_targeted[
                     "source"
                 ]["replacement_count"],
+                "percentage_isolation_dataset_id": percentage_isolation[
+                    "dataset_id"
+                ],
+                "percentage_isolation_samples": percentage_isolation[
+                    "summary"
+                ]["samples"],
+                "percentage_isolation_train_samples": percentage_isolation[
+                    "summary"
+                ]["by_split"]["train"],
+                "percentage_isolation_validation_samples": percentage_isolation[
+                    "summary"
+                ]["by_split"]["validation"],
+                "percentage_isolation_replacement_count": percentage_isolation[
+                    "source"
+                ]["replacement_count"],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
@@ -204,6 +240,7 @@ def main() -> None:
                 "preservation_byte_reproducible": True,
                 "targeted_byte_reproducible": True,
                 "failure_targeted_byte_reproducible": True,
+                "percentage_isolation_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,
