@@ -59,3 +59,15 @@ PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli validate-analog \
 
 The analog dataset is deterministic synthetic arithmetic, not benchmark
 content. Its validation split checks only exact `FINAL:` contract learning.
+
+Build the fresh two-step curriculum successor:
+
+```bash
+PYTHONPATH=. ../.venv/bin/python -m nano_data_pipeline.cli build-curriculum-analog \
+  --feedback-manifest manifests/qwen35_large_confirmation_feedback_v1.json \
+  --prior-dataset datasets/format_contract_analog_v1.json \
+  --output datasets/format_contract_curriculum_analog_v2.json
+```
+
+Curriculum v2 has zero sample-ID, exact-hash, or semantic-hash overlap with v1
+and uses an independent validation split.

@@ -3,9 +3,11 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
+from collections import Counter
 from pathlib import Path
 
 from nano_data_pipeline.analog import (
+    build_curriculum_analog_dataset,
     build_format_analog_dataset,
     validate_analog_dataset,
 )
@@ -113,6 +115,49 @@ class AnalogTests(unittest.TestCase):
             feedback.write_text(json.dumps(manifest), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "sealed case IDs leaked"):
                 build_format_analog_dataset(feedback)
+
+    def test_builds_fresh_two_step_curriculum(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            prior_path = root / "prior.json"
+            self._feedback(feedback)
+            prior = build_format_analog_dataset(feedback)
+            prior_path.write_text(json.dumps(prior), encoding="utf-8")
+            curriculum = build_curriculum_analog_dataset(
+                feedback,
+                prior_path,
+            )
+
+        self.assertEqual(curriculum["summary"]["samples"], 160)
+        self.assertEqual(
+            curriculum["summary"]["by_split"],
+            {"train": 128, "validation": 32},
+        )
+        self.assertEqual(
+            curriculum["summary"]["by_task_family"],
+            {"choice_contract": 80, "numeric_contract": 80},
+        )
+        train = [
+            sample for sample in curriculum["samples"] if sample["split"] == "train"
+        ]
+        validation = [
+            sample
+            for sample in curriculum["samples"]
+            if sample["split"] == "validation"
+        ]
+        self.assertEqual(
+            dict(Counter(sample["difficulty"] for sample in train)),
+            {"single_step": 24, "two_step": 104},
+        )
+        self.assertEqual(
+            dict(Counter(sample["difficulty"] for sample in validation)),
+            {"single_step": 8, "two_step": 24},
+        )
+        self.assertEqual(curriculum["source"]["prior_exact_overlap"], 0)
+        self.assertEqual(curriculum["source"]["prior_semantic_overlap"], 0)
+        self.assertEqual(curriculum["source"]["prior_sample_id_overlap"], 0)
+        self.assertFalse(curriculum["policy"]["observed_validation_reused"])
 
 
 if __name__ == "__main__":

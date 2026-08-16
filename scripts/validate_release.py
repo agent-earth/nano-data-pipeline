@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from nano_data_pipeline.analog import (
+    build_curriculum_analog_dataset,
     build_format_analog_dataset,
     validate_analog_dataset,
 )
@@ -19,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HARNESS = ROOT.parent / "nano-harness"
 COMMITTED = ROOT / "manifests/qwen35_large_confirmation_feedback_v1.json"
 ANALOG = ROOT / "datasets/format_contract_analog_v1.json"
+CURRICULUM = ROOT / "datasets/format_contract_curriculum_analog_v2.json"
 
 
 def main() -> None:
@@ -49,6 +51,14 @@ def main() -> None:
     expected_analog = build_format_analog_dataset(COMMITTED)
     if analog != expected_analog:
         raise SystemExit("committed analog dataset is not reproducible")
+    curriculum = json.loads(CURRICULUM.read_text(encoding="utf-8"))
+    validate_analog_dataset(curriculum)
+    expected_curriculum = build_curriculum_analog_dataset(
+        COMMITTED,
+        ANALOG,
+    )
+    if curriculum != expected_curriculum:
+        raise SystemExit("committed curriculum dataset is not reproducible")
     print(
         json.dumps(
             {
@@ -64,8 +74,17 @@ def main() -> None:
                 "analog_validation_samples": analog["summary"]["by_split"][
                     "validation"
                 ],
+                "curriculum_dataset_id": curriculum["dataset_id"],
+                "curriculum_samples": curriculum["summary"]["samples"],
+                "curriculum_train_samples": curriculum["summary"]["by_split"][
+                    "train"
+                ],
+                "curriculum_validation_samples": curriculum["summary"][
+                    "by_split"
+                ]["validation"],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
+                "curriculum_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,

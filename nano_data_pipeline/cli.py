@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from nano_data_pipeline.analog import (
+    build_curriculum_analog_dataset,
     build_format_analog_dataset,
     validate_analog_dataset,
 )
@@ -36,6 +37,11 @@ def main() -> None:
     validate_analog = subparsers.add_parser("validate-analog")
     validate_analog.add_argument("path")
 
+    curriculum = subparsers.add_parser("build-curriculum-analog")
+    curriculum.add_argument("--feedback-manifest", required=True)
+    curriculum.add_argument("--prior-dataset", required=True)
+    curriculum.add_argument("--output", required=True)
+
     args = parser.parse_args()
     if args.command == "build-feedback":
         manifest = build_feedback_manifest(
@@ -56,6 +62,17 @@ def main() -> None:
         validate_feedback_manifest(manifest)
     elif args.command == "build-format-analog":
         manifest = build_format_analog_dataset(Path(args.feedback_manifest))
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    elif args.command == "build-curriculum-analog":
+        manifest = build_curriculum_analog_dataset(
+            Path(args.feedback_manifest),
+            Path(args.prior_dataset),
+        )
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(
