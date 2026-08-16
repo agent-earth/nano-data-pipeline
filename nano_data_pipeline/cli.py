@@ -7,6 +7,7 @@ from pathlib import Path
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_format_analog_dataset,
+    build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
     validate_analog_dataset,
@@ -53,6 +54,15 @@ def main() -> None:
     process.add_argument("--feedback-manifest", required=True)
     process.add_argument("--prior-dataset", action="append", required=True)
     process.add_argument("--output", required=True)
+
+    preservation = subparsers.add_parser("build-preservation-mix")
+    preservation.add_argument("--feedback-manifest", required=True)
+    preservation.add_argument(
+        "--prior-dataset",
+        action="append",
+        required=True,
+    )
+    preservation.add_argument("--output", required=True)
 
     args = parser.parse_args()
     if args.command == "build-feedback":
@@ -104,6 +114,17 @@ def main() -> None:
         )
     elif args.command == "build-process-traces":
         manifest = build_process_trace_dataset(
+            Path(args.feedback_manifest),
+            [Path(path) for path in args.prior_dataset],
+        )
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    elif args.command == "build-preservation-mix":
+        manifest = build_preservation_mix_dataset(
             Path(args.feedback_manifest),
             [Path(path) for path in args.prior_dataset],
         )

@@ -9,6 +9,7 @@ from pathlib import Path
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_format_analog_dataset,
+    build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
     evaluate_arithmetic,
@@ -313,6 +314,92 @@ class AnalogTests(unittest.TestCase):
             "process step verifier mismatch",
         ):
             validate_analog_dataset(process)
+
+    def _prior_datasets(self, root: Path, feedback: Path) -> list[Path]:
+        paths = []
+        v1 = build_format_analog_dataset(feedback)
+        v1_path = root / "v1.json"
+        v1_path.write_text(json.dumps(v1), encoding="utf-8")
+        paths.append(v1_path)
+        v2 = build_curriculum_analog_dataset(feedback, v1_path)
+        v2_path = root / "v2.json"
+        v2_path.write_text(json.dumps(v2), encoding="utf-8")
+        paths.append(v2_path)
+        v3 = build_semantic_trace_dataset(feedback, paths)
+        v3_path = root / "v3.json"
+        v3_path.write_text(json.dumps(v3), encoding="utf-8")
+        paths.append(v3_path)
+        v4 = build_process_trace_dataset(feedback, paths)
+        v4_path = root / "v4.json"
+        v4_path.write_text(json.dumps(v4), encoding="utf-8")
+        paths.append(v4_path)
+        return paths
+
+    def test_builds_hard_preservation_mix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            mix = build_preservation_mix_dataset(feedback, priors)
+
+        self.assertEqual(mix["summary"]["samples"], 192)
+        self.assertEqual(
+            mix["summary"]["by_split"],
+            {"train": 160, "validation": 32},
+        )
+        self.assertEqual(
+            mix["summary"]["by_task_family"],
+            {
+                "capability_preservation_choice": 48,
+                "capability_preservation_numeric": 96,
+                "semantic_arithmetic_process": 48,
+            },
+        )
+        self.assertEqual(mix["source"]["prior_sample_id_overlap"], 0)
+        self.assertEqual(mix["source"]["prior_exact_overlap"], 0)
+        self.assertEqual(mix["source"]["prior_semantic_overlap"], 0)
+        self.assertEqual(mix["source"]["prior_source_signature_overlap"], 0)
+        self.assertFalse(mix["policy"]["sealed_canary_used_for_training"])
+        self.assertTrue(
+            mix["policy"]["all_numeric_targets_deterministically_verified"]
+        )
+        self.assertTrue(
+            all(sample["training_eligible"] for sample in mix["samples"])
+        )
+
+    def test_preservation_validator_rejects_tampered_work(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            self._feedback(feedback)
+            mix = build_preservation_mix_dataset(
+                feedback,
+                self._prior_datasets(root, feedback),
+            )
+        sample = next(
+            row
+            for row in mix["samples"]
+            if row["format_family"] == "reasoning_numeric"
+        )
+        expected = sample["verifier"]["expected_result"]
+        sample["messages"][-1]["content"] = sample["messages"][-1][
+            "content"
+        ].replace(f"= {expected}", f"= {int(expected) + 1}", 1)
+        with self.assertRaisesRegex(ValueError, "reasoning verifier mismatch"):
+            validate_analog_dataset(mix)
+
+    def test_preservation_builder_rejects_sealed_case_id_leak(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            feedback = root / "feedback.json"
+            self._feedback(feedback)
+            priors = self._prior_datasets(root, feedback)
+            manifest = json.loads(feedback.read_text(encoding="utf-8"))
+            manifest["rows"][0]["case_id"] = "capability_preservation_numeric"
+            feedback.write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "sealed case IDs leaked"):
+                build_preservation_mix_dataset(feedback, priors)
 
 
 if __name__ == "__main__":

@@ -567,6 +567,188 @@ def _process_trace_sample(index: int) -> dict[str, Any]:
     }
 
 
+def _preservation_word_sample(index: int) -> dict[str, Any]:
+    mode = index % 4
+    if mode == 0:
+        invited = 40 + index * 2
+        companions = 2 + (index % 3)
+        direct = 5 + (index * 3 % 17)
+        partners = 2 + (index * 5 % max(3, direct - 1))
+        expression = (
+            f"1 + {invited} + {invited} * {companions} + "
+            f"{direct} + {partners}"
+        )
+        result = 1 + invited + invited * companions + direct + partners
+        user = (
+            f"Nora hosts a community dinner and attends it herself. She "
+            f"invites {invited} neighbors, and each neighbor brings "
+            f"{companions} additional guests. Nora separately invites "
+            f"{direct} coworkers, and {partners} of those coworkers bring one "
+            "partner each. How many seats are needed in total, including "
+            "Nora? Show one WORK line, then put FINAL on its own line."
+        )
+        rule = "host_and_companion_count"
+    elif mode == 1:
+        red = 24 + (index // 4) * 4
+        percent = (25, 50, 75, 100)[(index // 4) % 4]
+        green = red + red * percent // 100
+        yellow = red + green
+        expression = f"{red} + {green} + {yellow}"
+        result = red + green + yellow
+        user = (
+            f"A craft box has {red} red tiles. It has {percent}% more green "
+            "tiles than red tiles. The number of yellow tiles equals the sum "
+            "of the red and green tiles. How many tiles are in the three "
+            "colors altogether? Show one WORK line, then put FINAL on its own "
+            "line."
+        )
+        rule = "percentage_category_total"
+    elif mode == 2:
+        first_items = 18 + index
+        first_distance = 6 + (index * 5 % 13)
+        second_items = 15 + index
+        second_distance = 7 + (index * 7 % 11)
+        first_total = first_items * first_distance
+        second_total = second_items * second_distance
+        if (first_total + second_total) % 2:
+            second_items += 1
+            second_total = second_items * second_distance
+        expression = f"({first_total} + {second_total}) / 2"
+        result = (first_total + second_total) / 2
+        user = (
+            f"In a two-person throwing contest, Imani throws {first_items} "
+            f"markers {first_distance} meters each. Pavel throws "
+            f"{second_items} markers {second_distance} meters each. What is "
+            "the average of the two contestants' total distances? Average the "
+            "two contestant totals, not the individual markers. Show one WORK "
+            "line, then put FINAL on its own line."
+        )
+        rule = "average_participant_totals"
+    else:
+        initial = 1200 + (index // 4) * 120
+        first = initial // 4
+        remaining = initial - first
+        second = remaining // 3
+        result = remaining - second
+        expression = f"{initial} - {first} - {second}"
+        user = (
+            f"A mosaic kit begins with {initial} pieces unplaced. Tariq places "
+            "one quarter of all the pieces. Then Mei places one third of the "
+            "pieces that remain after Tariq. How many pieces are still "
+            "unplaced? Show one WORK line, then put FINAL on its own line."
+        )
+        rule = "sequential_remaining_fraction"
+    expected = format_number(result)
+    return {
+        "task_family": "capability_preservation_numeric",
+        "format_family": "reasoning_numeric",
+        "difficulty": "hard_multi_step",
+        "generation_rule": f"preservation_{rule}_v5",
+        "source_signature": f"{rule}:{index}",
+        "verifier": {
+            "kind": "safe_ast_reasoning_numeric_v1",
+            "expression": expression,
+            "expected_result": expected,
+        },
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "Solve from the stated facts. Return one executable WORK "
+                    "line and then a standalone FINAL line."
+                ),
+            },
+            {"role": "user", "content": user},
+            {
+                "role": "assistant",
+                "content": f"WORK: {expression} = {expected}\nFINAL: {expected}",
+            },
+        ],
+    }
+
+
+def _preservation_choice_sample(index: int) -> dict[str, Any]:
+    mode = index % 3
+    if mode == 0:
+        invited = 12 + index
+        guests = 2 + (index % 3)
+        result = 1 + invited + invited * guests
+        prompt = (
+            f"A host attends an event, invites {invited} people, and each "
+            f"invitee brings {guests} additional guests. Including the host, "
+            "how many people attend?"
+        )
+        rule = "host_count"
+    elif mode == 1:
+        first = 20 + index
+        first_rate = 4 + (index % 7)
+        second = 18 + index
+        second_rate = 5 + (index % 5)
+        total = first * first_rate + second * second_rate
+        if total % 2:
+            second += 1
+            total = first * first_rate + second * second_rate
+        result = total // 2
+        prompt = (
+            f"Two players have total scores {first} * {first_rate} and "
+            f"{second} * {second_rate}. What is the average of the two player "
+            "totals?"
+        )
+        rule = "participant_average"
+    else:
+        initial = 600 + index * 12
+        after_first = initial * 3 // 4
+        result = after_first * 2 // 3
+        prompt = (
+            f"A collection has {initial} items. One quarter are removed, then "
+            "one third of the remaining items are removed. How many remain?"
+        )
+        rule = "sequential_fraction"
+    correct_index = (index * 5 + 2) % 4
+    offsets = (-12, -4, 6, 14)
+    options = [result + offset for offset in offsets]
+    options[correct_index] = result
+    letters = "ABCD"
+    user = (
+        f"{prompt}\n"
+        + "\n".join(
+            f"{letter}. {value}" for letter, value in zip(letters, options)
+        )
+        + "\nReturn only one standalone line: FINAL: <letter>."
+    )
+    return {
+        "task_family": "capability_preservation_choice",
+        "format_family": "final_choice",
+        "difficulty": "hard_multi_step",
+        "generation_rule": f"preservation_{rule}_choice_v5",
+        "source_signature": f"{rule}:{index}",
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "Solve internally and return only the required standalone "
+                    "FINAL line."
+                ),
+            },
+            {"role": "user", "content": user},
+            {
+                "role": "assistant",
+                "content": f"FINAL: {letters[correct_index]}",
+            },
+        ],
+    }
+
+
+def _preservation_process_sample(index: int) -> dict[str, Any]:
+    sample = _process_trace_sample(700 + index)
+    sample["generation_rule"] = sample["generation_rule"].replace(
+        "verified_process_",
+        "preservation_process_",
+    ).replace("_v4", "_v5")
+    sample["source_signature"] = f"process:{index}"
+    return sample
+
+
 def build_semantic_trace_dataset(
     feedback_manifest_path: Path,
     prior_dataset_paths: list[Path],
@@ -779,6 +961,150 @@ def build_process_trace_dataset(
     return dataset
 
 
+def build_preservation_mix_dataset(
+    feedback_manifest_path: Path,
+    prior_dataset_paths: list[Path],
+) -> dict[str, Any]:
+    feedback = json.loads(feedback_manifest_path.read_text(encoding="utf-8"))
+    validate_feedback_manifest(feedback)
+    priors = []
+    prior_ids: set[str] = set()
+    prior_exact: set[str] = set()
+    prior_semantic: set[str] = set()
+    prior_signatures: set[str] = set()
+    for path in prior_dataset_paths:
+        prior = json.loads(path.read_text(encoding="utf-8"))
+        validate_analog_dataset(prior)
+        priors.append(
+            {
+                "dataset_id": prior["dataset_id"],
+                "sha256": sha256_file(path),
+            }
+        )
+        prior_ids.update(sample["sample_id"] for sample in prior["samples"])
+        prior_exact.update(sample["exact_sha256"] for sample in prior["samples"])
+        prior_semantic.update(
+            sample["semantic_sha256"] for sample in prior["samples"]
+        )
+        prior_signatures.update(
+            str(sample["source_signature"])
+            for sample in prior["samples"]
+            if sample.get("source_signature") is not None
+        )
+        prior_signatures.update(
+            str(sample["verifier"]["expression"])
+            for sample in prior["samples"]
+            if sample.get("verifier", {}).get("expression") is not None
+        )
+        prior_signatures.update(
+            str(sample["verifier"]["source_expression"])
+            for sample in prior["samples"]
+            if sample.get("verifier", {}).get("source_expression") is not None
+        )
+
+    samples = []
+    families = (
+        ("preservation_numeric", _preservation_word_sample, 96, 0),
+        ("preservation_choice", _preservation_choice_sample, 48, 1),
+        ("preservation_process", _preservation_process_sample, 48, 2),
+    )
+    for family, builder, count, validation_offset in families:
+        for index in range(count):
+            sample = builder(index)
+            identity = {
+                "dataset_version": "v5",
+                "family": family,
+                "generation_rule": sample["generation_rule"],
+                "messages": sample["messages"],
+            }
+            sample["sample_id"] = (
+                f"synthetic-{_hash(_canonical_json(identity))[:20]}"
+            )
+            sample["split"] = (
+                "validation"
+                if index % 6 == validation_offset
+                else "train"
+            )
+            sample["source_kind"] = "deterministic_synthetic"
+            sample["training_eligible"] = True
+            sample["exact_sha256"] = _hash(
+                _canonical_json(sample["messages"])
+            )
+            sample["semantic_sha256"] = _hash(
+                _normalized_text(sample["messages"])
+            )
+            samples.append(sample)
+    samples.sort(key=lambda sample: sample["sample_id"])
+
+    overlaps = {
+        "prior_sample_id_overlap": sum(
+            sample["sample_id"] in prior_ids for sample in samples
+        ),
+        "prior_exact_overlap": sum(
+            sample["exact_sha256"] in prior_exact for sample in samples
+        ),
+        "prior_semantic_overlap": sum(
+            sample["semantic_sha256"] in prior_semantic for sample in samples
+        ),
+        "prior_source_signature_overlap": sum(
+            sample["source_signature"] in prior_signatures
+            or sample.get("verifier", {}).get("expression")
+            in prior_signatures
+            or sample.get("verifier", {}).get("source_expression")
+            in prior_signatures
+            for sample in samples
+        ),
+    }
+    if any(overlaps.values()):
+        raise ValueError(
+            f"preservation mix overlaps prior analogs: {overlaps}"
+        )
+    rendered_samples = _canonical_json(samples)
+    leaked_case_ids = [
+        row["case_id"]
+        for row in feedback["rows"]
+        if str(row["case_id"]) in rendered_samples
+    ]
+    if leaked_case_ids:
+        raise ValueError(
+            f"sealed case IDs leaked into analog data: {leaked_case_ids[:5]}"
+        )
+
+    dataset = {
+        "schema_version": SCHEMA_VERSION,
+        "dataset_id": "hard-preservation-mix-v5",
+        "version": "v5",
+        "source": {
+            "source_kind": "deterministic_synthetic",
+            "generator": "nano_data_pipeline.analog",
+            "feedback_requirement_id": feedback["dataset_id"],
+            "feedback_manifest_sha256": sha256_file(
+                feedback_manifest_path
+            ),
+            "prior_datasets": priors,
+            "benchmark_content_used": False,
+            "sealed_case_ids_used": False,
+            **overlaps,
+        },
+        "policy": {
+            "source_split": "non_eval_analog_only",
+            "training_allowed": True,
+            "contains_benchmark_content": False,
+            "contains_model_outputs": False,
+            "contains_teacher_outputs": False,
+            "purpose": "hard_capability_preservation_sft_smoke",
+            "observed_validation_reused": False,
+            "all_numeric_targets_deterministically_verified": True,
+            "all_intermediate_steps_verified": True,
+            "sealed_canary_used_for_training": False,
+        },
+        "samples": samples,
+    }
+    dataset["summary"] = summarize_analog_dataset(dataset)
+    validate_analog_dataset(dataset)
+    return dataset
+
+
 def summarize_analog_dataset(dataset: dict[str, Any]) -> dict[str, Any]:
     samples = dataset["samples"]
     return {
@@ -843,6 +1169,31 @@ def validate_analog_dataset(dataset: dict[str, Any]) -> None:
                 raise ValueError("invalid numeric target")
             if "verifier" in sample:
                 raise ValueError("format-only sample must not include a verifier")
+        elif sample["format_family"] == "reasoning_numeric":
+            verifier = sample.get("verifier", {})
+            if set(verifier) != {"kind", "expression", "expected_result"}:
+                raise ValueError("reasoning verifier fields are invalid")
+            if verifier["kind"] != "safe_ast_reasoning_numeric_v1":
+                raise ValueError("unknown reasoning verifier")
+            match = re.fullmatch(
+                (
+                    r"WORK: (.+) = "
+                    r"([-+]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))\n"
+                    r"FINAL: ([-+]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))"
+                ),
+                assistant,
+            )
+            if match is None:
+                raise ValueError("invalid reasoning target")
+            expression, work_result, final_result = match.groups()
+            verified = format_number(evaluate_arithmetic(expression))
+            if (
+                expression != verifier["expression"]
+                or work_result != verifier["expected_result"]
+                or final_result != verifier["expected_result"]
+                or verified != verifier["expected_result"]
+            ):
+                raise ValueError("reasoning verifier mismatch")
         elif sample["format_family"] == "trace_numeric":
             verifier = sample.get("verifier", {})
             if set(verifier) != {"kind", "expression", "expected_result"}:

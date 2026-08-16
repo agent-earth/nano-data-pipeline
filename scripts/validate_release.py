@@ -8,6 +8,7 @@ from pathlib import Path
 from nano_data_pipeline.analog import (
     build_curriculum_analog_dataset,
     build_format_analog_dataset,
+    build_preservation_mix_dataset,
     build_process_trace_dataset,
     build_semantic_trace_dataset,
     validate_analog_dataset,
@@ -25,6 +26,7 @@ ANALOG = ROOT / "datasets/format_contract_analog_v1.json"
 CURRICULUM = ROOT / "datasets/format_contract_curriculum_analog_v2.json"
 SEMANTIC = ROOT / "datasets/verified_semantic_arithmetic_traces_v3.json"
 PROCESS = ROOT / "datasets/verified_arithmetic_process_traces_v4.json"
+PRESERVATION = ROOT / "datasets/hard_preservation_mix_v5.json"
 
 
 def main() -> None:
@@ -79,6 +81,14 @@ def main() -> None:
     )
     if process != expected_process:
         raise SystemExit("committed process trace dataset is not reproducible")
+    preservation = json.loads(PRESERVATION.read_text(encoding="utf-8"))
+    validate_analog_dataset(preservation)
+    expected_preservation = build_preservation_mix_dataset(
+        COMMITTED,
+        [ANALOG, CURRICULUM, SEMANTIC, PROCESS],
+    )
+    if preservation != expected_preservation:
+        raise SystemExit("committed preservation mix is not reproducible")
     print(
         json.dumps(
             {
@@ -114,11 +124,20 @@ def main() -> None:
                 "process_validation_samples": process["summary"]["by_split"][
                     "validation"
                 ],
+                "preservation_dataset_id": preservation["dataset_id"],
+                "preservation_samples": preservation["summary"]["samples"],
+                "preservation_train_samples": preservation["summary"][
+                    "by_split"
+                ]["train"],
+                "preservation_validation_samples": preservation["summary"][
+                    "by_split"
+                ]["validation"],
                 "feedback_byte_reproducible": True,
                 "analog_byte_reproducible": True,
                 "curriculum_byte_reproducible": True,
                 "semantic_byte_reproducible": True,
                 "process_byte_reproducible": True,
+                "preservation_byte_reproducible": True,
             },
             indent=2,
             sort_keys=True,
