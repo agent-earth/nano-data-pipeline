@@ -1,0 +1,174 @@
+{
+  "acceptance_gates": {
+    "cross_split_overlap_allowed": 0,
+    "deterministic_verifier_pass_required": true,
+    "global_exact_duplicates_allowed": 0,
+    "independent_critic_required": true,
+    "minimum_critic_score": 0.8,
+    "required_row_fields": [
+      "sample_id",
+      "messages",
+      "split",
+      "skill_id",
+      "task_family",
+      "source",
+      "generator_receipt",
+      "critic_receipt",
+      "verifier_receipt",
+      "token_count",
+      "exact_hash",
+      "semantic_hash"
+    ],
+    "semantic_similarity_max": 0.92
+  },
+  "campaign_id": "skill-sft-10k-10m-v1",
+  "claim_boundary": {
+    "generation_completion_proves_quality": false,
+    "target_is_empirical_optimum": false,
+    "target_rationale": "This is the first engineering scale target for a 4B LoRA SFT ablation. It is large enough to exercise sharded generation and token accounting, but only downstream matched evaluation can establish quality."
+  },
+  "completion_contract": {
+    "required_checks": [
+      "train_sample_target_pass",
+      "train_token_target_pass",
+      "family_quotas_pass",
+      "global_dedup_pass",
+      "source_policy_pass",
+      "tokenizer_identity_pass"
+    ],
+    "training_unblocks_only_after_all_checks": true
+  },
+  "data_families": [
+    {
+      "accepted_dev_samples_min": 100,
+      "accepted_train_samples_min": 2500,
+      "accepted_train_tokens_min": 2800000,
+      "deterministic_verifier": "tool_trace_contract_v1",
+      "family_id": "tool-use-and-recovery",
+      "purpose": "Choose tools, emit schema-valid calls, interpret observations, and recover from injected tool failures without inventing success."
+    },
+    {
+      "accepted_dev_samples_min": 80,
+      "accepted_train_samples_min": 2000,
+      "accepted_train_tokens_min": 2000000,
+      "deterministic_verifier": "state_plan_consistency_v1",
+      "family_id": "planning-and-state",
+      "purpose": "Maintain explicit constraints, evidence, pending work, and stop conditions across multi-step tasks."
+    },
+    {
+      "accepted_dev_samples_min": 100,
+      "accepted_train_samples_min": 2500,
+      "accepted_train_tokens_min": 2300000,
+      "deterministic_verifier": "safe_execution_receipt_v1",
+      "family_id": "verified-reasoning",
+      "purpose": "Produce calculations or transformations whose final answer is checked by a deterministic local executor."
+    },
+    {
+      "accepted_dev_samples_min": 60,
+      "accepted_train_samples_min": 1500,
+      "accepted_train_tokens_min": 1800000,
+      "deterministic_verifier": "patch_test_receipt_v1",
+      "family_id": "coding-and-validation",
+      "purpose": "Explore a small synthetic repository, make a bounded patch, and report only test-backed outcomes."
+    },
+    {
+      "accepted_dev_samples_min": 60,
+      "accepted_train_samples_min": 1500,
+      "accepted_train_tokens_min": 1100000,
+      "deterministic_verifier": "skill_route_receipt_v1",
+      "family_id": "skill-routing-and-reflection",
+      "purpose": "Select the minimal applicable skill, follow its contract, and propose a bounded skill revision from synthetic development failures."
+    }
+  ],
+  "generation_protocol": {
+    "generator_context_may_include": [
+      "family specification",
+      "synthetic seed",
+      "current frozen skill version",
+      "output schema"
+    ],
+    "generator_context_must_exclude": [
+      "benchmark prompts",
+      "benchmark references",
+      "benchmark model outputs",
+      "canary rows",
+      "independent holdout rows",
+      "critic decisions for the same row"
+    ],
+    "generator_role": "subagent_generator",
+    "critic_context_must_exclude": [
+      "generator hidden reasoning",
+      "target quota pressure",
+      "acceptance decision from another critic"
+    ],
+    "critic_role": "subagent_critic",
+    "verifier_role": "deterministic_local_script"
+  },
+  "schema_version": "nano_skill_sft_campaign_v1",
+  "self_evolution": {
+    "benchmark_feedback_may_mutate_skills": false,
+    "candidate_sources": [
+      "synthetic development failures",
+      "critic rejection clusters",
+      "verifier failure clusters"
+    ],
+    "freeze_rule": "Select one candidate only when it improves the frozen synthetic development suite with zero safety-family regressions; otherwise retain the parent skill.",
+    "max_cycles_before_freeze": 3,
+    "mutation_scope": [
+      "skill instructions",
+      "skill routing policy",
+      "deterministic verifier selection"
+    ],
+    "train_rows_may_mutate_skills": false
+  },
+  "sharding": {
+    "candidate_samples_per_shard": 512,
+    "initial_candidate_tokens_min": 13000000,
+    "initial_oversubscription_ratio": 1.3,
+    "initial_shards": 32,
+    "max_parallel_subagents": 8,
+    "refill_batch_shards": 4,
+    "refill_until_global_targets_pass": true,
+    "resume_key": "campaign_id/family_id/shard_id/attempt"
+  },
+  "source_policy": {
+    "allowed_payload_sources": [
+      "procedurally generated synthetic tasks",
+      "license-compatible non-evaluation seed material with recorded provenance",
+      "synthetic development failure summaries without benchmark payload"
+    ],
+    "benchmark_payload_training_allowed": false,
+    "forbidden_payload_sources": [
+      "SkillBench",
+      "SWE-bench",
+      "ClawBench",
+      "WildClawBench",
+      "Terminal-Bench",
+      "GSM8K",
+      "MMLU",
+      "GPQA"
+    ],
+    "independent_holdout_may_be_read": false,
+    "sealed_canary_payload_training_allowed": false
+  },
+  "status": "pre_registered",
+  "targets": {
+    "accepted_dev_samples_min": 400,
+    "accepted_train_samples_min": 10000,
+    "accepted_train_tokens_min": 10000000
+  },
+  "token_accounting": {
+    "add_generation_prompt": false,
+    "counted_content": "accepted full train conversation after apply_chat_template, including assistant target and special tokens",
+    "counted_split": "train",
+    "enable_thinking": false,
+    "file_sha256": {
+      "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+      "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+      "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8"
+    },
+    "model_path_reference": "../../models/Qwen3.5-4B",
+    "tokenizer_class_observed": "Qwen2Tokenizer",
+    "unit": "qwen3.5_tokenizer_input_id"
+  }
+}
