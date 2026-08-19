@@ -13,6 +13,7 @@ from nano_data_pipeline.campaign import (
 
 ROOT = Path(__file__).resolve().parents[1]
 CAMPAIGN = ROOT / "manifests/skill_sft_campaign_v1.json"
+CAMPAIGN_V2 = ROOT / "manifests/skill_sft_campaign_v2.json"
 
 
 class SkillSFTCampaignTests(unittest.TestCase):
@@ -68,6 +69,31 @@ class SkillSFTCampaignTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "sample oversubscription"):
             validate_skill_sft_campaign(invalid)
+
+    def test_recipe_overlay_is_pinned_and_requires_scale_gates(self):
+        campaign = load_skill_sft_campaign(CAMPAIGN_V2)
+
+        self.assertEqual(campaign["campaign_id"], "skill-sft-10k-10m-v2")
+        self.assertEqual(
+            campaign["generation_protocol"]["mode"],
+            "recipe_per_shard_v1",
+        )
+        self.assertEqual(
+            campaign["generation_protocol"]["generator_calls_per_shard_max"],
+            1,
+        )
+        self.assertIn(
+            "dev_sample_target_pass",
+            campaign["completion_contract"]["required_checks"],
+        )
+        self.assertIn(
+            "recipe_call_budget_pass",
+            campaign["completion_contract"]["required_checks"],
+        )
+        self.assertEqual(
+            campaign["overlay_receipt"]["base_sha256"],
+            "e24a16404f4462d7b2cd09312489c05327ed9e7ec08dc608e7a01e7a14ef9b0d",
+        )
 
 
 if __name__ == "__main__":

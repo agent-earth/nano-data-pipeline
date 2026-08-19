@@ -31,8 +31,8 @@ Use the repository environment and frozen manifest:
 
 ```bash
 PYTHON=${NANO_WORKSPACE_PYTHON:-../.venv/bin/python}
-MANIFEST=manifests/skill_sft_campaign_v1.json
-RUN_DIR=runs/skill-sft-10k-10m-v1
+MANIFEST=manifests/skill_sft_campaign_v2.json
+RUN_DIR=runs/skill-sft-10k-10m-v2
 
 $PYTHON scripts/run_skill_sft_campaign.py plan \
   --campaign "$MANIFEST" --run-dir "$RUN_DIR"
@@ -55,6 +55,11 @@ $PYTHON scripts/run_skill_sft_campaign.py refill \
 
 Read `references/contracts.md` before authoring generator or critic commands,
 row schemas, verifier payloads, or skill-candidate scorecards.
+
+Use v1 only to reproduce the historical per-row pilot. Production generation
+uses v2: one allowlisted generator recipe and one independent critic recipe
+decision per shard, followed by deterministic local expansion and row-level
+verification.
 
 ## Gates
 

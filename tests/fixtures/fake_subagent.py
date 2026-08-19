@@ -31,6 +31,16 @@ def main() -> None:
 
 def generate(request: dict) -> list[dict]:
     rows = []
+    recipe_mode = request.get("generation_mode") == "recipe_per_shard_v1"
+    recipe = {
+        "narrative_style": "technical",
+        "evidence_label": "record",
+        "instruction_order": "contract-first",
+        "response_tone": "neutral",
+    }
+    recipe_sha256 = sha256_text(
+        json.dumps(recipe, sort_keys=True, separators=(",", ":"))
+    )
     for index in range(request["candidate_samples"]):
         left = request["seed"] % 97 + index + 3
         right = request["shard_id"] * 11 + index + 5
@@ -46,7 +56,7 @@ def generate(request: dict) -> list[dict]:
             result,
             index,
         )
-        if index % 5 == 0:
+        if index % 5 == 0 and not recipe_mode:
             target = tamper_target(request["family_id"], target)
         rows.append(
             {
@@ -54,7 +64,7 @@ def generate(request: dict) -> list[dict]:
                 "candidate_id": candidate_id,
                 "family_id": request["family_id"],
                 "task_family": f"{request['family_id']}-smoke",
-                "split": "dev" if index == 1 else "train",
+                "split": "dev" if index < request.get("dev_samples", 0) else "train",
                 "skill_id": "skill-sft-campaign",
                 "messages": [
                     {
@@ -77,13 +87,31 @@ def generate(request: dict) -> list[dict]:
                     "kind": "procedurally_generated_synthetic",
                     "generator": "fake-subagent-smoke",
                     "seed": request["seed"],
+                    **(
+                        {
+                            "compiler": "deterministic_recipe_v2",
+                            "recipe_sha256": recipe_sha256,
+                        }
+                        if recipe_mode
+                        else {}
+                    ),
                 },
                 "task_spec": task_spec,
                 "verifier": {"kind": verifier_kind},
                 "generator_receipt": {
-                    "request_id": f"fake-generator-{candidate_id}",
+                    "request_id": (
+                        f"fake-generator-recipe-{request['shard_id']}"
+                        if recipe_mode
+                        else f"fake-generator-{candidate_id}"
+                    ),
                     "skill_sha256": request["skill_sha256"],
+                    **(
+                        {"recipe_sha256": recipe_sha256}
+                        if recipe_mode
+                        else {}
+                    ),
                 },
+                **({"generator_recipe": recipe} if recipe_mode else {}),
             }
         )
     return rows
@@ -199,8 +227,15 @@ def sha256_text(value: str) -> str:
 
 def criticize(request: dict) -> list[dict]:
     rows = []
+    recipe_mode = bool(
+        request["candidates"]
+        and request["candidates"][0]
+        .get("source", {})
+        .get("compiler")
+        == "deterministic_recipe_v2"
+    )
     for index, candidate in enumerate(request["candidates"]):
-        accept = index % 4 != 3
+        accept = recipe_mode or index % 4 != 3
         rows.append(
             {
                 "schema_version": "nano_subagent_critic_v1",
@@ -209,8 +244,21 @@ def criticize(request: dict) -> list[dict]:
                 "accept": accept,
                 "reasons": [] if accept else ["synthetic_quality_rejection"],
                 "critic_receipt": {
-                    "request_id": f"fake-critic-{candidate['candidate_id']}",
+                    "request_id": (
+                        f"fake-critic-recipe-{request['shard_id']}"
+                        if recipe_mode
+                        else f"fake-critic-{candidate['candidate_id']}"
+                    ),
                     "critic": "fake-independent-critic-smoke",
+                    **(
+                        {
+                            "recipe_sha256": candidate["source"][
+                                "recipe_sha256"
+                            ]
+                        }
+                        if recipe_mode
+                        else {}
+                    ),
                 },
             }
         )

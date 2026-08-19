@@ -1,0 +1,35 @@
+{
+  "base_manifest": "skill_sft_campaign_v1.json",
+  "base_sha256": "e24a16404f4462d7b2cd09312489c05327ed9e7ec08dc608e7a01e7a14ef9b0d",
+  "campaign_id": "skill-sft-10k-10m-v2",
+  "overrides": {
+    "completion_contract": {
+      "required_checks": [
+        "train_sample_target_pass",
+        "train_token_target_pass",
+        "dev_sample_target_pass",
+        "family_quotas_pass",
+        "family_dev_quotas_pass",
+        "global_dedup_pass",
+        "source_policy_pass",
+        "tokenizer_identity_pass",
+        "recipe_call_budget_pass"
+      ],
+      "training_unblocks_only_after_all_checks": true
+    },
+    "generation_protocol": {
+      "critic_calls_per_shard_max": 1,
+      "generator_calls_per_shard_max": 1,
+      "mode": "recipe_per_shard_v1",
+      "recipe_fields": [
+        "narrative_style",
+        "evidence_label",
+        "instruction_order",
+        "response_tone"
+      ],
+      "row_expander": "deterministic_local_compiler_v2"
+    }
+  },
+  "schema_version": "nano_skill_sft_campaign_overlay_v1",
+  "status": "pre_registered"
+}

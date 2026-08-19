@@ -10,11 +10,13 @@ from nano_data_pipeline.analog import evaluate_arithmetic, format_number
 from nano_data_pipeline.campaign import load_skill_sft_campaign
 from nano_data_pipeline.openai_subagent import (
     FamilyCompiler,
+    RECIPE_CHOICES,
     SubagentConfig,
     criticize_candidates,
     generate_candidates,
     parse_json_object,
     sha256_text,
+    validate_recipe,
 )
 from nano_data_pipeline.subagent_campaign import accept_candidates
 
@@ -51,6 +53,32 @@ class SolvingSubagent:
             }
         return response, {
             "request_id": f"{self.role}-{self.calls}",
+            "model": f"fake-{self.role}",
+            "usage": {"total_tokens": 10},
+            "finish_reason": "stop",
+        }
+
+
+class RecipeSubagent:
+    def __init__(self, role: str):
+        self.role = role
+        self.config = type("Config", (), {"max_tokens": 512})()
+        self.calls = 0
+
+    def complete_json(self, messages, *, max_tokens=None):
+        del messages, max_tokens
+        self.calls += 1
+        if self.role == "generator":
+            response = {
+                "narrative_style": "technical",
+                "evidence_label": "record",
+                "instruction_order": "contract-first",
+                "response_tone": "neutral",
+            }
+        else:
+            response = {"accept": True, "score": 0.95, "reasons": []}
+        return response, {
+            "request_id": f"{self.role}-recipe-{self.calls}",
             "model": f"fake-{self.role}",
             "usage": {"total_tokens": 10},
             "finish_reason": "stop",
@@ -166,6 +194,87 @@ class OpenAISubagentTests(unittest.TestCase):
                 accepted[0]["critic_receipt"]["request_id"],
             )
             self.assertGreaterEqual(accepted[0]["token_count"], 300)
+
+    def test_recipe_mode_uses_one_generator_and_critic_call_for_eight_rows(self):
+        campaign = load_skill_sft_campaign(
+            ROOT / "manifests/skill_sft_campaign_v2.json"
+        )
+        skill_sha256 = sha256_text(SKILL.read_text(encoding="utf-8"))
+        compiler = FamilyCompiler.__new__(FamilyCompiler)
+        compiler.tokenizer = FakeTokenizer()
+        request = {
+            "campaign_id": campaign["campaign_id"],
+            "family_id": "verified-reasoning",
+            "shard_id": 0,
+            "attempt": 0,
+            "candidate_samples": 8,
+            "candidate_tokens_min": 2_400,
+            "dev_samples": 2,
+            "seed": 500,
+            "skill_sha256": skill_sha256,
+            "generation_mode": "recipe_per_shard_v1",
+        }
+        generator = RecipeSubagent("generator")
+        critic = RecipeSubagent("critic")
+
+        candidates = generate_candidates(request, generator, compiler)
+        decisions = criticize_candidates({"candidates": candidates}, critic)
+        accepted, rejected = accept_candidates(
+            campaign,
+            candidates,
+            decisions,
+            tokenizer=FakeTokenizer(),
+            skill_sha256=skill_sha256,
+            family_ids={
+                family["family_id"] for family in campaign["data_families"]
+            },
+            shard={
+                "shard_id": 0,
+                "attempt": 0,
+                "family_id": "verified-reasoning",
+                "seed": 500,
+            },
+        )
+
+        self.assertEqual(generator.calls, 1)
+        self.assertEqual(critic.calls, 1)
+        self.assertEqual(len(candidates), 8)
+        self.assertEqual(len(accepted), 8)
+        self.assertEqual(rejected, [])
+        self.assertEqual(
+            sum(row["split"] == "dev" for row in accepted),
+            2,
+        )
+        self.assertEqual(
+            len(
+                {
+                    row["generator_receipt"]["request_id"]
+                    for row in candidates
+                }
+            ),
+            1,
+        )
+        self.assertEqual(
+            len(
+                {
+                    row["critic_receipt"]["request_id"]
+                    for row in decisions
+                }
+            ),
+            1,
+        )
+
+    def test_recipe_rejects_extra_field_and_outside_value(self):
+        valid = {key: sorted(values)[0] for key, values in RECIPE_CHOICES.items()}
+        validate_recipe(valid)
+        invalid = dict(valid)
+        invalid["answer"] = "42"
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            validate_recipe(invalid)
+        invalid = dict(valid)
+        invalid["response_tone"] = "benchmark-tuned"
+        with self.assertRaisesRegex(ValueError, "allowlist"):
+            validate_recipe(invalid)
 
 
 def solve(family_id: str, task_spec: dict) -> str:

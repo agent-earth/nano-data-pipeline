@@ -33,6 +33,12 @@ SUPPORTED_VERIFIERS = {
     "state_plan_consistency_v1",
     "tool_trace_contract_v1",
 }
+RECIPE_CHOICES = {
+    "narrative_style": {"audit", "procedural", "technical"},
+    "evidence_label": {"ledger", "record", "trace"},
+    "instruction_order": {"context-first", "contract-first"},
+    "response_tone": {"compact", "formal", "neutral"},
+}
 PLACEHOLDERS = {
     "attempt",
     "family_id",
@@ -162,6 +168,13 @@ def plan_campaign(
         count = shard_counts[family_id]
         if count == 0:
             continue
+        if mode == "smoke":
+            dev_splits = [min(1, samples_per_shard) for _ in range(count)]
+        else:
+            dev_splits = split_integer(
+                family["accepted_dev_samples_min"],
+                count,
+            )
         if candidate_tokens_per_sample_override is None:
             token_splits = split_integer(family_token_budget[family_id], count)
         else:
@@ -178,6 +191,7 @@ def plan_campaign(
                     "attempt": 0,
                     "candidate_samples": samples_per_shard,
                     "candidate_tokens_min": token_splits[family_shard_id],
+                    "dev_samples": dev_splits[family_shard_id],
                     "seed": 202608190000 + shard_id,
                 }
             )
@@ -216,12 +230,19 @@ def validate_plan(plan: dict[str, Any]) -> None:
             "attempt",
             "candidate_samples",
             "candidate_tokens_min",
+            "dev_samples",
             "family_id",
             "seed",
             "shard_id",
         ):
             if key not in shard:
                 raise ValueError(f"campaign shard is missing {key}")
+        if (
+            type(shard["dev_samples"]) is not int
+            or shard["dev_samples"] < 0
+            or shard["dev_samples"] > shard["candidate_samples"]
+        ):
+            raise ValueError("campaign shard has invalid dev_samples")
 
 
 def allocate_integer_total(
@@ -349,9 +370,14 @@ def _run_shard(
         "attempt": shard["attempt"],
         "candidate_samples": shard["candidate_samples"],
         "candidate_tokens_min": shard["candidate_tokens_min"],
+        "dev_samples": shard["dev_samples"],
         "seed": shard["seed"],
         "skill_path": plan["skill_path"],
         "skill_sha256": plan["skill_sha256"],
+        "generation_mode": campaign["generation_protocol"].get(
+            "mode",
+            "per_row_subagent_v1",
+        ),
         "output_schema": CANDIDATE_SCHEMA,
     }
     generator_input = shard_dir / "generator-input.json"
@@ -426,8 +452,26 @@ def _run_shard(
             "attempt": shard["attempt"],
             "candidate_rows": len(candidates),
             "accepted_rows": len(accepted),
+            "accepted_dev_rows": sum(
+                row["split"] == "dev" for row in accepted
+            ),
+            "accepted_train_rows": sum(
+                row["split"] == "train" for row in accepted
+            ),
             "rejected_rows": len(rejected),
             "accepted_tokens": sum(row["token_count"] for row in accepted),
+            "generator_model_calls": len(
+                {
+                    row["generator_receipt"]["request_id"]
+                    for row in candidates
+                }
+            ),
+            "critic_model_calls": len(
+                {
+                    row["critic_receipt"]["request_id"]
+                    for row in decisions
+                }
+            ),
             "rejection_reasons": dict(Counter(rejected)),
             "generator_process": generator_receipt,
             "critic_process": critic_receipt,
@@ -598,6 +642,11 @@ def accept_candidates(
                 "token_count": token_count,
                 "exact_hash": exact_hash,
                 "semantic_hash": semantic_hash,
+                **(
+                    {"generator_recipe": candidate["generator_recipe"]}
+                    if "generator_recipe" in candidate
+                    else {}
+                ),
             }
         )
     return accepted, rejected
@@ -661,6 +710,15 @@ def validate_candidate(
         or verifier.get("kind") != expected_verifier
     ):
         raise ValueError("verifier")
+    if source.get("compiler") == "deterministic_recipe_v2":
+        recipe = candidate.get("generator_recipe")
+        validate_recipe_contract(recipe)
+        recipe_sha256 = sha256_text(canonical_json(recipe))
+        if (
+            source.get("recipe_sha256") != recipe_sha256
+            or receipt.get("recipe_sha256") != recipe_sha256
+        ):
+            raise ValueError("recipe_identity")
 
 
 def verify_candidate(candidate: dict[str, Any]) -> tuple[bool, dict[str, Any]]:
@@ -908,6 +966,20 @@ def audit_campaign(
             and float(row["critic_score"])
             >= float(campaign["acceptance_gates"]["minimum_critic_score"])
         )
+        if source.get("compiler") == "deterministic_recipe_v2":
+            try:
+                recipe = row["generator_recipe"]
+                validate_recipe_contract(recipe)
+                recipe_sha256 = sha256_text(canonical_json(recipe))
+                recipe_identity_pass = (
+                    source.get("recipe_sha256") == recipe_sha256
+                    and generator_receipt.get("recipe_sha256")
+                    == recipe_sha256
+                    and critic_receipt.get("recipe_sha256") == recipe_sha256
+                )
+            except (AttributeError, KeyError, TypeError, ValueError):
+                recipe_identity_pass = False
+            source_policy_pass = source_policy_pass and recipe_identity_pass
         skill_identity_pass = skill_identity_pass and (
             isinstance(generator_receipt, dict)
             and row.get("skill_sha256")
@@ -943,6 +1015,7 @@ def audit_campaign(
     train_tokens = sum(tokens for _, tokens in train_rows)
     family_summary = {}
     family_quotas_pass = True
+    family_dev_quotas_pass = True
     for family in campaign["data_families"]:
         family_id = family["family_id"]
         matched = [
@@ -955,11 +1028,23 @@ def audit_campaign(
         sample_pass = samples >= family["accepted_train_samples_min"]
         token_quota_pass = tokens >= family["accepted_train_tokens_min"]
         family_quotas_pass = family_quotas_pass and sample_pass and token_quota_pass
+        dev_samples = sum(
+            row["family_id"] == family_id and row["split"] == "dev"
+            for row, _ in recomputed_rows
+        )
+        dev_sample_pass = (
+            dev_samples >= family["accepted_dev_samples_min"]
+        )
+        family_dev_quotas_pass = (
+            family_dev_quotas_pass and dev_sample_pass
+        )
         family_summary[family_id] = {
             "train_samples": samples,
             "train_tokens": tokens,
+            "dev_samples": dev_samples,
             "sample_target": family["accepted_train_samples_min"],
             "token_target": family["accepted_train_tokens_min"],
+            "dev_sample_target": family["accepted_dev_samples_min"],
             "sample_deficit": max(
                 0,
                 family["accepted_train_samples_min"] - samples,
@@ -968,9 +1053,18 @@ def audit_campaign(
                 0,
                 family["accepted_train_tokens_min"] - tokens,
             ),
+            "dev_sample_deficit": max(
+                0,
+                family["accepted_dev_samples_min"] - dev_samples,
+            ),
             "sample_target_pass": sample_pass,
             "token_target_pass": token_quota_pass,
+            "dev_sample_target_pass": dev_sample_pass,
         }
+    accepted_dev_samples = sum(
+        row["split"] == "dev" for row, _ in recomputed_rows
+    )
+    recipe_call_budget_pass = _recipe_call_budget_pass(campaign, root)
     tokenizer_identity_pass = True
     if tokenizer_path is not None:
         tokenizer_identity_pass = verify_tokenizer_identity(
@@ -979,9 +1073,15 @@ def audit_campaign(
         )
     checks = {
         "critic_revalidation_pass": critic_pass,
+        "dev_sample_target_pass": (
+            accepted_dev_samples
+            >= campaign["targets"]["accepted_dev_samples_min"]
+        ),
+        "family_dev_quotas_pass": family_dev_quotas_pass,
         "family_quotas_pass": family_quotas_pass,
         "global_dedup_pass": global_dedup_pass,
         "source_policy_pass": source_policy_pass,
+        "recipe_call_budget_pass": recipe_call_budget_pass,
         "skill_identity_pass": skill_identity_pass,
         "tokenizer_identity_pass": tokenizer_identity_pass,
         "train_sample_target_pass": (
@@ -992,11 +1092,26 @@ def audit_campaign(
         ),
         "verifier_revalidation_pass": verifier_pass,
     }
-    training_unblocked = all(checks.values()) and hash_pass and token_pass
+    required_checks = set(
+        campaign["completion_contract"]["required_checks"]
+    )
+    required_checks.update(
+        {
+            "critic_revalidation_pass",
+            "skill_identity_pass",
+            "verifier_revalidation_pass",
+        }
+    )
+    training_unblocked = (
+        all(checks[name] for name in required_checks)
+        and hash_pass
+        and token_pass
+    )
     report = {
         "schema_version": "nano_skill_sft_campaign_audit_v1",
         "campaign_id": campaign["campaign_id"],
         "accepted_rows": len(recomputed_rows),
+        "accepted_dev_samples": accepted_dev_samples,
         "accepted_train_samples": train_samples,
         "accepted_train_tokens": train_tokens,
         "checks": checks,
@@ -1024,6 +1139,40 @@ def verify_tokenizer_identity(
         and sha256_file(tokenizer_path / filename) == digest
         for filename, digest in expected.items()
     )
+
+
+def validate_recipe_contract(recipe: Any) -> None:
+    if not isinstance(recipe, dict) or set(recipe) != set(RECIPE_CHOICES):
+        raise ValueError("recipe must contain exactly the frozen fields")
+    for key, choices in RECIPE_CHOICES.items():
+        if recipe.get(key) not in choices:
+            raise ValueError(f"recipe field {key} is outside the allowlist")
+    serialized = canonical_json(recipe).lower()
+    if any(marker in serialized for marker in FORBIDDEN_PAYLOAD_MARKERS):
+        raise ValueError("recipe contains a forbidden marker")
+
+
+def _recipe_call_budget_pass(
+    campaign: dict[str, Any],
+    root: Path,
+) -> bool:
+    protocol = campaign.get("generation_protocol", {})
+    if protocol.get("mode") != "recipe_per_shard_v1":
+        return True
+    generator_max = protocol["generator_calls_per_shard_max"]
+    critic_max = protocol["critic_calls_per_shard_max"]
+    statuses = sorted(root.glob("shards/*/attempt-*/status.json"))
+    if not statuses:
+        return False
+    for status_path in statuses:
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        if status.get("status") != "completed":
+            return False
+        if status.get("generator_model_calls", generator_max + 1) > generator_max:
+            return False
+        if status.get("critic_model_calls", critic_max + 1) > critic_max:
+            return False
+    return True
 
 
 def find_semantic_near_duplicates(
@@ -1144,7 +1293,11 @@ def plan_refill(
         token_need_as_samples = math.ceil(
             summary["token_deficit"] / max(1, average_tokens)
         )
-        accepted_need = max(sample_need, token_need_as_samples)
+        accepted_need = max(
+            sample_need,
+            token_need_as_samples,
+            summary["dev_sample_deficit"],
+        )
         if accepted_need:
             family_needs[family_id] = accepted_need
     refill_batch = campaign["sharding"]["refill_batch_shards"]
@@ -1172,7 +1325,11 @@ def plan_refill(
     )
     shards = []
     for family_id in sorted(allocation):
-        for _ in range(allocation[family_id]):
+        family_dev_splits = split_integer(
+            audit["family_summary"][family_id]["dev_sample_deficit"],
+            allocation[family_id],
+        )
+        for family_refill_index in range(allocation[family_id]):
             shards.append(
                 {
                     "shard_id": next_shard_id,
@@ -1183,6 +1340,10 @@ def plan_refill(
                     "candidate_tokens_min": math.ceil(
                         audit["family_summary"][family_id]["token_deficit"]
                         / max(1, allocation[family_id])
+                    ),
+                    "dev_samples": min(
+                        candidates_per_shard,
+                        family_dev_splits[family_refill_index],
                     ),
                     "seed": 202608199000 + next_shard_id,
                 }

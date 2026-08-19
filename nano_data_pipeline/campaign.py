@@ -8,6 +8,7 @@ from typing import Any
 
 
 SCHEMA_VERSION = "nano_skill_sft_campaign_v1"
+OVERLAY_SCHEMA_VERSION = "nano_skill_sft_campaign_overlay_v1"
 REQUIRED_FORBIDDEN_SOURCES = {
     "clawbench",
     "gpqa",
@@ -22,7 +23,10 @@ SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 
 
 def load_skill_sft_campaign(path: str | Path) -> dict[str, Any]:
-    campaign = json.loads(Path(path).read_text(encoding="utf-8"))
+    campaign_path = Path(path).resolve()
+    campaign = json.loads(campaign_path.read_text(encoding="utf-8"))
+    if campaign.get("schema_version") == OVERLAY_SCHEMA_VERSION:
+        campaign = _resolve_campaign_overlay(campaign_path, campaign)
     validate_skill_sft_campaign(campaign)
     return campaign
 
@@ -186,6 +190,78 @@ def validate_skill_sft_campaign(campaign: dict[str, Any]) -> None:
         raise ValueError("completion contract is missing mandatory checks")
     if completion.get("training_unblocks_only_after_all_checks") is not True:
         raise ValueError("training must remain blocked until all checks pass")
+
+    generation_mode = campaign.get("generation_protocol", {}).get(
+        "mode",
+        "per_row_subagent_v1",
+    )
+    if generation_mode not in {
+        "per_row_subagent_v1",
+        "recipe_per_shard_v1",
+    }:
+        raise ValueError("unsupported generation protocol mode")
+    if generation_mode == "recipe_per_shard_v1":
+        protocol = campaign["generation_protocol"]
+        if protocol.get("generator_calls_per_shard_max") != 1:
+            raise ValueError("recipe mode requires one generator call per shard")
+        if protocol.get("critic_calls_per_shard_max") != 1:
+            raise ValueError("recipe mode requires one critic call per shard")
+        if protocol.get("row_expander") != "deterministic_local_compiler_v2":
+            raise ValueError("recipe mode requires the frozen local row expander")
+
+
+def _resolve_campaign_overlay(
+    overlay_path: Path,
+    overlay: dict[str, Any],
+) -> dict[str, Any]:
+    allowed = {
+        "base_manifest",
+        "base_sha256",
+        "campaign_id",
+        "overrides",
+        "schema_version",
+        "status",
+    }
+    unknown = set(overlay) - allowed
+    if unknown:
+        raise ValueError(f"unknown campaign overlay fields: {sorted(unknown)}")
+    relative = Path(str(overlay.get("base_manifest", "")))
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ValueError("campaign overlay base must stay beside the overlay")
+    base_path = (overlay_path.parent / relative).resolve()
+    if overlay_path.parent.resolve() not in base_path.parents:
+        raise ValueError("campaign overlay base escapes its directory")
+    expected_sha256 = str(overlay.get("base_sha256", ""))
+    from nano_data_pipeline.feedback import sha256_file
+
+    if sha256_file(base_path) != expected_sha256:
+        raise ValueError("campaign overlay base SHA256 mismatch")
+    base = json.loads(base_path.read_text(encoding="utf-8"))
+    if base.get("schema_version") != SCHEMA_VERSION:
+        raise ValueError("campaign overlay base must use the v1 schema")
+    overrides = overlay.get("overrides")
+    if not isinstance(overrides, dict):
+        raise ValueError("campaign overlay overrides must be an object")
+    resolved = _deep_merge(base, overrides)
+    resolved["campaign_id"] = str(overlay.get("campaign_id", ""))
+    resolved["status"] = str(overlay.get("status", ""))
+    resolved["overlay_receipt"] = {
+        "schema_version": OVERLAY_SCHEMA_VERSION,
+        "overlay_sha256": sha256_file(overlay_path),
+        "base_manifest": relative.as_posix(),
+        "base_sha256": expected_sha256,
+    }
+    return resolved
+
+
+def _deep_merge(base: dict[str, Any], overrides: dict[str, Any]) -> dict[str, Any]:
+    result = dict(base)
+    for key, value in overrides.items():
+        if isinstance(value, dict) and isinstance(result.get(key), dict):
+            result[key] = _deep_merge(result[key], value)
+        else:
+            result[key] = value
+    return result
 
 
 def _positive_int(mapping: dict[str, Any], key: str) -> int:

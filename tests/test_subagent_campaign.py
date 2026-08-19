@@ -24,6 +24,7 @@ from nano_data_pipeline.subagent_campaign import (
 
 ROOT = Path(__file__).resolve().parents[1]
 CAMPAIGN = ROOT / "manifests/skill_sft_campaign_v1.json"
+CAMPAIGN_V2 = ROOT / "manifests/skill_sft_campaign_v2.json"
 SKILL = ROOT / "skills/skill-sft-campaign/SKILL.md"
 
 
@@ -59,6 +60,23 @@ class SubagentCampaignTests(unittest.TestCase):
         self.assertEqual(
             {row["family_id"] for row in plan["shards"]},
             {row["family_id"] for row in self.campaign["data_families"]},
+        )
+
+    def test_recipe_production_plan_has_exact_dev_quota(self):
+        plan = plan_campaign(CAMPAIGN_V2, skill_path=SKILL)
+
+        self.assertEqual(len(plan["shards"]), 32)
+        self.assertEqual(
+            sum(row["dev_samples"] for row in plan["shards"]),
+            400,
+        )
+        self.assertEqual(
+            sum(row["candidate_samples"] for row in plan["shards"]),
+            16_384,
+        )
+        self.assertEqual(
+            sum(row["candidate_tokens_min"] for row in plan["shards"]),
+            13_000_000,
         )
 
     def test_smoke_plan_is_labeled_and_idempotent(self):
@@ -280,6 +298,32 @@ class SubagentCampaignTests(unittest.TestCase):
             self.assertFalse(report["checks"]["verifier_revalidation_pass"])
             self.assertFalse(report["training_unblocked"])
 
+    def test_audit_rejects_tampered_recipe_identity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            row = self._accepted_row("recipe-tamper")
+            recipe = {
+                "narrative_style": "technical",
+                "evidence_label": "record",
+                "instruction_order": "contract-first",
+                "response_tone": "neutral",
+            }
+            row["generator_recipe"] = recipe
+            row["source"]["compiler"] = "deterministic_recipe_v2"
+            row["source"]["recipe_sha256"] = "0" * 64
+            row["generator_receipt"]["recipe_sha256"] = "0" * 64
+            row["critic_receipt"]["recipe_sha256"] = "0" * 64
+            write_jsonl(root / "accepted.jsonl", [row])
+
+            report = audit_campaign(
+                CAMPAIGN,
+                root,
+                tokenizer=FakeTokenizer(),
+            )
+
+            self.assertFalse(report["checks"]["source_policy_pass"])
+            self.assertFalse(report["training_unblocked"])
+
     def test_audit_fails_closed_on_malformed_generator_receipt(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -295,6 +339,29 @@ class SubagentCampaignTests(unittest.TestCase):
 
             self.assertFalse(report["checks"]["critic_revalidation_pass"])
             self.assertFalse(report["checks"]["skill_identity_pass"])
+            self.assertFalse(report["training_unblocked"])
+
+    def test_recipe_audit_fails_closed_when_call_budget_is_missing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            plan = plan_campaign(
+                CAMPAIGN_V2,
+                skill_path=SKILL,
+                max_shards=5,
+                candidate_samples_override=2,
+                candidate_tokens_per_sample_override=300,
+            )
+            write_plan(plan, root)
+            write_jsonl(root / "accepted.jsonl", [])
+
+            report = audit_campaign(
+                CAMPAIGN_V2,
+                root,
+                tokenizer=FakeTokenizer(),
+            )
+
+            self.assertFalse(report["checks"]["recipe_call_budget_pass"])
+            self.assertFalse(report["checks"]["dev_sample_target_pass"])
             self.assertFalse(report["training_unblocked"])
 
     def test_refill_shard_ids_advance_across_rounds(self):

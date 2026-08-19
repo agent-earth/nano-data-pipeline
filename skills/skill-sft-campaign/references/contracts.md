@@ -78,6 +78,32 @@ kinds are `tool_trace_contract_v1`, `state_plan_consistency_v1`,
 `safe_execution_receipt_v1`, `patch_test_receipt_v1`, and
 `skill_route_receipt_v1`.
 
+## Production Recipe Mode
+
+`skill_sft_campaign_v2.json` replaces per-row model calls with one reviewed
+recipe per shard. The generator recipe must contain exactly:
+
+```json
+{
+  "narrative_style": "audit | procedural | technical",
+  "evidence_label": "ledger | record | trace",
+  "instruction_order": "context-first | contract-first",
+  "response_tone": "compact | formal | neutral"
+}
+```
+
+No other field or value is accepted. The recipe cannot contain task answers,
+code, prompts, benchmark names, or dataset payloads. One independent critic
+request approves or rejects that recipe. The local compiler then expands it to
+the shard's rows, constructs each `task_spec`, computes each target, runs each
+family verifier, and records the same recipe hash in source, generator, and
+critic receipts.
+
+Production audit requires at most one generator request ID and one critic
+request ID per completed shard. It also requires 400 accepted development rows
+with the frozen per-family quotas, in addition to 10,000 train rows and 10M
+train tokens.
+
 ## Critic Input And Output
 
 The critic receives candidates but no generator hidden reasoning or quota
