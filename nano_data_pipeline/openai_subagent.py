@@ -571,21 +571,27 @@ def _recipe_critic_messages(
     family_id: str,
     recipe: dict[str, str],
 ) -> list[dict[str, str]]:
+    del family_id
     return [
         {
             "role": "system",
             "content": (
-                "You are an independent recipe critic. Check that every field "
-                "uses the declared allowlist, contains no task answer or dataset "
-                "reference, and only changes style. Return JSON with accept, "
-                "score, and reasons."
+                "You are an independent recipe critic. Use only this exact "
+                "allowlist; do not substitute your own taxonomy. Required keys "
+                "and values: narrative_style in [audit, procedural, technical]; "
+                "evidence_label in [ledger, record, trace]; instruction_order "
+                "in [context-first, contract-first]; response_tone in [compact, "
+                "formal, neutral]. The four-field object supplied by the user IS "
+                "the complete recipe. Do not expect narrative content, routing "
+                "metadata, or an accept field in the input. Accept if and only if "
+                "all four keys use these values and no value contains a task "
+                "answer, code, prompt, or dataset reference. Return a separate "
+                "JSON object with accept, score, and reasons."
             ),
         },
         {
             "role": "user",
-            "content": canonical_json(
-                {"family_id": family_id, "recipe": recipe}
-            ),
+            "content": canonical_json(recipe),
         },
     ]
 

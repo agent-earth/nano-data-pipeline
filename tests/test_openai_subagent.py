@@ -12,6 +12,7 @@ from nano_data_pipeline.openai_subagent import (
     FamilyCompiler,
     RECIPE_CHOICES,
     SubagentConfig,
+    _recipe_critic_messages,
     criticize_candidates,
     generate_candidates,
     parse_json_object,
@@ -275,6 +276,24 @@ class OpenAISubagentTests(unittest.TestCase):
         invalid["response_tone"] = "benchmark-tuned"
         with self.assertRaisesRegex(ValueError, "allowlist"):
             validate_recipe(invalid)
+
+    def test_recipe_critic_receives_exact_allowlist(self):
+        recipe = {
+            "narrative_style": "procedural",
+            "evidence_label": "record",
+            "instruction_order": "context-first",
+            "response_tone": "neutral",
+        }
+
+        messages = _recipe_critic_messages("verified-reasoning", recipe)
+
+        system = messages[0]["content"]
+        self.assertIn("do not substitute your own taxonomy", system)
+        self.assertIn("audit, procedural, technical", system)
+        self.assertIn("context-first, contract-first", system)
+        self.assertIn("IS the complete recipe", system)
+        payload = json.loads(messages[1]["content"])
+        self.assertEqual(payload, recipe)
 
 
 def solve(family_id: str, task_spec: dict) -> str:
