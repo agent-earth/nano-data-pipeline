@@ -12,6 +12,7 @@ from nano_data_pipeline.openai_subagent import (
     FamilyCompiler,
     RECIPE_CHOICES,
     SubagentConfig,
+    _base_task,
     _recipe_critic_messages,
     criticize_candidates,
     generate_candidates,
@@ -294,6 +295,29 @@ class OpenAISubagentTests(unittest.TestCase):
         self.assertIn("IS the complete recipe", system)
         payload = json.loads(messages[1]["content"])
         self.assertEqual(payload, recipe)
+
+    def test_compiler_task_specs_are_unique_across_shards(self):
+        families = (
+            "coding-and-validation",
+            "planning-and-state",
+            "skill-routing-and-reflection",
+            "tool-use-and-recovery",
+            "verified-reasoning",
+        )
+        for family_id in families:
+            specs = [
+                json.dumps(
+                    _base_task(
+                        family_id,
+                        seed=202608190000 + shard_id,
+                        index=index,
+                    )["task_spec"],
+                    sort_keys=True,
+                )
+                for shard_id in range(4)
+                for index in range(512)
+            ]
+            self.assertEqual(len(specs), len(set(specs)), family_id)
 
 
 def solve(family_id: str, task_spec: dict) -> str:

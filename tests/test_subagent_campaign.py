@@ -12,6 +12,7 @@ from nano_data_pipeline.subagent_campaign import (
     accept_candidates,
     allocate_integer_total,
     audit_campaign,
+    find_semantic_near_duplicates,
     plan_campaign,
     plan_refill,
     rebuild_accepted_ledger,
@@ -259,6 +260,25 @@ class SubagentCampaignTests(unittest.TestCase):
                 {"duplicate_exact_hash": 1},
             )
 
+    def test_ledger_recomputes_stale_semantic_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            row = self._accepted_row("stale-semantic")
+            row["semantic_hash"] = "0" * 64
+            write_jsonl(
+                root / "shards/shard-00000/attempt-000/accepted.jsonl",
+                [row],
+            )
+
+            output = rebuild_accepted_ledger(root)
+            rebuilt = json.loads(output.read_text(encoding="utf-8"))
+
+            self.assertNotEqual(rebuilt["semantic_hash"], "0" * 64)
+            self.assertEqual(
+                rebuilt["semantic_basis_version"],
+                "family_task_spec_v1",
+            )
+
     def test_audit_stays_blocked_and_creates_refill(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -392,6 +412,44 @@ class SubagentCampaignTests(unittest.TestCase):
         matches = index.matches("alpha beta gamma delta epsilon extra")
 
         self.assertEqual(len(matches), 1)
+
+    def test_semantic_dedup_uses_task_spec_not_padding(self):
+        duplicate_rows = [
+            {
+                "family_id": "verified-reasoning",
+                "task_spec": {"expression": "3 + 4"},
+                "messages": [
+                    {"role": "user", "content": "short padding"},
+                ],
+            },
+            {
+                "family_id": "verified-reasoning",
+                "task_spec": {"expression": "3 + 4"},
+                "messages": [
+                    {"role": "user", "content": "completely different padding"},
+                ],
+            },
+        ]
+        distinct_rows = [
+            duplicate_rows[0],
+            {
+                "family_id": "verified-reasoning",
+                "task_spec": {"expression": "3 + 5"},
+                "messages": duplicate_rows[0]["messages"],
+            },
+        ]
+
+        duplicates = find_semantic_near_duplicates(
+            duplicate_rows,
+            threshold=0.92,
+        )
+        distinct = find_semantic_near_duplicates(
+            distinct_rows,
+            threshold=0.92,
+        )
+
+        self.assertEqual(len(duplicates), 1)
+        self.assertEqual(distinct, [])
 
     def test_integer_allocations_are_exact(self):
         allocation = allocate_integer_total(7, {"a": 3, "b": 2})

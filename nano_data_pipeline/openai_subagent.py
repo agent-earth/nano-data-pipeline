@@ -693,8 +693,10 @@ def _critic_messages(candidate: dict[str, Any]) -> list[dict[str, str]]:
 
 
 def _base_task(family_id: str, seed: int, index: int) -> dict[str, Any]:
-    left = 40 + (seed + index * 7) % 80
-    right = 20 + (seed * 3 + index * 11) % 60
+    identity = sha256_text(f"{family_id}:{seed}:{index}")
+    left = 1_000 + int(identity[:12], 16) % 900_000
+    right = 1_000 + int(identity[12:24], 16) % 900_000
+    suffix = identity[:16]
     if family_id == "verified-reasoning":
         expression = f"({left} + {right}) * 3 - {right}"
         return {
@@ -747,10 +749,10 @@ def _base_task(family_id: str, seed: int, index: int) -> dict[str, Any]:
         original = f"total = {left}\n"
         expected = f"total = {left + right}\n"
         task_spec = {
-            "file": f"synthetic_{index}.py",
+            "file": f"synthetic_{suffix}.py",
             "original_content": original,
             "expected_content": expected,
-            "test_command": f"python -m unittest synthetic_{index}",
+            "test_command": f"python -m unittest synthetic_{suffix}",
         }
         before_hash = sha256_text(original)
         return {
@@ -767,11 +769,11 @@ def _base_task(family_id: str, seed: int, index: int) -> dict[str, Any]:
             "request_tags": ["data", "validation"],
             "skills": [
                 {
-                    "skill_id": f"broad-{index}",
+                    "skill_id": f"broad-{suffix}",
                     "tags": ["data", "validation", "training"],
                 },
                 {
-                    "skill_id": f"minimal-{index}",
+                    "skill_id": f"minimal-{suffix}",
                     "tags": ["data", "validation"],
                 },
             ],

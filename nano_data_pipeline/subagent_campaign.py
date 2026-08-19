@@ -82,6 +82,25 @@ def normalize_messages(messages: list[dict[str, str]]) -> str:
     return "\n".join(normalized)
 
 
+def semantic_basis(family_id: str, task_spec: dict[str, Any]) -> str:
+    atoms = [f"family_id={family_id}"]
+
+    def visit(path: str, value: Any) -> None:
+        if isinstance(value, dict):
+            for key in sorted(value):
+                visit(f"{path}.{key}" if path else str(key), value[key])
+            return
+        if isinstance(value, list):
+            for index, item in enumerate(value):
+                visit(f"{path}[{index}]", item)
+            return
+        normalized = re.sub(r"\s+", " ", str(value)).strip().lower()
+        atoms.append(f"{path}={normalized}")
+
+    visit("task_spec", task_spec)
+    return "semantic-v1\n" + "\n".join(sorted(atoms))
+
+
 def load_command(path: str | Path) -> list[str]:
     command = json.loads(Path(path).read_text(encoding="utf-8"))
     if (
@@ -603,7 +622,9 @@ def accept_candidates(
             continue
         messages = candidate["messages"]
         exact_hash = sha256_text(canonical_json(messages))
-        semantic_hash = sha256_text(normalize_messages(messages))
+        semantic_hash = sha256_text(
+            semantic_basis(candidate["family_id"], candidate["task_spec"])
+        )
         sample_id = sha256_text(
             (
                 f"{campaign['campaign_id']}:{shard['family_id']}:"
@@ -642,6 +663,7 @@ def accept_candidates(
                 "token_count": token_count,
                 "exact_hash": exact_hash,
                 "semantic_hash": semantic_hash,
+                "semantic_basis_version": "family_task_spec_v1",
                 **(
                     {"generator_recipe": candidate["generator_recipe"]}
                     if "generator_recipe" in candidate
@@ -916,7 +938,9 @@ def audit_campaign(
         try:
             messages = row["messages"]
             exact_hash = sha256_text(canonical_json(messages))
-            semantic_hash = sha256_text(normalize_messages(messages))
+            semantic_hash = sha256_text(
+                semantic_basis(row["family_id"], row["task_spec"])
+            )
             tokens = count_tokens(tokenizer, messages)
         except (KeyError, TypeError, ValueError):
             hash_pass = False
@@ -993,7 +1017,7 @@ def audit_campaign(
     semantic_unique = len(semantic_hashes) == len(set(semantic_hashes))
     id_unique = len(sample_ids) == len(set(sample_ids))
     semantic_near_duplicates = find_semantic_near_duplicates(
-        [row["messages"] for row, _ in recomputed_rows],
+        [row for row, _ in recomputed_rows],
         threshold=float(campaign["acceptance_gates"]["semantic_similarity_max"]),
     )
     global_dedup_pass = (
@@ -1176,14 +1200,14 @@ def _recipe_call_budget_pass(
 
 
 def find_semantic_near_duplicates(
-    message_sets: list[list[dict[str, str]]],
+    rows: list[dict[str, Any]],
     *,
     threshold: float,
 ) -> list[dict[str, Any]]:
     index = SemanticDuplicateIndex(threshold)
     duplicates = []
-    for row_index, messages in enumerate(message_sets):
-        normalized = normalize_messages(messages)
+    for row_index, row in enumerate(rows):
+        normalized = semantic_basis(row["family_id"], row["task_spec"])
         for match in index.matches(normalized):
             duplicates.append(
                 {
@@ -1207,7 +1231,7 @@ class SemanticDuplicateIndex:
         self.prefix_index: dict[str, list[int]] = defaultdict(list)
 
     def matches(self, normalized: str) -> list[dict[str, Any]]:
-        tokens = set(re.findall(r"\w+", normalized))
+        tokens = self._tokens(normalized)
         prefix = self._prefix(tokens)
         candidates = {
             prior
@@ -1244,7 +1268,7 @@ class SemanticDuplicateIndex:
             index = len(self.normalized)
         if index != len(self.normalized):
             raise ValueError("semantic duplicate index rows must be append-only")
-        tokens = set(re.findall(r"\w+", normalized))
+        tokens = self._tokens(normalized)
         self.normalized.append(normalized)
         self.token_sets.append(tokens)
         for token in self._prefix(tokens):
@@ -1258,6 +1282,15 @@ class SemanticDuplicateIndex:
             len(ordered) - math.ceil(self.threshold * len(ordered)) + 1,
         )
         return ordered[:prefix_length]
+
+    def _tokens(self, normalized: str) -> set[str]:
+        if normalized.startswith("semantic-v1\n"):
+            return {
+                line
+                for line in normalized.splitlines()[1:]
+                if line.strip()
+            }
+        return set(re.findall(r"\w+", normalized))
 
     def _lengths_can_match(self, left: int, right: int) -> bool:
         shorter = min(left, right)
@@ -1383,7 +1416,12 @@ def rebuild_accepted_ledger(
     semantic_hashes = set()
     semantic_index = SemanticDuplicateIndex(semantic_threshold)
     for accepted_path in sorted(root.glob("shards/*/attempt-*/accepted.jsonl")):
-        for row in read_jsonl(accepted_path):
+        for source_row in read_jsonl(accepted_path):
+            row = dict(source_row)
+            row["semantic_hash"] = sha256_text(
+                semantic_basis(row["family_id"], row["task_spec"])
+            )
+            row["semantic_basis_version"] = "family_task_spec_v1"
             if row["sample_id"] in sample_ids:
                 rejected["duplicate_sample_id"] += 1
                 continue
@@ -1393,7 +1431,10 @@ def rebuild_accepted_ledger(
             if row["semantic_hash"] in semantic_hashes:
                 rejected["duplicate_semantic_hash"] += 1
                 continue
-            normalized = normalize_messages(row["messages"])
+            normalized = semantic_basis(
+                row["family_id"],
+                row["task_spec"],
+            )
             if semantic_index.matches(normalized):
                 rejected["semantic_near_duplicate"] += 1
                 continue
@@ -1411,7 +1452,7 @@ def rebuild_accepted_ledger(
         "global_rejection_reasons": dict(rejected),
         "accepted_sha256": sha256_file(output),
         "semantic_similarity_metric": (
-            "token_set_jaccard_and_normalized_sequence_ratio"
+            "family_task_spec_jaccard_and_sequence_ratio"
         ),
         "semantic_similarity_max": semantic_threshold,
     }
