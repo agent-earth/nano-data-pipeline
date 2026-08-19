@@ -1,0 +1,9 @@
+[
+  "{python}",
+  "{repo_root}/scripts/openai_subagent.py",
+  "critic",
+  "--input",
+  "{input}",
+  "--output",
+  "{output}"
+]

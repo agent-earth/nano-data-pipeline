@@ -11,6 +11,12 @@ requires-python = ">=3.11"
 [project.scripts]
 nano-data-pipeline = "nano_data_pipeline.cli:main"
 
+[project.optional-dependencies]
+generation = [
+  "openai>=2.0",
+  "transformers>=5.0",
+]
+
 [tool.setuptools.packages.find]
 include = ["nano_data_pipeline*"]
 

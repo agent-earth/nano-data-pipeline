@@ -34,6 +34,7 @@ def main() -> None:
     plan_parser.add_argument("--skill", default=str(DEFAULT_SKILL))
     plan_parser.add_argument("--max-shards", type=int)
     plan_parser.add_argument("--candidate-samples", type=int)
+    plan_parser.add_argument("--candidate-tokens-per-sample", type=int)
 
     run_parser = subparsers.add_parser("run")
     run_parser.add_argument("--campaign", required=True)
@@ -74,6 +75,9 @@ def main() -> None:
             skill_path=args.skill,
             max_shards=args.max_shards,
             candidate_samples_override=args.candidate_samples,
+            candidate_tokens_per_sample_override=(
+                args.candidate_tokens_per_sample
+            ),
         )
         write_plan(plan, args.run_dir)
         print(json.dumps(_plan_summary(plan), indent=2, sort_keys=True))

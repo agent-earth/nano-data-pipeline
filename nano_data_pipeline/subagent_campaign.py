@@ -6,6 +6,7 @@ import json
 import math
 import re
 import subprocess
+import sys
 from collections import Counter, defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
@@ -37,6 +38,8 @@ PLACEHOLDERS = {
     "family_id",
     "input",
     "output",
+    "python",
+    "repo_root",
     "shard_id",
     "skill_path",
 }
@@ -113,6 +116,7 @@ def plan_campaign(
     skill_path: str | Path,
     max_shards: int | None = None,
     candidate_samples_override: int | None = None,
+    candidate_tokens_per_sample_override: int | None = None,
 ) -> dict[str, Any]:
     campaign = load_skill_sft_campaign(campaign_path)
     skill = Path(skill_path).resolve()
@@ -131,6 +135,11 @@ def plan_campaign(
             raise ValueError("candidate sample override must be positive")
         samples_per_shard = candidate_samples_override
         mode = "smoke"
+    if (
+        candidate_tokens_per_sample_override is not None
+        and candidate_tokens_per_sample_override <= 0
+    ):
+        raise ValueError("candidate token override must be positive")
 
     families = campaign["data_families"]
     family_weights = {
@@ -153,7 +162,13 @@ def plan_campaign(
         count = shard_counts[family_id]
         if count == 0:
             continue
-        token_splits = split_integer(family_token_budget[family_id], count)
+        if candidate_tokens_per_sample_override is None:
+            token_splits = split_integer(family_token_budget[family_id], count)
+        else:
+            token_splits = [
+                samples_per_shard * candidate_tokens_per_sample_override
+                for _ in range(count)
+            ]
         for family_shard_id in range(count):
             shards.append(
                 {
@@ -354,6 +369,8 @@ def _run_shard(
         "family_id": shard["family_id"],
         "input": str(generator_input),
         "output": str(candidate_output),
+        "python": sys.executable,
+        "repo_root": str(Path(__file__).resolve().parents[1]),
         "shard_id": shard["shard_id"],
         "skill_path": plan["skill_path"],
     }

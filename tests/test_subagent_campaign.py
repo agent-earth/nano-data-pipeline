@@ -68,6 +68,7 @@ class SubagentCampaignTests(unittest.TestCase):
                 skill_path=SKILL,
                 max_shards=5,
                 candidate_samples_override=8,
+                candidate_tokens_per_sample_override=900,
             )
             first = write_plan(plan, directory)
             second = write_plan(plan, directory)
@@ -78,6 +79,10 @@ class SubagentCampaignTests(unittest.TestCase):
             self.assertEqual(
                 sum(row["candidate_samples"] for row in plan["shards"]),
                 40,
+            )
+            self.assertEqual(
+                sum(row["candidate_tokens_min"] for row in plan["shards"]),
+                36_000,
             )
 
     def test_accepts_only_critic_and_verifier_passes(self):

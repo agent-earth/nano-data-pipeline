@@ -39,8 +39,11 @@ $PYTHON scripts/run_skill_sft_campaign.py plan \
 
 $PYTHON scripts/run_skill_sft_campaign.py run \
   --campaign "$MANIFEST" --run-dir "$RUN_DIR" \
-  --generator-command-json generator-command.json \
-  --critic-command-json critic-command.json
+  --generator-command-json \
+    skills/skill-sft-campaign/assets/generator-command.json \
+  --critic-command-json \
+    skills/skill-sft-campaign/assets/critic-command.json \
+  --tokenizer ../../models/Qwen3.5-4B
 
 $PYTHON scripts/run_skill_sft_campaign.py audit \
   --campaign "$MANIFEST" --run-dir "$RUN_DIR" \
