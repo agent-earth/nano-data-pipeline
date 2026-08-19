@@ -1,0 +1,515 @@
+{
+  "audit_id": "skill-release-execution-target-coverage-v1",
+  "claim_boundary": "\u8fd9\u6b21\u5ba1\u8ba1\u53ea\u6bd4\u8f83 public-safe synthetic \u8bad\u7ec3\u673a\u5236\uff0c\u6ca1\u6709\u8fd0\u884c\u6216\u8bc4\u4f30\u6a21\u578b\u3002\u5b83\u4e0d\u80fd\u8bc1\u660e\u6a21\u578b\u80fd\u529b\u63d0\u5347\uff0c\u4e5f\u4e0d\u5141\u8bb8\u542f\u52a8\u8bad\u7ec3\u3001\u8bbf\u95ee benchmark \u6216 independent holdout\uff0c\u6216\u542f\u52a8 RL\u3002",
+  "coverage": {
+    "full_release_reasoning_train": {
+      "covered_targets": {
+        "exact_expression_matches": 0,
+        "exact_result_matches": 2,
+        "operand_bounds_pass": 4,
+        "process_relation_matches": 0,
+        "process_shape_matches": 0,
+        "relation_matches": 4,
+        "result_bounds_pass": 4,
+        "shape_matches": 4
+      },
+      "rows": [
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "338",
+          "expression": "(82 + 46) * 3 - 46",
+          "nearest_result_distance": 1.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 0,
+          "relation_matches": 3956,
+          "result_bounds_pass": true,
+          "sample_id": "4f1df0f7809548f384f2d509",
+          "shape_matches": 3964
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 1,
+          "expected_result": "381",
+          "expression": "(89 + 57) * 3 - 57",
+          "nearest_result_distance": 0.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 0,
+          "relation_matches": 3956,
+          "result_bounds_pass": true,
+          "sample_id": "3e20fdaaf2f043ff7c736f8b",
+          "shape_matches": 3964
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 1,
+          "expected_result": "424",
+          "expression": "(96 + 68) * 3 - 68",
+          "nearest_result_distance": 0.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 0,
+          "relation_matches": 3956,
+          "result_bounds_pass": true,
+          "sample_id": "1cee7df166c235a15560a671",
+          "shape_matches": 3964
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "467",
+          "expression": "(103 + 79) * 3 - 79",
+          "nearest_result_distance": 1.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 0,
+          "relation_matches": 3956,
+          "result_bounds_pass": true,
+          "sample_id": "e1a004006d7434ac8b66cbaa",
+          "shape_matches": 3964
+        }
+      ],
+      "targets": 4
+    },
+    "joint_process_relation_rows": 0,
+    "process_v6_train": {
+      "covered_targets": {
+        "exact_expression_matches": 0,
+        "exact_result_matches": 0,
+        "operand_bounds_pass": 0,
+        "process_relation_matches": 0,
+        "process_shape_matches": 4,
+        "relation_matches": 0,
+        "result_bounds_pass": 0,
+        "shape_matches": 4
+      },
+      "rows": [
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "338",
+          "expression": "(82 + 46) * 3 - 46",
+          "nearest_result_distance": 1691.0,
+          "operand_bounds_pass": false,
+          "process_relation_matches": 0,
+          "process_shape_matches": 43,
+          "relation_matches": 0,
+          "result_bounds_pass": false,
+          "sample_id": "4f1df0f7809548f384f2d509",
+          "shape_matches": 43
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "381",
+          "expression": "(89 + 57) * 3 - 57",
+          "nearest_result_distance": 1648.0,
+          "operand_bounds_pass": false,
+          "process_relation_matches": 0,
+          "process_shape_matches": 43,
+          "relation_matches": 0,
+          "result_bounds_pass": false,
+          "sample_id": "3e20fdaaf2f043ff7c736f8b",
+          "shape_matches": 43
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "424",
+          "expression": "(96 + 68) * 3 - 68",
+          "nearest_result_distance": 1605.0,
+          "operand_bounds_pass": false,
+          "process_relation_matches": 0,
+          "process_shape_matches": 43,
+          "relation_matches": 0,
+          "result_bounds_pass": false,
+          "sample_id": "1cee7df166c235a15560a671",
+          "shape_matches": 43
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "467",
+          "expression": "(103 + 79) * 3 - 79",
+          "nearest_result_distance": 1562.0,
+          "operand_bounds_pass": false,
+          "process_relation_matches": 0,
+          "process_shape_matches": 43,
+          "relation_matches": 0,
+          "result_bounds_pass": false,
+          "sample_id": "e1a004006d7434ac8b66cbaa",
+          "shape_matches": 43
+        }
+      ],
+      "targets": 4
+    },
+    "selected_release_plus_process_v6": {
+      "covered_targets": {
+        "exact_expression_matches": 0,
+        "exact_result_matches": 0,
+        "operand_bounds_pass": 3,
+        "process_relation_matches": 0,
+        "process_shape_matches": 4,
+        "relation_matches": 4,
+        "result_bounds_pass": 4,
+        "shape_matches": 4
+      },
+      "rows": [
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "338",
+          "expression": "(82 + 46) * 3 - 46",
+          "nearest_result_distance": 2.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 43,
+          "relation_matches": 16,
+          "result_bounds_pass": true,
+          "sample_id": "4f1df0f7809548f384f2d509",
+          "shape_matches": 59
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "381",
+          "expression": "(89 + 57) * 3 - 57",
+          "nearest_result_distance": 2.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 43,
+          "relation_matches": 16,
+          "result_bounds_pass": true,
+          "sample_id": "3e20fdaaf2f043ff7c736f8b",
+          "shape_matches": 59
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "424",
+          "expression": "(96 + 68) * 3 - 68",
+          "nearest_result_distance": 2.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 43,
+          "relation_matches": 16,
+          "result_bounds_pass": true,
+          "sample_id": "1cee7df166c235a15560a671",
+          "shape_matches": 59
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "467",
+          "expression": "(103 + 79) * 3 - 79",
+          "nearest_result_distance": 41.0,
+          "operand_bounds_pass": false,
+          "process_relation_matches": 0,
+          "process_shape_matches": 43,
+          "relation_matches": 16,
+          "result_bounds_pass": true,
+          "sample_id": "e1a004006d7434ac8b66cbaa",
+          "shape_matches": 59
+        }
+      ],
+      "targets": 4
+    },
+    "selected_release_reasoning_train": {
+      "covered_targets": {
+        "exact_expression_matches": 0,
+        "exact_result_matches": 0,
+        "operand_bounds_pass": 3,
+        "process_relation_matches": 0,
+        "process_shape_matches": 0,
+        "relation_matches": 4,
+        "result_bounds_pass": 3,
+        "shape_matches": 4
+      },
+      "rows": [
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "338",
+          "expression": "(82 + 46) * 3 - 46",
+          "nearest_result_distance": 2.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 0,
+          "relation_matches": 16,
+          "result_bounds_pass": true,
+          "sample_id": "4f1df0f7809548f384f2d509",
+          "shape_matches": 16
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "381",
+          "expression": "(89 + 57) * 3 - 57",
+          "nearest_result_distance": 2.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 0,
+          "relation_matches": 16,
+          "result_bounds_pass": true,
+          "sample_id": "3e20fdaaf2f043ff7c736f8b",
+          "shape_matches": 16
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "424",
+          "expression": "(96 + 68) * 3 - 68",
+          "nearest_result_distance": 2.0,
+          "operand_bounds_pass": true,
+          "process_relation_matches": 0,
+          "process_shape_matches": 0,
+          "relation_matches": 16,
+          "result_bounds_pass": true,
+          "sample_id": "1cee7df166c235a15560a671",
+          "shape_matches": 16
+        },
+        {
+          "exact_expression_matches": 0,
+          "exact_result_matches": 0,
+          "expected_result": "467",
+          "expression": "(103 + 79) * 3 - 79",
+          "nearest_result_distance": 41.0,
+          "operand_bounds_pass": false,
+          "process_relation_matches": 0,
+          "process_shape_matches": 0,
+          "relation_matches": 16,
+          "result_bounds_pass": false,
+          "sample_id": "e1a004006d7434ac8b66cbaa",
+          "shape_matches": 16
+        }
+      ],
+      "targets": 4
+    }
+  },
+  "datasets": {
+    "full_release_reasoning_train": {
+      "constant_bounds": [
+        {
+          "maximum": 900774,
+          "minimum": 40,
+          "position": 0
+        },
+        {
+          "maximum": 900445,
+          "minimum": 20,
+          "position": 1
+        },
+        {
+          "maximum": 3,
+          "minimum": 3,
+          "position": 2
+        },
+        {
+          "maximum": 900445,
+          "minimum": 20,
+          "position": 3
+        }
+      ],
+      "equality_pattern_counts": {
+        "0,0,1,0": 8,
+        "0,1,2,1": 3956
+      },
+      "explicit_process_rows": 0,
+      "final_only_rows": 3964,
+      "median_synthetic_distractors": 12,
+      "result_bounds": {
+        "maximum": 4449673.0,
+        "minimum": 160.0
+      },
+      "rows": 3964,
+      "shape_counts": {
+        "Expression(BinOp(BinOp(BinOp(Constant(0), Add(), Constant(0)), Mult(), Constant(0)), Sub(), Constant(0)))": 3964
+      },
+      "target_value_in_user_rows": 0,
+      "unique_expressions": 3964,
+      "unique_results": 3804
+    },
+    "process_v6_train": {
+      "constant_bounds": [
+        {
+          "maximum": 3340,
+          "minimum": 2003,
+          "position": 0
+        },
+        {
+          "maximum": 53,
+          "minimum": 13,
+          "position": 1
+        },
+        {
+          "maximum": 14,
+          "minimum": 2,
+          "position": 2
+        },
+        {
+          "maximum": 23,
+          "minimum": 5,
+          "position": 3
+        }
+      ],
+      "equality_pattern_counts": {
+        "0,1,2": 79,
+        "0,1,2,2": 3,
+        "0,1,2,3": 78
+      },
+      "explicit_process_rows": 160,
+      "final_only_rows": 0,
+      "median_synthetic_distractors": 0,
+      "result_bounds": {
+        "maximum": 46046.0,
+        "minimum": 2029.0
+      },
+      "rows": 160,
+      "shape_counts": {
+        "Expression(BinOp(BinOp(BinOp(Constant(0), Add(), Constant(0)), Mult(), Constant(0)), Sub(), Constant(0)))": 43,
+        "Expression(BinOp(BinOp(Constant(0), Add(), BinOp(Constant(0), Mult(), Constant(0))), Sub(), Constant(0)))": 38,
+        "Expression(BinOp(BinOp(Constant(0), Sub(), Constant(0)), Mult(), Constant(0)))": 37,
+        "Expression(BinOp(Constant(0), Add(), BinOp(Constant(0), Mult(), Constant(0))))": 42
+      },
+      "target_value_in_user_rows": 0,
+      "unique_expressions": 160,
+      "unique_results": 157
+    },
+    "selected_release_reasoning_train": {
+      "constant_bounds": [
+        {
+          "maximum": 114,
+          "minimum": 41,
+          "position": 0
+        },
+        {
+          "maximum": 75,
+          "minimum": 20,
+          "position": 1
+        },
+        {
+          "maximum": 3,
+          "minimum": 3,
+          "position": 2
+        },
+        {
+          "maximum": 75,
+          "minimum": 20,
+          "position": 3
+        }
+      ],
+      "equality_pattern_counts": {
+        "0,1,2,1": 16
+      },
+      "explicit_process_rows": 0,
+      "final_only_rows": 16,
+      "median_synthetic_distractors": 17,
+      "result_bounds": {
+        "maximum": 426.0,
+        "minimum": 229.0
+      },
+      "rows": 16,
+      "shape_counts": {
+        "Expression(BinOp(BinOp(BinOp(Constant(0), Add(), Constant(0)), Mult(), Constant(0)), Sub(), Constant(0)))": 16
+      },
+      "target_value_in_user_rows": 0,
+      "unique_expressions": 16,
+      "unique_results": 16
+    }
+  },
+  "decision": {
+    "benchmark_allowed": false,
+    "generate_contract_dataset_next": true,
+    "independent_holdout_allowed": false,
+    "more_sft_allowed_now": false,
+    "reuse_answer_only_oversampling": false,
+    "reuse_process_v6_unchanged": false,
+    "rl_allowed": false
+  },
+  "findings": {
+    "joint_mechanism_coverage_missing": true,
+    "process_shape_without_relation": true,
+    "release_relation_without_process": true,
+    "selected_release_is_final_only": true,
+    "target_value_leakage_detected": false
+  },
+  "minimum_fresh_data_contract": {
+    "benchmark_holdout_rl_blocked": true,
+    "dev_composition": {
+      "fresh_relation_semantic_tasks": 24,
+      "json_non_regression_rows": 32,
+      "json_non_regression_rows_per_family": 8,
+      "paired_execution_views": 48
+    },
+    "dev_rows": 80,
+    "gates": {
+      "answer_value_leakage": 0,
+      "benchmark_or_holdout_content": 0,
+      "every_execution_row_relation_match": true,
+      "every_process_view_intermediate_verified": true,
+      "family_dev_non_regression_required": true,
+      "paired_view_final_consistency": true,
+      "prior_release_semantic_overlap": 0,
+      "train_dev_semantic_overlap": 0
+    },
+    "minimum_train_tokens": 300000,
+    "purpose": "target_wrong_final_execution_without_format_shortcuts",
+    "relation_grid": {
+      "left_bins": 8,
+      "multipliers": [
+        2,
+        3
+      ],
+      "paired_views_per_semantic_task": [
+        "verified_process_trace",
+        "final_only_contract"
+      ],
+      "repeated_operand_bins": 8,
+      "required_relation": "(left + repeated) * multiplier - repeated"
+    },
+    "schema_version": "nano_execution_target_data_contract_v1",
+    "train_composition": {
+      "json_preservation_rows": 256,
+      "json_preservation_rows_per_family": 64,
+      "paired_final_only_views": 128,
+      "paired_process_views": 128,
+      "relation_grid_semantic_tasks": 128
+    },
+    "train_rows": 512,
+    "training_blocked_until_contract_passes": true
+  },
+  "schema_version": "nano_execution_target_coverage_audit_v1",
+  "sources": {
+    "accepted_jsonl_sha256": "b5503761900cfa290dba03aff306ff511630d01544a4dab93de3a0be1e74abc1",
+    "failure_manifest_sha256": "c55fee0eb358c3c3938b3b74ac713abe7253e4eac16091da59c65e07507ba3f1",
+    "failure_source_commit": "ee82dab",
+    "process_dataset_id": "verified-arithmetic-process-traces-v4",
+    "process_dataset_sha256": "0e53fb3d05fb60569a4109da05b66d93c1158f734495e0126a55cf195c41653a",
+    "release_id": "skill-sft-10k-10m-v2",
+    "release_manifest_sha256": "26ddb15f5c2e043d20527103a5a59216e54290aabeea2a6d228ebce7b7bb35e3"
+  },
+  "target_failures": {
+    "equality_pattern": [
+      0,
+      1,
+      2,
+      1
+    ],
+    "expected_results": [
+      338,
+      381,
+      424,
+      467
+    ],
+    "rows": 4,
+    "sample_ids": [
+      "1cee7df166c235a15560a671",
+      "3e20fdaaf2f043ff7c736f8b",
+      "4f1df0f7809548f384f2d509",
+      "e1a004006d7434ac8b66cbaa"
+    ],
+    "shape": "Expression(BinOp(BinOp(BinOp(Constant(0), Add(), Constant(0)), Mult(), Constant(0)), Sub(), Constant(0)))"
+  }
+}

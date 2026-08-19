@@ -1,0 +1,52 @@
+{
+  "policy": {
+    "contains_benchmark_content": false,
+    "contains_raw_private_artifacts": false,
+    "source_result_public": true,
+    "training_eligible": false
+  },
+  "rows": [
+    {
+      "baseline": "FINAL: 312",
+      "baseline_verified": false,
+      "expected": "FINAL: 338",
+      "expression": "(82 + 46) * 3 - 46",
+      "post_sft": "FINAL: 312",
+      "post_sft_verified": false,
+      "sample_id": "4f1df0f7809548f384f2d509"
+    },
+    {
+      "baseline": "FINAL: 312",
+      "baseline_verified": false,
+      "expected": "FINAL: 381",
+      "expression": "(89 + 57) * 3 - 57",
+      "post_sft": "FINAL: 312",
+      "post_sft_verified": false,
+      "sample_id": "3e20fdaaf2f043ff7c736f8b"
+    },
+    {
+      "baseline": "FINAL: 324",
+      "baseline_verified": false,
+      "expected": "FINAL: 424",
+      "expression": "(96 + 68) * 3 - 68",
+      "post_sft": "FINAL: 324",
+      "post_sft_verified": false,
+      "sample_id": "1cee7df166c235a15560a671"
+    },
+    {
+      "baseline": "FINAL: 342",
+      "baseline_verified": false,
+      "expected": "FINAL: 467",
+      "expression": "(103 + 79) * 3 - 79",
+      "post_sft": "FINAL: 344",
+      "post_sft_verified": false,
+      "sample_id": "e1a004006d7434ac8b66cbaa"
+    }
+  ],
+  "schema_version": "nano_execution_failure_manifest_v1",
+  "source": {
+    "experiment_id": "skill-release-reasoning-preservation-sft-v4",
+    "public_report": "nano-train/docs/results/skill_release_reasoning_preservation_sft_v4.public.json",
+    "result_commit": "ee82dab"
+  }
+}
