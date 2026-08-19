@@ -1,0 +1,117 @@
+{
+  "accepted": {
+    "dev_json_by_family": {
+      "coding-and-validation": 32,
+      "planning-and-state": 32,
+      "skill-routing-and-reflection": 32,
+      "tool-use-and-recovery": 32
+    },
+    "dev_pairs": 192,
+    "dev_rows": 512,
+    "rows": 1152,
+    "train_json_by_family": {
+      "coding-and-validation": 64,
+      "planning-and-state": 64,
+      "skill-routing-and-reflection": 64,
+      "tool-use-and-recovery": 64
+    },
+    "train_pairs": 192,
+    "train_rows": 640,
+    "train_tokens": 405007
+  },
+  "checks": {
+    "answer_leakage_pass": true,
+    "dev_json_family_pass": true,
+    "dev_pairs_pass": true,
+    "dev_rows_pass": true,
+    "exact_hash_unique_pass": true,
+    "final_verifier_pass": true,
+    "forbidden_content_pass": true,
+    "hash_recomputation_pass": true,
+    "json_verifier_pass": true,
+    "paired_consistency_pass": true,
+    "prior_expression_overlap_pass": true,
+    "prior_ledger_expression_overlap_pass": true,
+    "prior_ledger_sample_id_overlap_pass": true,
+    "prior_ledger_semantic_overlap_pass": true,
+    "prior_sample_id_overlap_pass": true,
+    "prior_semantic_overlap_pass": true,
+    "prior_task_overlap_pass": true,
+    "process_verifier_pass": true,
+    "sample_id_unique_pass": true,
+    "sample_size_pass": true,
+    "semantic_hash_unique_pass": true,
+    "semantic_task_hash_pairing_pass": true,
+    "source_result_identity_pass": true,
+    "token_accounting_pass": true,
+    "tokenizer_identity_pass": true,
+    "train_dev_semantic_overlap_pass": true,
+    "train_dev_task_overlap_pass": true,
+    "train_json_family_pass": true,
+    "train_pairs_pass": true,
+    "train_rows_pass": true
+  },
+  "claim_boundary": "\u8fd9\u4efd release \u53ea\u8bc1\u660e\u66f4\u5927\u7684 fresh replication data \u548c significance contract \u901a\u8fc7\u5168\u90e8\u68c0\u67e5\u3002\u5b83\u4e0d\u8bc1\u660e\u6a21\u578b\u80fd\u529b\u63d0\u5347\uff0c\u4e5f\u4e0d\u5141\u8bb8\u8bbf\u95ee benchmark/holdout \u6216\u542f\u52a8 RL\u3002",
+  "dataset_schema": "nano_consistency_replication_dataset_v1",
+  "leakage": {
+    "answer_value_rows": [],
+    "forbidden_content_rows": []
+  },
+  "objective_frozen": {
+    "consistency_weight": 1.0,
+    "final_ce_weight": 0.5,
+    "process_ce_weight": 0.5,
+    "teacher_detach": true,
+    "temperature": 1.0
+  },
+  "overlap": {
+    "prior_expression": 0,
+    "prior_ledger_expression": 0,
+    "prior_ledger_sample_id": 0,
+    "prior_ledger_semantic": 0,
+    "prior_sample_id": 0,
+    "prior_semantic": 0,
+    "prior_task": 0,
+    "train_dev_semantic": 0,
+    "train_dev_task": 0
+  },
+  "release_id": "paired-consistency-replication-v1",
+  "sample_size": {
+    "achieved_probability": 0.8028924204795511,
+    "exact_mcnemar_alpha": 0.05,
+    "frozen_dev_pairs": 192,
+    "frozen_train_pairs": 192,
+    "minimum_pairs": 189,
+    "minimum_wins": 6,
+    "minimum_wins_for_zero_losses": 6,
+    "observed_fix_rate": 0.041666666666666664,
+    "rounding": "189 rounded up to 192 for a 16x12 grid per split",
+    "target_probability": 0.8
+  },
+  "schema_version": "nano_consistency_replication_release_v1",
+  "significance_gates": {
+    "aggregate_bootstrap_ci_lower_gt_zero": true,
+    "aggregate_mcnemar_p_lt": 0.05,
+    "final_bootstrap_ci_lower_gt_zero": true,
+    "final_mcnemar_p_lt": 0.05,
+    "json_family_non_regression": true,
+    "maximum_final_only_losses": 0,
+    "minimum_final_only_wins": 6,
+    "pair_bootstrap_ci_lower_gt_zero": true,
+    "pair_mcnemar_p_lt": 0.05
+  },
+  "source": {
+    "dataset_canonical_sha256": "40514440b95b94981a756a8f325d5a1111db1ec7bc94125875e40e8bc3898797",
+    "prior_accepted_jsonl_sha256": "b5503761900cfa290dba03aff306ff511630d01544a4dab93de3a0be1e74abc1",
+    "prior_dataset_file_sha256": [
+      "295158d643f8e5822341770c86e011326ef0f5ec681fa0d98cdd5804e5725f42"
+    ],
+    "source_result_sha256": "76968fc034c0bf6543d3e140129280140274d7296d93834e569de53cd1bfb856",
+    "tokenizer_file_sha256": {
+      "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+      "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+      "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8"
+    }
+  },
+  "training_unblocked": true
+}
