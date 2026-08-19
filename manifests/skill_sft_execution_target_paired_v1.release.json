@@ -1,0 +1,77 @@
+{
+  "accepted": {
+    "dev_json_by_family": {
+      "coding-and-validation": 8,
+      "planning-and-state": 8,
+      "skill-routing-and-reflection": 8,
+      "tool-use-and-recovery": 8
+    },
+    "dev_json_rows": 32,
+    "dev_relation_views": 48,
+    "dev_rows": 80,
+    "rows": 592,
+    "train_json_by_family": {
+      "coding-and-validation": 64,
+      "planning-and-state": 64,
+      "skill-routing-and-reflection": 64,
+      "tool-use-and-recovery": 64
+    },
+    "train_json_rows": 256,
+    "train_relation_views": 256,
+    "train_rows": 512,
+    "train_tokens": 324545
+  },
+  "checks": {
+    "answer_value_leakage_pass": true,
+    "deterministic_verifier_pass": true,
+    "dev_json_family_quotas_pass": true,
+    "dev_json_rows_pass": true,
+    "dev_relation_views_pass": true,
+    "dev_rows_pass": true,
+    "exact_hash_unique_pass": true,
+    "forbidden_content_pass": true,
+    "hash_recomputation_pass": true,
+    "paired_view_consistency_pass": true,
+    "prior_release_expression_overlap_pass": true,
+    "prior_release_sample_id_overlap_pass": true,
+    "prior_release_semantic_overlap_pass": true,
+    "sample_id_unique_pass": true,
+    "semantic_hash_unique_pass": true,
+    "token_accounting_pass": true,
+    "tokenizer_identity_pass": true,
+    "train_dev_semantic_overlap_pass": true,
+    "train_dev_task_overlap_pass": true,
+    "train_json_family_quotas_pass": true,
+    "train_json_rows_pass": true,
+    "train_relation_views_pass": true,
+    "train_rows_pass": true,
+    "train_tokens_pass": true
+  },
+  "claim_boundary": "\u8fd9\u4efd release \u53ea\u8bc1\u660e\u51bb\u7ed3\u7684 synthetic data contract \u901a\u8fc7\u4e86\u884c\u6570\u3001token\u3001paired view\u3001verifier\u3001provenance\u3001overlap \u548c leakage \u68c0\u67e5\u3002\u5b83\u4e0d\u8bc1\u660e\u6a21\u578b\u80fd\u529b\u6216 benchmark \u6307\u6807\u63d0\u5347\u3002",
+  "dataset_schema": "nano_execution_target_dataset_v1",
+  "leakage": {
+    "answer_value_rows": [],
+    "forbidden_content_rows": []
+  },
+  "overlap": {
+    "prior_release_expression": 0,
+    "prior_release_sample_id": 0,
+    "prior_release_semantic": 0,
+    "train_dev_semantic": 0,
+    "train_dev_task_semantic": 0
+  },
+  "release_id": "skill-sft-execution-target-paired-v1",
+  "schema_version": "nano_execution_target_release_v1",
+  "source": {
+    "coverage_audit_sha256": "aca3f5995eda6ba4d4f7015b11ce4062b15653e404677145eec2b4292d280817",
+    "dataset_canonical_sha256": "77728a0531f18e55989c172a21fb267284aa1001c17fd62de6bcd13b9d300659",
+    "prior_accepted_jsonl_sha256": "b5503761900cfa290dba03aff306ff511630d01544a4dab93de3a0be1e74abc1",
+    "prior_release_manifest_sha256": "26ddb15f5c2e043d20527103a5a59216e54290aabeea2a6d228ebce7b7bb35e3",
+    "tokenizer_file_sha256": {
+      "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+      "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+      "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8"
+    }
+  },
+  "training_unblocked": true
+}
