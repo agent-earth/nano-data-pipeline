@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill SFT Campaign"
+  short_description: "并行生成、验收、续跑并审计小模型 SFT 训练数据"
+  default_prompt: "Use $skill-sft-campaign to plan, generate, validate, and audit a skill-driven SFT data campaign."

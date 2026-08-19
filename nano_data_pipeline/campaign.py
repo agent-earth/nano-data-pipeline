@@ -152,6 +152,13 @@ def validate_skill_sft_campaign(campaign: dict[str, Any]) -> None:
         raise ValueError("every accepted row must pass a deterministic verifier")
     if gates.get("independent_critic_required") is not True:
         raise ValueError("every accepted row must have an independent critic")
+    minimum_critic_score = gates.get("minimum_critic_score")
+    if (
+        not isinstance(minimum_critic_score, (int, float))
+        or isinstance(minimum_critic_score, bool)
+        or not 0 < float(minimum_critic_score) <= 1
+    ):
+        raise ValueError("minimum critic score must be in (0, 1]")
     if gates.get("global_exact_duplicates_allowed") != 0:
         raise ValueError("exact duplicate rows must be rejected")
     semantic_threshold = float(gates.get("semantic_similarity_max", 1.0))
