@@ -1,0 +1,134 @@
+{
+  "accepted": {
+    "dev_samples": 400,
+    "family_summary": {
+      "coding-and-validation": {
+        "dev_sample_deficit": 0,
+        "dev_sample_target": 60,
+        "dev_sample_target_pass": true,
+        "dev_samples": 60,
+        "sample_deficit": 0,
+        "sample_target": 1500,
+        "sample_target_pass": true,
+        "token_deficit": 0,
+        "token_target": 1800000,
+        "token_target_pass": true,
+        "train_samples": 2500,
+        "train_tokens": 2602572
+      },
+      "planning-and-state": {
+        "dev_sample_deficit": 0,
+        "dev_sample_target": 80,
+        "dev_sample_target_pass": true,
+        "dev_samples": 80,
+        "sample_deficit": 0,
+        "sample_target": 2000,
+        "sample_target_pass": true,
+        "token_deficit": 0,
+        "token_target": 2000000,
+        "token_target_pass": true,
+        "train_samples": 2960,
+        "train_tokens": 2202181
+      },
+      "skill-routing-and-reflection": {
+        "dev_sample_deficit": 0,
+        "dev_sample_target": 60,
+        "dev_sample_target_pass": true,
+        "dev_samples": 60,
+        "sample_deficit": 0,
+        "sample_target": 1500,
+        "sample_target_pass": true,
+        "token_deficit": 0,
+        "token_target": 1100000,
+        "token_target_pass": true,
+        "train_samples": 2500,
+        "train_tokens": 1204842
+      },
+      "tool-use-and-recovery": {
+        "dev_sample_deficit": 0,
+        "dev_sample_target": 100,
+        "dev_sample_target_pass": true,
+        "dev_samples": 100,
+        "sample_deficit": 0,
+        "sample_target": 2500,
+        "sample_target_pass": true,
+        "token_deficit": 0,
+        "token_target": 2800000,
+        "token_target_pass": true,
+        "train_samples": 3964,
+        "train_tokens": 3035225
+      },
+      "verified-reasoning": {
+        "dev_sample_deficit": 0,
+        "dev_sample_target": 100,
+        "dev_sample_target_pass": true,
+        "dev_samples": 100,
+        "sample_deficit": 0,
+        "sample_target": 2500,
+        "sample_target_pass": true,
+        "token_deficit": 0,
+        "token_target": 2300000,
+        "token_target_pass": true,
+        "train_samples": 3964,
+        "train_tokens": 2380346
+      }
+    },
+    "rows": 16288,
+    "train_samples": 15888,
+    "train_tokens": 11425166
+  },
+  "artifacts": {
+    "accepted_jsonl_sha256": "b5503761900cfa290dba03aff306ff511630d01544a4dab93de3a0be1e74abc1",
+    "audit_json_sha256": "084d39ba07f3bfbd8ed4375812a4cf35bda7d699cd158d97fa43cd3c435836cb",
+    "merge_json_sha256": "00e92e74bcbf8ec453bae95a074c41dc41d618a5553c2a1321ebd37c9d029baa",
+    "plan_json_sha256": "b82a736a6b04c9b3110ce86ad4993924b88ab5dacadc46650496efc10fec5ef9",
+    "refill_plan_json_sha256": "de9528ed6bcedb4167b4131f31c007e335924f6974d4537e2f45ff25ec091fce"
+  },
+  "campaign": {
+    "campaign_id": "skill-sft-10k-10m-v2",
+    "critic_model_calls": 55,
+    "failed_shards": 0,
+    "generator_model_calls": 55,
+    "initial_completed_shards": 32,
+    "planned_shards": 32,
+    "refill_completed_shards": 23,
+    "shard_accepted_rows_before_global_dedup": 28160,
+    "total_completed_shards": 55
+  },
+  "checks": {
+    "critic_revalidation_pass": true,
+    "dev_sample_target_pass": true,
+    "family_dev_quotas_pass": true,
+    "family_quotas_pass": true,
+    "global_dedup_pass": true,
+    "recipe_call_budget_pass": true,
+    "skill_identity_pass": true,
+    "source_policy_pass": true,
+    "tokenizer_identity_pass": true,
+    "train_sample_target_pass": true,
+    "train_token_target_pass": true,
+    "verifier_revalidation_pass": true
+  },
+  "claim_boundary": "This release proves the data campaign met its frozen row, token, development, provenance, verifier, critic, deduplication, and call-budget gates. It does not prove model or benchmark uplift.",
+  "contains_raw_rows": false,
+  "deduplication": {
+    "global_rejection_reasons": {
+      "duplicate_semantic_hash": 11872
+    },
+    "globally_rejected_rows": 11872,
+    "semantic_similarity_max": 0.92,
+    "semantic_similarity_metric": "family_task_spec_jaccard_and_sequence_ratio"
+  },
+  "models": {
+    "critic": "Qwen3.5-9B",
+    "generator": "Qwen3.5-4B"
+  },
+  "raw_ledger_local_only": true,
+  "release_id": "skill-sft-10k-10m-v2",
+  "schema_version": "nano_skill_sft_release_v1",
+  "source_revisions": {
+    "initial_shards": "42b1940",
+    "refill_shards": "e00228c"
+  },
+  "training_unblocked": true
+}
