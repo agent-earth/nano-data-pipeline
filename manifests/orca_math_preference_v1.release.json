@@ -1,0 +1,44 @@
+{
+  "accepted": {
+    "by_split_stratum": {
+      "dev:long": 48,
+      "dev:medium": 96,
+      "dev:short": 48,
+      "train:long": 128,
+      "train:medium": 256,
+      "train:short": 128
+    },
+    "dev_rows": 192,
+    "max_chosen_tokens": 512,
+    "max_rejected_tokens": 512,
+    "rows": 704,
+    "train_rows": 512
+  },
+  "benchmark_unlocked": false,
+  "checks": {
+    "chosen_only_final_diff_pass": true,
+    "chosen_rejected_prompt_identity_pass": true,
+    "max_sequence_pass": true,
+    "numeric_verifier_pass": true,
+    "pair_hash_unique": true,
+    "prior_sft_overlap_zero": true,
+    "row_count_pass": true,
+    "row_schema_pass": true,
+    "sample_id_unique": true,
+    "source_id_unique": true,
+    "strata_count_pass": true,
+    "token_recomputation_pass": true
+  },
+  "claim_boundary": "This release proves fresh, verifier-labeled preference pairs with identical prompt/reasoning and only the FINAL value changed. It is not model-quality evidence and unlocks one pre-registered reference-free preference optimization smoke only.",
+  "release_id": "orca-math-preference-v1",
+  "schema_version": "nano_orca_math_preference_release_v1",
+  "source": {
+    "config_sha256": "75a6a0b187009cab3ea39138f424723be35d56512f80d6203b1e0b6f2175544e",
+    "dataset_file_sha256": "deae4dabda40dcb55cd046dd330387683bdec508cd3085d53974b508ed9ae320",
+    "prior_sft_preregister_sha256": "d68ab3189f592bf723d71ca6df3654b76861a0c3da981cf77e36359b173df5e3",
+    "prior_sft_public_result_sha256": "3a469c1c47be36f173db0ddf3883aac6d680030aeed1d3459bb6416c82d315cc",
+    "source_dataset_sha256": "85a09db0743d94fc313574eaf15661556426195112da8ba59ca9abd7710fa0ff",
+    "source_release_sha256": "620aedd055fda7f13b8cdad9f85826dcdf8d2d92fc7532596c9c01b2a704b0b2"
+  },
+  "training_unblocked": true
+}

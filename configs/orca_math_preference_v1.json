@@ -1,0 +1,60 @@
+{
+  "dataset_id": "orca-math-preference-v1",
+  "output": {
+    "dataset_path": "../../../datasets/ultimate-distill/orca-math-preference-v1/dataset.jsonl",
+    "local_release_path": "../../../datasets/ultimate-distill/orca-math-preference-v1/release.json",
+    "public_release_path": "manifests/orca_math_preference_v1.release.json"
+  },
+  "prior_sft": {
+    "preregister_path": "../nano-train-fullstack-traex-03/docs/experiments/orca_math_sft_smoke_v1.preregister.json",
+    "preregister_sha256": "d68ab3189f592bf723d71ca6df3654b76861a0c3da981cf77e36359b173df5e3",
+    "public_result_path": "../nano-train-fullstack-traex-03/docs/results/orca_math_sft_smoke_v1.public.json",
+    "public_result_sha256": "3a469c1c47be36f173db0ddf3883aac6d680030aeed1d3459bb6416c82d315cc"
+  },
+  "schema_version": "nano_orca_math_preference_config_v1",
+  "selection": {
+    "dev_rows": 192,
+    "dev_rows_by_stratum": {
+      "long": 48,
+      "medium": 96,
+      "short": 48
+    },
+    "max_sequence_tokens": 512,
+    "seed": "orca-math-preference-v1:20260821",
+    "train_rows": 512,
+    "train_rows_by_stratum": {
+      "long": 128,
+      "medium": 256,
+      "short": 128
+    }
+  },
+  "source": {
+    "dataset_path": "../../../datasets/ultimate-distill/orca-math-sft-v1/dataset.jsonl",
+    "dataset_sha256": "85a09db0743d94fc313574eaf15661556426195112da8ba59ca9abd7710fa0ff",
+    "release_path": "manifests/orca_math_sft_v1.release.json",
+    "release_sha256": "620aedd055fda7f13b8cdad9f85826dcdf8d2d92fc7532596c9c01b2a704b0b2"
+  },
+  "tokenizer": {
+    "enable_thinking": false,
+    "path": "../../../models/Qwen3.5-4B",
+    "tokenizer_files": {
+      "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+      "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+      "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8"
+    },
+    "unit": "qwen3.5_tokenizer_input_id"
+  },
+  "transformation": {
+    "chosen": "source teacher trajectory with verified correct FINAL suffix",
+    "rejected": "byte-identical chosen trajectory except deterministic incorrect FINAL suffix",
+    "rejected_offset_rule": "integer_or_rational_expected_plus_signed_nonzero_small_integer",
+    "verifier": "exact rational FINAL comparison"
+  },
+  "training_boundary": {
+    "benchmark_rows_training_eligible": false,
+    "benchmark_text_published": false,
+    "prior_sft_rows_reused": false,
+    "rl_or_opd_unlocked": false,
+    "source_model_outputs_generated_locally": false
+  }
+}
