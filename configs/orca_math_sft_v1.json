@@ -1,0 +1,113 @@
+{
+  "dataset_id": "orca-math-sft-v1",
+  "forbidden_corpora": [
+    {
+      "path": "../../../datasets/gsm8k/gsm8k/main/train-00000-of-00001.parquet",
+      "question_column": "question",
+      "sha256": "ea82612ea9582142387730c793eb67d3b12849002bc0b7fa6f8efafa7351419d"
+    },
+    {
+      "path": "../../../datasets/gsm8k/gsm8k/main/test-00000-of-00001.parquet",
+      "question_column": "question",
+      "sha256": "ee7b8da9e381df27b9e3f7758a159ab2bdaa4dbaa910546cbbc47e0cb44e4f59"
+    },
+    {
+      "path": "../../../datasets/mmlu_no_train/mmlu_no_train/all/dev-00000-of-00001.parquet",
+      "question_column": "question",
+      "sha256": "65464a1f95bc301a23b554bed8ca99eb864a0d44f1709a8c145acba00a8435d7"
+    },
+    {
+      "path": "../../../datasets/mmlu_no_train/mmlu_no_train/all/validation-00000-of-00001.parquet",
+      "question_column": "question",
+      "sha256": "95fedd84de22f9ecef771ccd4fc12a4cca11f7a9a1eda2d2bd9689fbbdf27cfa"
+    },
+    {
+      "path": "../../../datasets/mmlu_no_train/mmlu_no_train/all/test-00000-of-00001.parquet",
+      "question_column": "question",
+      "sha256": "02033371a64dbe5a0d8b6fb9d612900afcd0fea5140e53490993a4540b3a58fd"
+    },
+    {
+      "path": "../../../datasets/GPQA-Diamond/GPQA-Diamond/test/gpqa_diamond.parquet",
+      "question_column": "question",
+      "sha256": "fdd6e95117cdf87075f56bf673a5bae4680b143bc2d29b486470810122c33f39"
+    }
+  ],
+  "output": {
+    "dataset_path": "../../../datasets/ultimate-distill/orca-math-sft-v1/dataset.jsonl",
+    "local_release_path": "../../../datasets/ultimate-distill/orca-math-sft-v1/release.json",
+    "public_release_path": "manifests/orca_math_sft_v1.release.json"
+  },
+  "quality": {
+    "answer_max_chars": 6000,
+    "answer_min_chars": 24,
+    "exact_question_duplicates_allowed": 0,
+    "forbidden_exact_overlap_allowed": 0,
+    "forbidden_near_overlap_allowed": 0,
+    "near_duplicate_jaccard": 0.8,
+    "near_duplicate_sequence_ratio": 0.85,
+    "selected_near_duplicate_threshold": 0.92
+  },
+  "schema_version": "nano_orca_math_sft_config_v1",
+  "selection": {
+    "dev_rows": 1024,
+    "difficulty_proxy": "teacher_answer_char_count",
+    "seed": "orca-math-sft-v1:20260821",
+    "smoke_dev_rows": 192,
+    "strata": {
+      "long": {
+        "answer_chars_min": 1001,
+        "dev_rows": 256,
+        "train_rows": 8192
+      },
+      "medium": {
+        "answer_chars_max": 1000,
+        "answer_chars_min": 601,
+        "dev_rows": 512,
+        "train_rows": 16384
+      },
+      "short": {
+        "answer_chars_max": 600,
+        "dev_rows": 256,
+        "train_rows": 8192
+      }
+    },
+    "train_rows": 32768
+  },
+  "source": {
+    "answer_column": "answer",
+    "dataset_revision": "29255d1770cc4eac66e5e7fa378cba542c026350",
+    "license": "mit",
+    "metadata_path": "../../../datasets/orca-math-word-problems-200k/orca-math-word-problems-200k/.metadata.json",
+    "metadata_sha256": "42c05ce91c3588ddb82a7abcb948af2f911c444394c22ba58ffab1c267ac1fe4",
+    "parquet_path": "../../../datasets/orca-math-word-problems-200k/orca-math-word-problems-200k/data/train-00000-of-00001.parquet",
+    "parquet_rows": 200035,
+    "parquet_sha256": "38513af71b04e2f710c6cd98f750bf72a87b7a4da1804caaa76f898585c1cfaf",
+    "question_column": "question",
+    "repository": "microsoft/orca-math-word-problems-200k"
+  },
+  "token_accounting": {
+    "enable_thinking": false,
+    "max_sequence_tokens": 1024,
+    "minimum_train_tokens": 10000000,
+    "tokenizer_files": {
+      "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+      "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+      "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8"
+    },
+    "tokenizer_path": "../../../models/Qwen3.5-4B",
+    "unit": "qwen3.5_tokenizer_input_id"
+  },
+  "training_boundary": {
+    "benchmark_rows_training_eligible": false,
+    "benchmark_text_published": false,
+    "full_release_unlocks_only_preregistered_sft_smoke": true,
+    "rl_or_opd_unlocked": false,
+    "source_model_outputs_generated_locally": false
+  },
+  "transformation": {
+    "answer_extraction": "last_numeric_token_from_teacher_tail",
+    "assistant_suffix": "FINAL: <normalized_numeric_answer>",
+    "preserve_teacher_reasoning": true,
+    "system_prompt": "Solve the math word problem carefully. Show concise reasoning and end with exactly one line: FINAL: <answer>."
+  }
+}
