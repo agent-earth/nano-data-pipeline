@@ -27,6 +27,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = (
     ROOT / "configs/router_classification/qwen35_router_classification_v1.json"
 )
+DATASET = ROOT / "datasets/qwen35_router_classification_v1.json"
+RELEASE = ROOT / "manifests/qwen35_router_classification_v1.release.json"
 
 
 class RouterClassificationTests(unittest.TestCase):
@@ -144,6 +146,28 @@ class RouterClassificationTests(unittest.TestCase):
         self.assertIn("768 rows", markdown)
         self.assertIn("192 rows", markdown)
         self.assertIn("data generation started：false", markdown)
+
+    def test_committed_release_passes_every_gate(self):
+        config = load_config(CONFIG)
+        dataset = json.loads(DATASET.read_text(encoding="utf-8"))
+        release = json.loads(RELEASE.read_text(encoding="utf-8"))
+        from transformers import AutoTokenizer
+
+        tokenizer_path = (ROOT / config.tokenizer_path).resolve()
+        tokenizer = AutoTokenizer.from_pretrained(
+            tokenizer_path,
+            local_files_only=True,
+        )
+        recomputed = validate_router_dataset(
+            dataset,
+            config=config,
+            tokenizer=tokenizer,
+            tokenizer_path=tokenizer_path,
+        )
+        self.assertEqual(recomputed, release)
+        self.assertTrue(release["training_unblocked"])
+        self.assertTrue(all(release["checks"].values()))
+        self.assertEqual(release["accepted"]["train_tokens"], 84_160)
 
 
 if __name__ == "__main__":

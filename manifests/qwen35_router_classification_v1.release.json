@@ -1,0 +1,67 @@
+{
+  "accepted": {
+    "dev_by_label": {
+      "A": 64,
+      "B": 64,
+      "C": 64
+    },
+    "dev_none_by_subtype": {
+      "box_total": 16,
+      "paired_average": 16,
+      "remaining_stock": 16,
+      "single_operation": 16
+    },
+    "dev_rows": 192,
+    "rows": 960,
+    "train_by_label": {
+      "A": 256,
+      "B": 256,
+      "C": 256
+    },
+    "train_none_by_subtype": {
+      "box_total": 64,
+      "paired_average": 64,
+      "remaining_stock": 64,
+      "single_operation": 64
+    },
+    "train_rows": 768,
+    "train_tokens": 84160
+  },
+  "checks": {
+    "benchmark_content_absence_pass": true,
+    "dev_label_balance_pass": true,
+    "dev_none_subtype_balance_pass": true,
+    "forbidden_content_pass": true,
+    "model_output_absence_pass": true,
+    "row_count_pass": true,
+    "teacher_output_absence_pass": true,
+    "token_accounting_pass": true,
+    "tokenizer_identity_pass": true,
+    "train_dev_semantic_overlap_pass": true,
+    "train_dev_template_overlap_pass": true,
+    "train_label_balance_pass": true,
+    "train_none_subtype_balance_pass": true
+  },
+  "claim_boundary": "This release proves only that a deterministic synthetic router classification dataset passed frozen balance, deduplication, split, token, provenance, and leakage gates. It is not model quality or benchmark evidence and unlocks only one separately pre-registered bounded SFT smoke.",
+  "dataset_schema": "nano_analog_dataset_v1",
+  "leakage": {
+    "forbidden_terms": []
+  },
+  "overlap": {
+    "train_dev_semantic": 0,
+    "train_dev_template": 0
+  },
+  "release_id": "qwen35-router-classification-v1",
+  "schema_version": "nano_router_classification_release_v1",
+  "source": {
+    "binary_detector_report_sha256": "0f50860efd48378be11314f83a38025bca533180d63f44b5bcaf902045ef2ae4",
+    "dataset_canonical_sha256": "b9f4ef24f16c680f6c5d5999e3ca86cd7c044b83e093d18b39f7e220da70bfad",
+    "multiclass_report_sha256": "c8e4034a27e925025589bc1a8a52abc6720ee0d7fc97e03983ff192cd44c3742",
+    "tokenizer_file_sha256": {
+      "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+      "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+      "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8"
+    }
+  },
+  "training_unblocked": true
+}

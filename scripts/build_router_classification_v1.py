@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = (
     ROOT / "configs/router_classification/qwen35_router_classification_v1.json"
 )
+REPORT = ROOT / "docs/datasets/qwen35_router_classification_v1.md"
 
 
 def main() -> None:
@@ -57,7 +58,49 @@ def main() -> None:
         json.dumps(release, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    REPORT.parent.mkdir(parents=True, exist_ok=True)
+    REPORT.write_text(render_markdown(release), encoding="utf-8")
     print(json.dumps(release, indent=2, sort_keys=True))
+
+
+def render_markdown(release: dict) -> str:
+    accepted = release["accepted"]
+    checks = "\n".join(
+        f"- `{name}`：{'通过' if passed else '失败'}"
+        for name, passed in sorted(release["checks"].items())
+    )
+    return f"""# Qwen3.5 Router Classification Data v1
+
+## Release
+
+- Train：{accepted['train_rows']} rows，A/B/C 各256；
+- Dev：{accepted['dev_rows']} rows，A/B/C 各64；
+- Total：{accepted['rows']}；
+- Train tokens：{accepted['train_tokens']:,}；
+- NONE train/dev：4种 subtype 各64/16；
+- train/dev semantic overlap：{release['overlap']['train_dev_semantic']}；
+- train/dev template overlap：{release['overlap']['train_dev_template']}；
+- forbidden terms：{len(release['leakage']['forbidden_terms'])}。
+
+## Gate
+
+{checks}
+
+`training_unblocked`：**{str(release['training_unblocked']).lower()}**。
+
+## Evidence
+
+- dataset canonical SHA：
+  `{release['source']['dataset_canonical_sha256']}`；
+- multiclass negative report SHA：
+  `{release['source']['multiclass_report_sha256']}`；
+- binary detector negative report SHA：
+  `{release['source']['binary_detector_report_sha256']}`。
+
+## 边界
+
+{release['claim_boundary']}
+"""
 
 
 if __name__ == "__main__":
