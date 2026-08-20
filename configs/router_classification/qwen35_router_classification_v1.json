@@ -1,0 +1,35 @@
+{
+  "binary_detector_report_path": "../nano-harness-fullstack-traex-03/docs/results/qwen35_semantic_binary_detectors_v1.public.json",
+  "binary_detector_report_sha256": "0f50860efd48378be11314f83a38025bca533180d63f44b5bcaf902045ef2ae4",
+  "dataset_id": "qwen35-router-classification-v1",
+  "dev_rows_per_label": 64,
+  "forbidden_terms": [
+    "gsm8k",
+    "mmlu",
+    "gpqa",
+    "canary",
+    "holdout",
+    "semantic-router-",
+    "binary-detector-"
+  ],
+  "label_contract": {
+    "A": "implicit_scale_total",
+    "B": "first_strict_profit_period",
+    "C": "NONE"
+  },
+  "minimum_train_tokens": 50000,
+  "multiclass_report_path": "../nano-harness-fullstack-traex-03/docs/results/qwen35_semantic_model_router_v1.public.json",
+  "multiclass_report_sha256": "c8e4034a27e925025589bc1a8a52abc6720ee0d7fc97e03983ff192cd44c3742",
+  "negative_subtypes": [
+    "box_total",
+    "remaining_stock",
+    "paired_average",
+    "single_operation"
+  ],
+  "output_dataset_path": "datasets/qwen35_router_classification_v1.json",
+  "output_release_path": "manifests/qwen35_router_classification_v1.release.json",
+  "schema_version": "nano_router_classification_contract_v1",
+  "seed": 20260824,
+  "tokenizer_path": "../../../models/Qwen3.5-4B",
+  "train_rows_per_label": 256
+}
