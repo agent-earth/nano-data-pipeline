@@ -1,0 +1,94 @@
+{
+  "attempts": [
+    {
+      "attempt": 1,
+      "contract_changed": false,
+      "elapsed_seconds": 697,
+      "output_files_written": 0,
+      "quality_thresholds_changed": false,
+      "reason": "per-row forbidden near-duplicate prefix ordering was computationally intractable",
+      "repair": "use one frozen global rare-token ordering and verify its match sets against brute force",
+      "selection_changed": false,
+      "status": "interrupted_before_output"
+    },
+    {
+      "accepted": {
+        "dev_rows": 1024,
+        "dev_tokens": 398945,
+        "rows": 33792,
+        "train_rows": 32768,
+        "train_tokens": 12820627
+      },
+      "attempt": 2,
+      "contract_changed": false,
+      "dataset_sha256": "c7035ffd761f8d326cc98e35ff069ff4d3472eef2a04556d9d322ab023f82599",
+      "failed_gate": "selected_near_overlap_zero",
+      "failed_gate_count": 1,
+      "near_duplicate_pairs_detected": 3,
+      "passed_gate_count": 17,
+      "quality_thresholds_changed": false,
+      "reason": "builder and validator constructed the selected near-duplicate index with different token-frequency orderings",
+      "repair": "reuse the frozen forbidden-corpus token-frequency ordering in both builder and validator",
+      "status": "release_rejected"
+    },
+    {
+      "accepted": {
+        "dev_rows": 1024,
+        "dev_tokens": 398945,
+        "rows": 33792,
+        "train_rows": 32768,
+        "train_tokens": 12820627
+      },
+      "attempt": 3,
+      "contract_changed": false,
+      "dataset_sha256": "c7035ffd761f8d326cc98e35ff069ff4d3472eef2a04556d9d322ab023f82599",
+      "failed_gate": "selected_near_overlap_zero",
+      "failed_gate_count": 1,
+      "near_duplicate_pairs_detected": 3,
+      "passed_gate_count": 17,
+      "quality_thresholds_changed": false,
+      "reason": "prefix-only candidate lookup remained insertion-order sensitive even with one frozen token-frequency ordering",
+      "repair": "query all normalized tokens against the rare-prefix index, then apply the unchanged exact Jaccard and sequence thresholds",
+      "status": "release_rejected"
+    },
+    {
+      "accepted": {
+        "dev_rows": 1024,
+        "dev_tokens": 398945,
+        "rows": 33792,
+        "train_rows": 32768,
+        "train_tokens": 12820627
+      },
+      "attempt": 4,
+      "contract_changed": false,
+      "dataset_sha256": "c7035ffd761f8d326cc98e35ff069ff4d3472eef2a04556d9d322ab023f82599",
+      "failed_gate": "selected_near_overlap_zero",
+      "failed_gate_count": 1,
+      "near_duplicate_pairs_detected": 3,
+      "passed_gate_count": 17,
+      "quality_thresholds_changed": false,
+      "reason": "Python SequenceMatcher produced direction-dependent ratios for the three pairs: validation order was above 0.92 while selection order was below 0.92",
+      "repair": "define sequence similarity symmetrically as max(forward_ratio, reverse_ratio) while preserving the frozen 0.92 threshold",
+      "status": "release_rejected"
+    },
+    {
+      "accepted": {
+        "dev_rows": 1024,
+        "dev_tokens": 398945,
+        "rows": 33792,
+        "train_rows": 32768,
+        "train_tokens": 12820576
+      },
+      "attempt": 5,
+      "dataset_sha256": "85a09db0743d94fc313574eaf15661556426195112da8ba59ca9abd7710fa0ff",
+      "failed_gate_count": 0,
+      "passed_gate_count": 18,
+      "public_release_sha256": "620aedd055fda7f13b8cdad9f85826dcdf8d2d92fc7532596c9c01b2a704b0b2",
+      "selected_near_duplicate_rejections": 1605,
+      "status": "release_admitted",
+      "training_unblocked": true
+    }
+  ],
+  "dataset_id": "orca-math-sft-v1",
+  "schema_version": "nano_orca_math_sft_attempt_history_v1"
+}

@@ -1,0 +1,76 @@
+{
+  "accepted": {
+    "by_split_stratum": {
+      "dev:long": 256,
+      "dev:medium": 512,
+      "dev:short": 256,
+      "train:long": 8192,
+      "train:medium": 16384,
+      "train:short": 8192
+    },
+    "dev_rows": 1024,
+    "dev_tokens": 398945,
+    "rows": 33792,
+    "token_quantiles": {
+      "max": 1024,
+      "min": 68,
+      "p25": 289,
+      "p50": 373,
+      "p75": 470,
+      "p90": 598,
+      "p95": 687,
+      "p99": 850
+    },
+    "train_rows": 32768,
+    "train_tokens": 12820576
+  },
+  "checks": {
+    "build_preregister_identity_pass": true,
+    "exact_hash_unique": true,
+    "forbidden_exact_overlap_zero": true,
+    "forbidden_identity_pass": true,
+    "forbidden_near_overlap_zero": true,
+    "row_count_pass": true,
+    "sample_id_unique": true,
+    "schema_pass": true,
+    "selected_near_overlap_zero": true,
+    "semantic_hash_unique": true,
+    "source_identity_pass": true,
+    "source_index_unique": true,
+    "strata_count_pass": true,
+    "token_recomputation_pass": true,
+    "tokenizer_identity_pass": true,
+    "train_token_target_pass": true,
+    "training_boundary_pass": true,
+    "verifier_pass": true
+  },
+  "claim_boundary": "This release proves deterministic source selection, row and token scale, provenance, split isolation, exact/near dedup, numeric suffix verification, and zero overlap with the pinned GSM8K/MMLU/GPQA corpora. It is not model-quality evidence and unlocks only one separately pre-registered SFT smoke.",
+  "filtering": {
+    "overlap_counts": {},
+    "selection_rejected": {
+      "selected_near_duplicate": 1605,
+      "sequence_too_long": 67
+    },
+    "source_rejected": {
+      "answer_char_bounds": 43,
+      "forbidden_exact_overlap": 7447,
+      "forbidden_near_overlap": 6771,
+      "numeric_answer_extraction": 573,
+      "source_exact_duplicate": 13636
+    }
+  },
+  "release_id": "orca-math-sft-v1",
+  "rl_or_opd_unlocked": false,
+  "schema_version": "nano_orca_math_sft_release_v1",
+  "source": {
+    "config_sha256": "512de9660b75bf4bbd0da31ebdd1ed4876958db713d73ae750e3a237ef74b69c",
+    "dataset_file_sha256": "85a09db0743d94fc313574eaf15661556426195112da8ba59ca9abd7710fa0ff",
+    "license": "mit",
+    "preregister_sha256": "f264029b29f44770b4466b5625864d6d55cc957af3147bb8d70c219e4be3f511",
+    "repository": "microsoft/orca-math-word-problems-200k",
+    "revision": "29255d1770cc4eac66e5e7fa378cba542c026350",
+    "source_parquet_sha256": "38513af71b04e2f710c6cd98f750bf72a87b7a4da1804caaa76f898585c1cfaf",
+    "source_rows": 200035
+  },
+  "training_unblocked": true
+}
