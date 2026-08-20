@@ -1,0 +1,123 @@
+{
+  "accepted": {
+    "answer_task_fraction": {
+      "train": 1.0,
+      "validation": 1.0
+    },
+    "dev_by_label": {
+      "A": 512,
+      "B": 512,
+      "C": 512
+    },
+    "dev_none_by_subtype": {
+      "box_total": 64,
+      "paired_average": 64,
+      "percentage_change": 64,
+      "quotient_remainder": 64,
+      "remaining_stock": 64,
+      "single_operation": 64,
+      "time_conversion": 64,
+      "weighted_total": 64
+    },
+    "dev_rows": 1536,
+    "dev_templates_by_subtype": {
+      "box_total": 4,
+      "paired_average": 4,
+      "percentage_change": 4,
+      "quotient_remainder": 4,
+      "remaining_stock": 4,
+      "single_operation": 4,
+      "time_conversion": 4,
+      "weighted_total": 4
+    },
+    "rows": 7680,
+    "train_by_label": {
+      "A": 2048,
+      "B": 2048,
+      "C": 2048
+    },
+    "train_none_by_subtype": {
+      "box_total": 256,
+      "paired_average": 256,
+      "percentage_change": 256,
+      "quotient_remainder": 256,
+      "remaining_stock": 256,
+      "single_operation": 256,
+      "time_conversion": 256,
+      "weighted_total": 256
+    },
+    "train_rows": 6144,
+    "train_templates_by_subtype": {
+      "box_total": 16,
+      "paired_average": 16,
+      "percentage_change": 16,
+      "quotient_remainder": 16,
+      "remaining_stock": 16,
+      "single_operation": 16,
+      "time_conversion": 16,
+      "weighted_total": 16
+    },
+    "train_tokens": 766519
+  },
+  "checks": {
+    "all_exact_hashes_unique": true,
+    "all_overlap_counts_zero": true,
+    "all_sample_ids_unique": true,
+    "all_semantic_hashes_unique": true,
+    "answer_task_fraction_pass": true,
+    "dev_answer_task_only_pass": true,
+    "exact_negative_subtype_balance": true,
+    "exact_row_and_class_balance": true,
+    "forbidden_content_zero": true,
+    "minimum_train_tokens_pass": true,
+    "template_diversity_pass": true,
+    "tokenizer_identity_pinned": true
+  },
+  "claim_boundary": "This release proves only deterministic synthetic data quality, balance, diversity, token, overlap, provenance, and leakage gates. It does not establish model quality and unlocks only one separately pre-registered router SFT run.",
+  "leakage": {
+    "forbidden_terms": []
+  },
+  "overlap": {
+    "benchmark_prompts": {
+      "gpqa_diamond": 0,
+      "gsm8k": 0,
+      "mmlu": 0
+    },
+    "benchmark_rows_hashed": {
+      "gpqa_diamond": 198,
+      "gsm8k": 1319,
+      "mmlu": 14042
+    },
+    "integration_prompts": {
+      "integration_v1": 0,
+      "integration_v2": 0
+    },
+    "source_v1_sample_ids": 0,
+    "source_v1_semantic": 0,
+    "train_dev_semantic": 0
+  },
+  "policy": {
+    "contains_benchmark_content": false,
+    "contains_integration_rows_or_outputs": false,
+    "contains_model_outputs": false,
+    "contains_teacher_outputs": false,
+    "purpose": "router_negative_diversity_sft_v2",
+    "source_split": "non_eval_analog_only",
+    "training_allowed": true
+  },
+  "release_id": "qwen35-router-negative-diversity-v2",
+  "schema_version": "nano_router_negative_diversity_release_v2",
+  "source": {
+    "audit_sha256": "9aaa69de746dbdc5cefbb52fb271c8f9ec86716d10ada70704c7e346dc2f7c17",
+    "contract_sha256": "c195a7373ea283546dde1866f70593f0912833d987ff5f1a8cb424c2bc340335",
+    "dataset_canonical_sha256": "f63c58b54ef4747f274599784bad9ffe4143117482c22b33005a2dbf725b1f2f",
+    "source_dataset_sha256": "dacd3663639fe9ddc054865b87afdd0c918f0fddb12c8c9355819d4bbce95d65",
+    "source_release_sha256": "fb265e125e181056856a196322cf5da3b1d7d890d60ad653839d2707ebe3781d",
+    "tokenizer_file_sha256": {
+      "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+      "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+      "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8"
+    }
+  },
+  "training_unblocked": true
+}

@@ -1,0 +1,46 @@
+{
+  "audit_path": "docs/datasets/qwen35_router_negative_diversity_v2.public.json",
+  "audit_sha256": "9aaa69de746dbdc5cefbb52fb271c8f9ec86716d10ada70704c7e346dc2f7c17",
+  "benchmark_sources": [
+    {
+      "name": "gsm8k",
+      "path": "../../../datasets/gsm8k/gsm8k/main/test-00000-of-00001.parquet",
+      "prompt_column": "question",
+      "sha256": "ee7b8da9e381df27b9e3f7758a159ab2bdaa4dbaa910546cbbc47e0cb44e4f59"
+    },
+    {
+      "name": "mmlu",
+      "path": "../../../datasets/mmlu_no_train/mmlu_no_train/all/test-00000-of-00001.parquet",
+      "prompt_column": "question",
+      "sha256": "02033371a64dbe5a0d8b6fb9d612900afcd0fea5140e53490993a4540b3a58fd"
+    },
+    {
+      "name": "gpqa_diamond",
+      "path": "../../../datasets/GPQA-Diamond/GPQA-Diamond/test/gpqa_diamond.parquet",
+      "prompt_column": "question",
+      "sha256": "fdd6e95117cdf87075f56bf673a5bae4680b143bc2d29b486470810122c33f39"
+    }
+  ],
+  "contract_path": "configs/router_classification/qwen35_router_negative_diversity_release_v2.json",
+  "contract_sha256": "c195a7373ea283546dde1866f70593f0912833d987ff5f1a8cb424c2bc340335",
+  "integration_preregistrations": [
+    {
+      "name": "integration_v1",
+      "path": "../nano-harness-fullstack-traex-03/docs/experiments/qwen35_router_adapter_integration_v1.preregister.json",
+      "sha256": "ed5c4e6800385e7a4bfce0aed027bd1f81a6854bb1ed5b3f6aa0cc6e808491f3"
+    },
+    {
+      "name": "integration_v2",
+      "path": "../nano-harness-fullstack-traex-03/docs/experiments/qwen35_router_adapter_integration_v2.preregister.json",
+      "sha256": "1a23a1bb391a3ebac7e70aecd5e2d855ef624e825c26e6bfe9ed942d07cc9e2e"
+    }
+  ],
+  "output_dataset_path": "datasets/qwen35_router_negative_diversity_v2.json",
+  "output_release_path": "manifests/qwen35_router_negative_diversity_v2.release.json",
+  "schema_version": "nano_router_negative_diversity_build_v2",
+  "source_dataset_path": "datasets/qwen35_router_classification_v1.json",
+  "source_dataset_sha256": "dacd3663639fe9ddc054865b87afdd0c918f0fddb12c8c9355819d4bbce95d65",
+  "source_release_path": "manifests/qwen35_router_classification_v1.release.json",
+  "source_release_sha256": "fb265e125e181056856a196322cf5da3b1d7d890d60ad653839d2707ebe3781d",
+  "tokenizer_path": "../../../models/Qwen3.5-4B"
+}
