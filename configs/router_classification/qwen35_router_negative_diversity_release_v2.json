@@ -1,0 +1,129 @@
+{
+  "allowed_after_release": "One separately pre-registered Qwen3.5-4B router SFT run with fresh validation and serving-namespace parity.",
+  "dataset_id": "qwen35-router-negative-diversity-v2",
+  "dev_by_label": {
+    "A": 512,
+    "B": 512,
+    "C": 512
+  },
+  "forbidden": [
+    "reuse_integration_v1_or_v2_rows",
+    "reuse_integration_v1_or_v2_outputs",
+    "train_on_benchmark_canary_or_holdout",
+    "post_release_template_or_class_prior_change",
+    "second_training_run_without_new_preregistration"
+  ],
+  "label_contract": {
+    "A": "implicit_scale_total",
+    "B": "first_strict_profit_period",
+    "C": "NONE"
+  },
+  "lexical_contract": {
+    "answer_task_prompts_must_not_contain": [
+      "route",
+      "router",
+      "classify",
+      "classification",
+      "semantic class"
+    ],
+    "dev_explicit_classification_rows": 0,
+    "minimum_answer_task_fraction_dev": 1.0,
+    "minimum_answer_task_fraction_train": 0.75,
+    "positive_and_negative_answer_task_templates_required": true
+  },
+  "minimum_train_tokens": 600000,
+  "negative_subtypes": {
+    "box_total": {
+      "dev_rows": 64,
+      "minimum_dev_templates": 4,
+      "minimum_train_templates": 16,
+      "train_rows": 256
+    },
+    "paired_average": {
+      "dev_rows": 64,
+      "minimum_dev_templates": 4,
+      "minimum_train_templates": 16,
+      "train_rows": 256
+    },
+    "percentage_change": {
+      "dev_rows": 64,
+      "minimum_dev_templates": 4,
+      "minimum_train_templates": 16,
+      "train_rows": 256
+    },
+    "quotient_remainder": {
+      "dev_rows": 64,
+      "minimum_dev_templates": 4,
+      "minimum_train_templates": 16,
+      "train_rows": 256
+    },
+    "remaining_stock": {
+      "dev_rows": 64,
+      "minimum_dev_templates": 4,
+      "minimum_train_templates": 16,
+      "train_rows": 256
+    },
+    "single_operation": {
+      "dev_rows": 64,
+      "minimum_dev_templates": 4,
+      "minimum_train_templates": 16,
+      "train_rows": 256
+    },
+    "time_conversion": {
+      "dev_rows": 64,
+      "minimum_dev_templates": 4,
+      "minimum_train_templates": 16,
+      "train_rows": 256
+    },
+    "weighted_total": {
+      "dev_rows": 64,
+      "minimum_dev_templates": 4,
+      "minimum_train_templates": 16,
+      "train_rows": 256
+    }
+  },
+  "provenance": {
+    "allowed_feedback": "public aggregate subtype counts and prompt hashes only",
+    "benchmark_canary_holdout_content_used": false,
+    "deterministic_synthetic_only": true,
+    "integration_v1_v2_outputs_used": false,
+    "integration_v1_v2_rows_used": false,
+    "model_outputs_used": false,
+    "teacher_outputs_used": false
+  },
+  "release_gates": {
+    "all_exact_hashes_unique": true,
+    "all_overlap_counts_zero": true,
+    "all_sample_ids_unique": true,
+    "all_semantic_hashes_unique": true,
+    "answer_task_fraction_pass": true,
+    "dev_answer_task_only_pass": true,
+    "exact_negative_subtype_balance": true,
+    "exact_row_and_class_balance": true,
+    "forbidden_content_zero": true,
+    "minimum_train_tokens_pass": true,
+    "template_diversity_pass": true,
+    "tokenizer_identity_pinned": true
+  },
+  "rows": {
+    "dev": 1536,
+    "total": 7680,
+    "train": 6144
+  },
+  "schema_version": "nano_router_negative_diversity_contract_v2",
+  "seed": 20260827,
+  "split_contract": {
+    "benchmark_prompt_overlap": 0,
+    "integration_v1_v2_prompt_overlap": 0,
+    "source_v1_sample_overlap": 0,
+    "source_v1_semantic_overlap": 0,
+    "train_dev_semantic_overlap": 0,
+    "train_dev_template_overlap": 0
+  },
+  "train_by_label": {
+    "A": 2048,
+    "B": 2048,
+    "C": 2048
+  },
+  "training_unblocked_only_after_release": true
+}
